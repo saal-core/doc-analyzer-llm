@@ -10,6 +10,8 @@ import NewWorkspaceModal, {
 } from "../Modals/NewWorkspace";
 import paths from "@/utils/paths";
 import { isMobile } from "react-device-detect";
+import AssistantLogo from "@/media/logo/assistant.png";
+import UserLogo from "@/media/logo/user.png";
 import { SidebarMobileHeader } from "../Sidebar";
 import ChatBubble from "../ChatBubble";
 import System from "@/models/system";
@@ -46,16 +48,21 @@ export default function DefaultChatContainer() {
           className={`pt-10 pb-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
         >
           <div className="flex gap-x-5">
-            <UserIcon user={{ uid: "system" }} role={"assistant"} />
+            <UserIcon
+              logo={AssistantLogo}
+              user={{ uid: "system" }}
+              role={"assistant"}
+            />
 
             <span
               className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
             >
-              Welcome to DataPrism 360, DataPrism 360 is an open-source AI tool by
-              Mintplex Labs that turns anything into a trained chatbot you can
-              query and chat with. DataPrism 360 is a BYOK (bring-your-own-keys)
-              software so there is no subscription, fee, or charges for this
-              software outside of the services you want to use with it.
+              Welcome to DataPrism 360, DataPrism 360 is an open-source AI tool
+              by Mintplex Labs that turns anything into a trained chatbot you
+              can query and chat with. DataPrism 360 is a BYOK
+              (bring-your-own-keys) software so there is no subscription, fee,
+              or charges for this software outside of the services you want to
+              use with it.
             </span>
           </div>
         </div>
@@ -70,7 +77,11 @@ export default function DefaultChatContainer() {
           className={`pb-4 pt-2 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
         >
           <div className="flex gap-x-5">
-            <UserIcon user={{ uid: "system" }} role={"assistant"} />
+            <UserIcon
+              logo={AssistantLogo}
+              user={{ uid: "system" }}
+              role={"assistant"}
+            />
 
             <span
               className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
@@ -93,26 +104,30 @@ export default function DefaultChatContainer() {
           className={`pt-2 pb-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
         >
           <div className="flex gap-x-5">
-            <UserIcon user={{ uid: "system" }} role={"assistant"} />
+            <UserIcon
+              logo={AssistantLogo}
+              user={{ uid: "system" }}
+              role={"assistant"}
+            />
             <div>
               <span
                 className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
               >
-                DataPrism 360 can run totally locally on your machine with little
-                overhead you wont even notice it's there! No GPU needed. Cloud
-                and on-premises installation is available as well.
+                DataPrism 360 can run totally locally on your machine with
+                little overhead you wont even notice it's there! No GPU needed.
+                Cloud and on-premises installation is available as well.
                 <br />
-                The AI tooling ecosystem gets more powerful everyday.
-                DataPrism 360 makes it easy to use.
+                The AI tooling ecosystem gets more powerful everyday. DataPrism
+                360 makes it easy to use.
               </span>
-              <a
+              {/* <a
                 href={paths.github()}
                 target="_blank"
                 className="mt-5 w-fit transition-all duration-300 border border-slate-200 px-4 py-2 rounded-lg text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
               >
                 <GitMerge className="h-4 w-4" />
                 <p>Create an issue on Github</p>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
@@ -129,6 +144,7 @@ export default function DefaultChatContainer() {
           <div className="flex gap-x-5">
             <UserIcon
               user={{ uid: userFromStorage()?.username }}
+              logo={UserLogo}
               role={"user"}
             />
 
@@ -150,7 +166,11 @@ export default function DefaultChatContainer() {
           className={`py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
         >
           <div className="flex gap-x-5">
-            <UserIcon user={{ uid: "system" }} role={"assistant"} />
+            <UserIcon
+              logo={AssistantLogo}
+              user={{ uid: "system" }}
+              role={"assistant"}
+            />
             <div>
               <span
                 className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
@@ -189,6 +209,7 @@ export default function DefaultChatContainer() {
           <div className="flex gap-x-5">
             <UserIcon
               user={{ uid: userFromStorage()?.username }}
+              logo={UserLogo}
               role={"user"}
             />
 
@@ -211,7 +232,11 @@ export default function DefaultChatContainer() {
           className={`py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
         >
           <div className="flex gap-x-5">
-            <UserIcon user={{ uid: "system" }} role={"assistant"} />
+            <UserIcon
+              logo={AssistantLogo}
+              user={{ uid: "system" }}
+              role={"assistant"}
+            />
 
             <span
               className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
@@ -251,6 +276,7 @@ export default function DefaultChatContainer() {
           <div className="flex gap-x-5">
             <UserIcon
               user={{ uid: userFromStorage()?.username }}
+              logo={UserLogo}
               role={"user"}
             />
 
@@ -272,7 +298,11 @@ export default function DefaultChatContainer() {
           className={`py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
         >
           <div className="flex gap-x-5">
-            <UserIcon user={{ uid: "system" }} role={"assistant"} />
+            <UserIcon
+              logo={AssistantLogo}
+              user={{ uid: "system" }}
+              role={"assistant"}
+            />
             <div>
               <span
                 className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
@@ -280,7 +310,7 @@ export default function DefaultChatContainer() {
                 Have Fun!
               </span>
 
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4">
+              {/* <div className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4">
                 <a
                   href={paths.github()}
                   target="_blank"
@@ -296,7 +326,7 @@ export default function DefaultChatContainer() {
                   <EnvelopeSimple className="h-4 w-4" />
                   <p>Contact Mintplex Labs</p>
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

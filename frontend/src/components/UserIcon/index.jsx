@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import JAZZ from "@metamask/jazzicon";
 import usePfp from "../../hooks/usePfp";
 
-export default function UserIcon({ size = 36, user, role }) {
+export default function UserIcon({ size = 36, user, role, logo }) {
   const { pfp } = usePfp();
   const divRef = useRef(null);
   const seed = user?.uid
@@ -15,10 +15,20 @@ export default function UserIcon({ size = 36, user, role }) {
     const result = JAZZ(size, seed);
     divRef.current.appendChild(result);
   }, [pfp, role, seed, size]);
-
   return (
     <div className="relative w-[35px] h-[35px] rounded-full flex-shrink-0 overflow-hidden">
-      <div ref={divRef} />
+      {((logo && !pfp) || (logo && role !== "user")) ? (
+        <img
+          src={logo}
+          style={{
+            backgroundColor: "white",
+          }}
+          alt="logo"
+          className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+        />
+      ) : (
+        <div ref={divRef} />
+      )}
       {role === "user" && pfp && (
         <img
           src={pfp}

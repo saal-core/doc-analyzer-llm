@@ -5,7 +5,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const TITLE = "Welcome to DataPrism 360";
-const DESCRIPTION = "Help us make DataPrism 360 built for your needs. Optional.";
+const DESCRIPTION =
+  "Help us make DataPrism 360 built for your needs. Optional.";
 
 async function sendQuestionnaire({ email, useCase, comment }) {
   if (import.meta.env.DEV) {
@@ -135,7 +136,7 @@ export default function Survey({ setHeader, setForwardBtn, setBackBtn }) {
           </label>
           <div className="mt-2 gap-y-3 flex flex-col">
             <label
-              className={`transition-all duration-300 w-full h-11 p-2.5 bg-white/10 rounded-lg flex justify-start items-center gap-2.5 cursor-pointer border border-transparent ${
+              className={`radio-button transition-all duration-300 w-full h-11 p-2.5 bg-white/10 rounded-lg flex justify-start items-center gap-2.5 cursor-pointer border border-transparent ${
                 selectedOption === "job" ? "border-white border-opacity-40" : ""
               } hover:border-white/60`}
             >
@@ -157,7 +158,7 @@ export default function Survey({ setHeader, setForwardBtn, setBackBtn }) {
               </div>
             </label>
             <label
-              className={`transition-all duration-300 w-full h-11 p-2.5 bg-white/10 rounded-lg flex justify-start items-center gap-2.5 cursor-pointer border border-transparent ${
+              className={`radio-button transition-all duration-300 w-full h-11 p-2.5 bg-white/10 rounded-lg flex justify-start items-center gap-2.5 cursor-pointer border border-transparent ${
                 selectedOption === "personal"
                   ? "border-white border-opacity-40"
                   : ""
@@ -181,7 +182,7 @@ export default function Survey({ setHeader, setForwardBtn, setBackBtn }) {
               </div>
             </label>
             <label
-              className={`transition-all duration-300 w-full h-11 p-2.5 bg-white/10 rounded-lg flex justify-start items-center gap-2.5 cursor-pointer border border-transparent ${
+              className={`radio-button transition-all duration-300 w-full h-11 p-2.5 bg-white/10 rounded-lg flex justify-start items-center gap-2.5 cursor-pointer border border-transparent ${
                 selectedOption === "other"
                   ? "border-white border-opacity-40"
                   : ""
