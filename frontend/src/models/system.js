@@ -36,8 +36,8 @@ const System = {
       .then((res) => res.results)
       .catch(() => null);
   },
-  localFiles: async function () {
-    return await fetch(`${API_BASE}/system/local-files`, {
+  localFiles: async function (ws) {
+    return await fetch(`${API_BASE}/system/local-files/${ws}`, {
       headers: baseHeaders(),
     })
       .then((res) => {
@@ -60,7 +60,6 @@ const System = {
     })
       .then((res) => res.ok)
       .catch(() => false);
-
     window.localStorage.setItem(AUTH_TIMESTAMP, Number(new Date()));
     return valid;
   },
@@ -78,6 +77,15 @@ const System = {
         return { valid: false, message: e.message };
       });
   },
+
+  openidToken: async function (body) {
+    // Construct the query parameters from the body object
+    const queryParams = new URLSearchParams(body).toString();
+
+    // Redirect the user to the URL with query parameters
+    window.location.href = `${API_BASE}/request-token?${queryParams}`;
+  },
+
   recoverAccount: async function (username, recoveryCodes) {
     return await fetch(`${API_BASE}/system/recover-account`, {
       method: "POST",

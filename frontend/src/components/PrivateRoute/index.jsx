@@ -7,6 +7,7 @@ import { AUTH_TIMESTAMP, AUTH_TOKEN, AUTH_USER } from "@/utils/constants";
 import { userFromStorage } from "@/utils/request";
 import System from "@/models/system";
 import UserMenu from "../UserMenu";
+import Cookies from 'js-cookie';
 
 // Used only for Multi-user mode only as we permission specific pages based on auth role.
 // When in single user mode we just bypass any authchecks.
@@ -15,7 +16,6 @@ function useIsAuthenticated() {
   const [shouldRedirectToOnboarding, setShouldRedirectToOnboarding] =
     useState(false);
   const [multiUserMode, setMultiUserMode] = useState(false);
-
   useEffect(() => {
     const validateSession = async () => {
       const {
@@ -44,23 +44,38 @@ function useIsAuthenticated() {
         return;
       }
 
-      // Single User password mode check
       if (!MultiUserMode && RequiresAuth) {
         const localAuthToken = localStorage.getItem(AUTH_TOKEN);
-        if (!localAuthToken) {
-          setIsAuthed(false);
-          return;
-        }
+        if (!localAuthToken) { /* empty */ }
 
         const isValid = await validateSessionTokenForUser();
         setIsAuthed(isValid);
         return;
       }
 
+      var token = localStorage.getItem(AUTH_TOKEN, token);
+      if (!token) token = Cookies.get("token");
+
+      var user = localStorage.getItem(AUTH_USER, token);
+      if (!user) user = Cookies.get("user");
+
+      if (!token) {
+        setIsAuthed(false);
+        return;
+      }
+
+      if (token) {
+        localStorage.setItem(AUTH_USER, user);
+        localStorage.setItem(AUTH_TOKEN, token);
+        localStorage.setItem(AUTH_TIMESTAMP, Date.now());
+        Cookies.remove("token");
+        Cookies.remove("user");
+      }
+
       const localUser = localStorage.getItem(AUTH_USER);
       const localAuthToken = localStorage.getItem(AUTH_TOKEN);
       if (!localUser || !localAuthToken) {
-        setIsAuthed(false);
+        setIsAuthed(true);
         return;
       }
 
@@ -72,7 +87,6 @@ function useIsAuthenticated() {
         setIsAuthed(false);
         return;
       }
-
       setIsAuthed(true);
     };
     validateSession();
@@ -124,6 +138,13 @@ export function ManagerRoute({ Component }) {
 }
 
 export default function PrivateRoute({ Component }) {
+  const getCookie = async () => {
+    const cookie = Cookies.get("token");
+    console.log("cookie is the following", cookie);
+  };
+  useEffect(() => {
+    getCookie();
+  }, []);
   const { isAuthd, shouldRedirectToOnboarding } = useIsAuthenticated();
   if (isAuthd === null) return <FullScreenLoader />;
 

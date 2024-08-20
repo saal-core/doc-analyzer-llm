@@ -52,7 +52,7 @@ function MultiUserMode() {
           window.localStorage.removeItem(AUTH_TOKEN);
           window.localStorage.removeItem(AUTH_TIMESTAMP);
           window.location = paths.settings.users();
-        }, 2_000);
+        }, 2000);
         return;
       }
 
