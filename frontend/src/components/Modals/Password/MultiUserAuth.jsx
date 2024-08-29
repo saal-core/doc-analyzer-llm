@@ -335,7 +335,7 @@ export default function MultiUserAuth({ logo }) {
               </p>
             </div>
           </div>
-          <div
+          {/* <div
             // className="w-full px-4 md:px-12"
             className="w-full"
           >
@@ -364,12 +364,12 @@ export default function MultiUserAuth({ logo }) {
               </div>
               {error && <p className="text-red-400 text-sm">Error: {error}</p>}
             </div>
-          </div>
+          </div> */}
           <div
             // className="flex items-center md:p-12 px-10 mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8"
             className="flex items-center md:py-12  mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8"
           >
-            <button
+            {/* <button
               disabled={loading}
               type="submit"
               // className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#46C8FF] md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
@@ -378,7 +378,7 @@ export default function MultiUserAuth({ logo }) {
               {loading
                 ? t("login.multi-user.validating")
                 : t("login.multi-user.login")}
-            </button>
+            </button> */}
             <button
               disabled={loading}
               type="button"
@@ -390,7 +390,7 @@ export default function MultiUserAuth({ logo }) {
                 ? t("login.multi-user.validating")
                 : t("login.multi-user.keyclock_login")}
             </button>
-            <button
+            {/* <button
               type="button"
               // className="text-white text-sm flex gap-x-1 hover:text-primary-button hover:underline"
               className="text-white text-sm flex gap-x-1 hover:text-primary-button hover:underline"
@@ -398,7 +398,7 @@ export default function MultiUserAuth({ logo }) {
             >
               {t("login.multi-user.forgot-pass")}?
               <b>{t("login.multi-user.reset")}</b>
-            </button>
+            </button> */}
           </div>
         </div>
       </form>
