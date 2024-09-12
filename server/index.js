@@ -1,6 +1,6 @@
 process.env.NODE_ENV === "development"
-  ? require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` })
-  : require("dotenv").config();
+  ? require("dotenv").config({ path: `./config/.env.${process.env.NODE_ENV}` })
+  : require("dotenv").config({ path: `/app/server/config/.env` });
 
 const express = require("express");
 const bodyParser = require("body-parser");
