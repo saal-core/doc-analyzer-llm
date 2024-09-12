@@ -797,7 +797,8 @@ async function dumpENV() {
     .map(([key, value]) => `${key}='${sanitizeValue(value)}'`)
     .join("\n");
 
-  const envPath = path.join(__dirname, "../../.env");
+  const envPath = path.join(__dirname, "../../config/.env");
+  console.log("envPath is ", envPath);
   fs.writeFileSync(envPath, envResult, { encoding: "utf8", flag: "w" });
   return true;
 }
