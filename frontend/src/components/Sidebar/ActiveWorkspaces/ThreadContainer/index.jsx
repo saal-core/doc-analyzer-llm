@@ -182,17 +182,17 @@ function NewThreadButton({ workspace }) {
             <CircleNotch
               weight="bold"
               size={14}
-              className="shrink-0 animate-spin text-slate-100"
+              className="shrink-0 animate-spin text-black"
             />
           ) : (
-            <Plus weight="bold" size={14} className="shrink-0 text-slate-100" />
+            <Plus weight="bold" size={14} className="shrink-0 text-black" />
           )}
         </div>
 
         {loading ? (
-          <p className="text-left text-slate-100 text-sm">Starting Thread...</p>
+          <p className="text-left text-black text-sm">Starting Thread...</p>
         ) : (
-          <p className="text-left text-slate-100 text-sm">New Thread</p>
+          <p className="text-left text-black text-sm">New Thread</p>
         )}
       </div>
     </button>

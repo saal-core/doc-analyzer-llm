@@ -66,7 +66,7 @@ export default function ThreadItem({
         {thread.deleted ? (
           <div className="w-full flex justify-between">
             <div className="w-full ">
-              <p className={`text-left text-sm text-slate-400/50 italic`}>
+              <p className={`text-left text-sm text-black italic`}>
                 deleted thread
               </p>
             </div>
@@ -77,7 +77,7 @@ export default function ThreadItem({
                 onClick={() => toggleMarkForDeletion(thread.id)}
               >
                 <ArrowCounterClockwise
-                  className="text-zinc-300 hover:text-white"
+                  className="text-black hover:text-black"
                   size={18}
                 />
               </button>
@@ -94,8 +94,8 @@ export default function ThreadItem({
             <p
               className={`text-left text-sm ${
                 isActive
-                  ? "font-medium text-white menu-item-selected"
-                  : "text-slate-400"
+                  ? "font-medium text-black menu-item-selected"
+                  : "text-black"
               }`}
             >
               {truncate(thread.name, 25)}
@@ -111,7 +111,7 @@ export default function ThreadItem({
                 onClick={() => toggleMarkForDeletion(thread.id)}
               >
                 <X
-                  className="text-zinc-300 hover:text-white"
+                  className="text-black hover:text-black"
                   weight="bold"
                   size={18}
                 />
@@ -127,7 +127,7 @@ export default function ThreadItem({
                   onClick={() => setShowOptions(!showOptions)}
                   aria-label="Thread options"
                 >
-                  <DotsThree className="text-slate-300" size={25} />
+                  <DotsThree className="text-black" size={25} />
                 </button>
               </div>
             )}
@@ -235,7 +235,7 @@ function OptionsMenu({ containerRef, workspace, thread, onRemove, close }) {
       <button
         onClick={renameThread}
         type="button"
-        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-slate-300"
+        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-white"
       >
         <PencilSimple size={18} />
         <p className="text-sm">Rename</p>
@@ -243,7 +243,7 @@ function OptionsMenu({ containerRef, workspace, thread, onRemove, close }) {
       <button
         onClick={handleDelete}
         type="button"
-        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-red-500/20 text-slate-300 hover:text-red-100"
+        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-red-500/20 text-white hover:text-red-100"
       >
         <Trash size={18} />
         <p className="text-sm">Delete Thread</p>

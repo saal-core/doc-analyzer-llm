@@ -91,13 +91,13 @@ export default function ActiveWorkspaces() {
               <a
                 href={isActive ? null : paths.workspace.chat(workspace.slug)}
                 aria-current={isActive ? "page" : ""}
-                className={`
+                className={`bg-workspace-item
               transition-all duration-[200ms]
-                flex flex-grow w-[75%] gap-x-2 py-[6px] px-[12px] rounded-[4px] text-white justify-start items-center
-                hover:bg-workspace-item-selected-gradient hover:font-bold border-2 border-outline
+                flex flex-grow w-[75%] gap-x-2 py-[6px] px-[12px] rounded-[4px] text-black justify-start items-center
+                hover:bg-workspace-item-selected-gradient hover:font-bold
                 ${
                   isActive
-                    ? "bg-workspace-item-selected-gradient font-bold"
+                    ? ""
                     : ""
                 }`}
               >
@@ -110,7 +110,7 @@ export default function ActiveWorkspaces() {
                     />
                     <p
                       className={`text-[14px] leading-loose whitespace-nowrap overflow-hidden ${
-                        isActive ? "text-white " : "text-zinc-200"
+                        isActive ? "text-black" : "text-black"
                       }`}
                     >
                       {isActive || isHovered
@@ -122,7 +122,7 @@ export default function ActiveWorkspaces() {
                   (user?.role !== "default" || workspace.isOwner) ? (
                     <div className="flex items-center gap-x-[2px]">
                       <div
-                        className={`flex hover:bg-[#646768] p-[2px] rounded-[4px] text-[#A7A8A9] hover:text-white ${
+                        className={`flex hover:bg-[#646768] p-[2px] rounded-[4px] text-black hover:text-black ${
                           uploadHover[workspace.id] ? "bg-[#646768]" : ""
                         }`}
                       >
@@ -144,7 +144,7 @@ export default function ActiveWorkspaces() {
                           <UploadSimple
                             className="h-[20px] w-[20px]"
                             weight="bold"
-                            color={"rgba(0, 0, 0, 0.6)"}
+                            color={"rgba(255, 255, 255, 1)"}
                           />
                         </button>
                       </div>
@@ -165,7 +165,7 @@ export default function ActiveWorkspaces() {
                           onMouseLeave={() =>
                             handleGearMouseLeave(workspace.id)
                           }
-                          className="rounded-md flex items-center justify-center text-[#A7A8A9] hover:text-white ml-auto"
+                          className="rounded-md flex items-center justify-center text-black hover:text-black ml-auto"
                           aria-label="General appearance settings"
                         >
                           <div className="flex hover:bg-[#646768] p-[2px] rounded-[4px]">
@@ -177,7 +177,7 @@ export default function ActiveWorkspaces() {
                               //       ? "#FFFFFF"
                               //       : "#A7A8A9"
                               // }
-                              color={"rgba(0, 0, 0, 0.6)"}
+                              color={"rgba(255, 255, 255, 1)"}
                               weight="bold"
                               className="h-[20px] w-[20px]"
                             />

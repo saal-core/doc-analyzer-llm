@@ -12,6 +12,8 @@ import SettingsButton from "../SettingsButton";
 import { Link } from "react-router-dom";
 import paths from "@/utils/paths";
 import SaalLogoDark from "./../../media/logo/saal_logo_light.svg";
+import sidebarBg from "./../../media/sidebarBg.png";
+
 
 export default function Sidebar() {
   const { user } = useUser();
@@ -46,12 +48,19 @@ export default function Sidebar() {
         style={{
           marginTop: "26px",
           marginBottom: "16px",
-          backgroundColor: "#fff",
+          // backgroundColor: "#fff",
+          background: `url(${sidebarBg})`,
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+          marginRight: "0px",
+          borderRadius: "0px",
+          border: "none",
+          paddingInline: "16px 26px"
         }}
         className="relative m-[16px] rounded-[8px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-88px)]"
       >
         <div className="flex flex-col h-full overflow-x-hidden">
-          <div className="flex-grow flex flex-col min-w-[235px]">
+          <div className="flex-grow flex flex-col min-w-[252px]">
             <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between overflow-y-scroll no-scroll">
               <div className="flex flex-col gap-y-2 pb-[120px] overflow-y-scroll no-scroll">
                 <div className="flex gap-x-2 items-center justify-between">
@@ -76,7 +85,7 @@ export default function Sidebar() {
             <div
               className="absolute bottom-0 left-0 right-0 pt-4 pb-3 rounded-b-[16px] bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md z-10"
               style={{
-                backgroundColor: "white",
+                backgroundColor: "transparent",
               }}
             >
               <Footer />

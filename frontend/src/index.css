@@ -201,7 +201,7 @@ button[type="submit"].send-message {
 }
 
 .bg-sidebar {
-  background-color: #f5f5f5;
+  background-color: #030852;  
 }
 
 .text-zinc-200 {
@@ -266,7 +266,7 @@ button[type="submit"].send-message {
   color: rgba(0, 0, 0, 0.6) !important;
 }
 .bg-switch-selected.font-semibold.text-white {
-  color: rgba(0, 142, 206, 1) !important;
+  color: #37CCF6 !important;
 }
 
 .hover\:bg-\[\#3D4147\]:hover {
@@ -302,6 +302,10 @@ button[type="submit"].send-message {
 }
 .hover\:text-x-button:hover {
   color: inherit;
+}
+
+.bg-sidebar.border-outline {
+  margin-left: 60px;
 }
 
 .bg-sidebar-button {
@@ -365,6 +369,12 @@ button.rounded-2xl {
 .bg-main-gradient {
   background-color: #fff;
   background-image: unset;
+  margin-right: 0px !important;
+  padding: 16px;
+  margin-left: -10px !important;
+  z-index: 11 !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
 }
 .absolute .bg-main-gradient {
   background-color: #f5f5f5;
@@ -449,18 +459,18 @@ button.bg-dark-input {
 
 .menu-item-selected {
   background-image: unset;
-  fill: rgba(0, 142, 206, 1) !important;
-  color: rgba(0, 142, 206, 1) !important;
+  fill: #37CCF6 !important;
+  color: #37CCF6 !important;
 }
 .bg-menu-item-selected-gradient {
   background-image: unset;
-  border: 1px solid rgba(0, 142, 206, 1) !important;
-  fill: rgba(0, 142, 206, 1) !important;
-  color: rgba(0, 142, 206, 1) !important;
+  /* border: 1px solid #37CCF6 !important; */
+  fill: #37CCF6 !important;
+  color: #37CCF6 !important;
 }
 .menu-item-selected:hover,
 .hover\:text-white:hover.bg-menu-item-selected-gradient:hover {
-  color: rgba(0, 142, 206, 1) !important;
+  color: #37CCF6 !important;
 }
 .bg-menu-item-gradient:hover {
   font-weight: 600;
@@ -479,21 +489,22 @@ button.bg-dark-input {
   /* border-color: rgba(0, 142, 206, 0.3) !important; */
 }
 
+.bg-workspace-item,
 .bg-workspace-item-selected-gradient,
 .hover\:bg-workspace-item-selected-gradient:hover {
   background-image: unset !important;
-  background-color: rgba(0, 142, 206, 0.2) !important;
-  border-color: rgba(0, 142, 206, 1) !important;
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  border-color: transparent !important;
 }
 
 .bg-workspace-item-selected-gradient p,
 .bg-workspace-item-selected-gradient .squares-four {
-  fill: rgba(0, 142, 206, 1) !important;
-  color: rgba(0, 142, 206, 1) !important;
+  fill: #37CCF6 !important;
+  color: #37CCF6 !important;
 }
 
 .peer:checked ~ .peer-checked\:bg-lime-300 {
-  background-color: rgba(0, 142, 206, 1) !important;
+  background-color: #37CCF6 !important;
 }
 
 .border-gray-500\/50,
@@ -517,7 +528,7 @@ button.bg-dark-input {
 
 .hover\:bg-\[\#646768\]:hover svg,
 .hover\:text-white:hover svg {
-  fill: rgba(0, 142, 206, 1) !important;
+  fill: #37CCF6 !important;
 }
 
 .hover\:text-white:hover,

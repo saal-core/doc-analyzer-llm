@@ -31,6 +31,8 @@ import Footer from "../Footer";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SaalLogoDark from "./../../media/logo/saal_logo_light.svg";
+import sidebarBg from "./../../media/sidebarBg.png";
+
 
 export default function SettingsSidebar() {
   const { t } = useTranslation();
@@ -153,11 +155,17 @@ export default function SettingsSidebar() {
         style={{
           marginTop: "26px",
           marginBottom: "16px",
-          backgroundColor: "white",
+          background: `url(${sidebarBg})`,
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+          marginRight: "0px",
+          borderRadius: "0px",
+          border: "none",
+          paddingInline: "16px 26px"
         }}
         className="transition-all duration-500 relative m-[16px] rounded-[8px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-92px)]"
       >
-        <div className="w-full h-full flex flex-col overflow-x-hidden items-between min-w-[235px]">
+        <div className="w-full h-full flex flex-col overflow-x-hidden items-between min-w-[252px]">
           <div
             className="text-white text-opacity-60 text-sm font-medium uppercase mt-[4px] mb-0 ml-2"
             style={{
@@ -178,7 +186,7 @@ export default function SettingsSidebar() {
           <div
             className="absolute bottom-0 left-0 right-0 pt-4 pb-3 rounded-b-[16px] bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md z-10"
             style={{
-              backgroundColor: "white",
+              backgroundColor: "transparent",
             }}
           >
             <Footer />
