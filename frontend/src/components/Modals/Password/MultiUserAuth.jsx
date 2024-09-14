@@ -307,7 +307,7 @@ export default function MultiUserAuth({ logo }) {
         {/* <div className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-12 py-12 -mt-4 md:mt-0"> */}
         <div
           // className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-16 py-12 -mt-4 md:mt-0"
-          className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:px-4 -mt-4 md:mt-0"
+          className="flex flex-col justify-center relative rounded-2xl md:bg-login-gradient md:px-4 -mt-4 md:mt-0"
         >
           {logo}
           <div
