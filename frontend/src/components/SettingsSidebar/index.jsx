@@ -167,7 +167,7 @@ export default function SettingsSidebar() {
       >
         <div className="w-full h-full flex flex-col overflow-x-hidden items-between min-w-[252px]">
           <div
-            className="text-white text-opacity-60 text-sm font-medium uppercase mt-[4px] mb-0 ml-2"
+            className="text-black text-opacity-60 text-sm font-medium uppercase mt-[4px] mb-0 ml-2"
             style={{
               borderBottom: "1px solid #e3e3e3",
               paddingBottom: "16px",
@@ -190,13 +190,13 @@ export default function SettingsSidebar() {
             }}
           >
             <Footer />
-            <div
+            {/* <div
               style={{ display: "flex", alignItems: "center" }}
               className="whitespace-pre-line text-white align-center justify-center font-normal text-xs flex"
             >
               <>Powered by:&nbsp;</>
               <img style={{ height: "12px" }} src={SaalLogoDark} alt="logo" />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -232,14 +232,14 @@ const Option = ({
         <Link
           to={href}
           className={`
-          transition-all duration-[200ms]
+          transition-all bg-workspace-item duration-[200ms]
           flex flex-grow w-[75%] gap-x-2 py-[6px] px-[12px] rounded-[4px] justify-start items-center
           hover:bg-workspace-item-selected-gradient hover:text-white hover:font-medium
           bg-menu-item-gradient
           ${
             isActive
-              ? "bg-menu-item-selected-gradient font-medium border-outline text-white"
-              : "hover:bg-menu-item-selected-gradient text-zinc-200"
+              ? "bg-menu-item-selected-gradient font-medium border-outline text-black"
+              : "hover:bg-menu-item-selected-gradient text-black"
           }
         `}
         >

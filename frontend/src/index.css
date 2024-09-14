@@ -467,17 +467,27 @@ button.bg-dark-input {
   /* border: 1px solid #37CCF6 !important; */
   fill: #37CCF6 !important;
   color: #37CCF6 !important;
+  font-weight: bold;
 }
+
 .menu-item-selected:hover,
 .hover\:text-white:hover.bg-menu-item-selected-gradient:hover {
   color: #37CCF6 !important;
 }
+
+.bg-workspace-item.hover\:text-white:hover.bg-menu-item-selected-gradient:hover {
+  color: white !important;
+}
+
 .bg-menu-item-gradient:hover {
   font-weight: 600;
 }
 
 .hover\:bg-menu-item-selected-gradient:hover {
   background-image: unset !important;
+}
+
+.hover\:bg-menu-item-selected-gradient:hover {
 }
 
 .focus\:border-white:focus {
@@ -495,6 +505,17 @@ button.bg-dark-input {
   background-image: unset !important;
   background-color: rgba(255, 255, 255, 0.4) !important;
   border-color: transparent !important;
+  color: white !important;
+  fill: white !important;
+}
+
+.bg-workspace-item.hover\:text-white:hover {
+  background-image: unset !important;
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  border-color: transparent !important;
+  color: white !important;
+  fill: white !important;
+  font-weight: bold;
 }
 
 .bg-workspace-item-selected-gradient p,
@@ -520,15 +541,17 @@ button.bg-dark-input {
   background-color: rgba(0, 142, 206, 0.1) !important;
   color: rgba(0, 0, 0, 0.6) !important;
 }
+
 .hover\:bg-\[\#646768\]:hover,
 .hover\:text-white:hover {
   background-color: rgba(0, 142, 206, 0.1) !important;
   color: rgba(255, 255, 255, 0.6) !important;
 }
 
+
 .hover\:bg-\[\#646768\]:hover svg,
 .hover\:text-white:hover svg {
-  fill: #37CCF6 !important;
+  /* fill: #37CCF6 !important; */
 }
 
 .hover\:text-white:hover,

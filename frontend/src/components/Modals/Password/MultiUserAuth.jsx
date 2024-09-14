@@ -305,27 +305,34 @@ export default function MultiUserAuth({ logo }) {
         }}
       >
         {/* <div className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-12 py-12 -mt-4 md:mt-0"> */}
-        <div className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-16 py-12 -mt-4 md:mt-0">
+        <div
+          // className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-16 py-12 -mt-4 md:mt-0"
+          className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:px-4 -mt-4 md:mt-0"
+        >
           {logo}
           <div
             // className="flex items-start justify-between pt-11 pb-9 rounded-t"
             className="flex items-start justify-between pt-8 pb-9 rounded-t"
+            style={{
+              width: '100%'
+            }}
           >
-            <div className="flex items-center flex-col gap-y-4">
-              <div className="flex gap-x-1">
-                <h3 className="text-md md:text-2xl font-bold text-white text-center white-space-nowrap hidden md:block">
+            <div className="flex flex-col" style={{ rowGap: "12px" }}>
+              <div className="w-100 flex gap-x-1">
+                <h3 style={{ color: "black", fontWeight: 500, fontSize: "20px", lineHeight: "28px" }} className="text-md md:text-2xl font-bold text-white white-space-nowrap hidden md:block">
                   {t("login.multi-user.welcome")}
                 </h3>
-                <p
+                {/* <p
                   // className="text-4xl md:text-2xl font-bold bg-gradient-to-r from-[#75D6FF] via-[#FFFFFF] to-[#FFFFFF] bg-clip-text text-transparent"
                   className="text-4xl md:text-2xl font-bold"
                 >
                   {customAppName || "DataPrism 360"}
-                </p>
+                </p> */}
               </div>
-              <p className="text-sm text-white/90 text-center">
-                {t("login.sign-in.start")} {customAppName || "DataPrism 360"}{" "}
-                {t("login.sign-in.end")}
+              <p className="text-sm text-white text-center">
+                Please provide your credentials to securely access your account.
+                {/* {t("login.sign-in.start")} {customAppName || "DataPrism 360"}{" "}
+                {t("login.sign-in.end")} */}
               </p>
             </div>
           </div>

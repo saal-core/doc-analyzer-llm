@@ -16,8 +16,8 @@ export default function SettingsButton() {
       // <ToolTipWrapper id="go-home">
       <Link
         to={paths.home()}
-        className="transition-all duration-300 p-1 text-white"
-        style={{ width: "100%" }}
+        className="transition-all duration-300 p-1 text-black"
+        style={{ width: "95%", paddingLeft: "8px" }}
         aria-label="Home"
         data-tooltip-id="go-home"
         data-tooltip-content="Back to workspaces"
@@ -25,7 +25,7 @@ export default function SettingsButton() {
         <div
           style={{ alignItems: "center", width: "100%" }}
           className={`transition-all duration-[200ms] text-sm
-            flex flex-grow w-[75%] gap-x-2 py-[8px] px-[12px] rounded-[4px] text-white justify-start items-center
+            flex flex-grow w-[75%] gap-x-2 py-[8px] px-[12px] rounded-[4px] text-black justify-start items-center
             hover:bg-workspace-item-selected-gradient hover:font-bold border-2 border-outline
             `}
         >
@@ -42,8 +42,8 @@ export default function SettingsButton() {
     // >
     <Link
       to={!!user?.role ? paths.settings.system() : paths.settings.appearance()}
-      className="transition-all duration-300 p-1 text-white"
-      style={{ width: "100%" }}
+      className="transition-all duration-300 p-1 text-black"
+      style={{ width: "95%", paddingLeft: "8px" }}
       aria-label="Home"
       data-tooltip-id="go-home"
       data-tooltip-content="Back to workspaces"
@@ -51,7 +51,7 @@ export default function SettingsButton() {
       <div
         style={{ alignItems: "center", width: "100%" }}
         className={`transition-all duration-[200ms] text-sm
-          flex flex-grow w-[75%] gap-x-2 py-[8px] px-[12px] rounded-[4px] text-white justify-start items-center
+          flex flex-grow w-[75%] gap-x-2 py-[8px] px-[12px] rounded-[4px] text-black justify-start items-center
           hover:bg-workspace-item-selected-gradient hover:font-bold border-2 border-outline
           `}
       >

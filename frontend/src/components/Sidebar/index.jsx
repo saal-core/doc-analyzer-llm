@@ -89,13 +89,13 @@ export default function Sidebar() {
               }}
             >
               <Footer />
-              <div
+              {/* <div
                 style={{ display: "flex", alignItems: "center" }}
                 className="whitespace-pre-line text-white align-center justify-center font-normal text-xs flex"
               >
                 <>Powered by:&nbsp;</>
                 <img style={{ height: "12px" }} src={SaalLogoDark} alt="logo" />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
