@@ -187,6 +187,7 @@ export default function SettingsSidebar() {
             className="absolute bottom-0 left-0 right-0 pt-4 pb-3 rounded-b-[16px] bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md z-10"
             style={{
               backgroundColor: "transparent",
+              // height: "0px",
             }}
           >
             <Footer />

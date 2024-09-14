@@ -51,7 +51,7 @@ export default function SettingsButton() {
     >
       <div
         // style={{ alignItems: "center", width: "100%" }}
-        style={{ alignItems: "center", position: "fixed", width: "59px", display: "flex", left: "-40px" }}
+        style={{ alignItems: "center", position: "fixed", width: "59px", display: "flex", left: "-40px", bottom: "12px" }}
         // className={`transition-all duration-[200ms] text-sm
         //   flex flex-grow w-[75%] gap-x-2 py-[8px] px-[12px] rounded-[4px] text-black justify-start items-center
         //   hover:bg-workspace-item-selected-gradient hover:font-bold border-2 border-outline
