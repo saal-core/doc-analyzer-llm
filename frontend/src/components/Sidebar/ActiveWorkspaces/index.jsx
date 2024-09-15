@@ -12,6 +12,7 @@ import truncate from "truncate";
 import useUser from "@/hooks/useUser";
 import ThreadContainer from "./ThreadContainer";
 import { Link, useMatch } from "react-router-dom";
+import SideIcon from "../../../media/SideIcon";
 
 export default function ActiveWorkspaces() {
   const { slug } = useParams();
@@ -103,7 +104,7 @@ export default function ActiveWorkspaces() {
               >
                 <div className="flex flex-row justify-between w-full">
                   <div className="flex items-center space-x-2">
-                    <SquaresFour
+                    <SideIcon
                       weight={isActive ? "fill" : "regular"}
                       className="flex-shrink-0 squares-four"
                       size={24}

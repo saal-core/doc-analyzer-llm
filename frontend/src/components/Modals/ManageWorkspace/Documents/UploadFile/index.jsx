@@ -78,9 +78,9 @@ export default function UploadFile({
   return (
     <div>
       <div
-        className={`w-[560px] border-2 border-dashed rounded-2xl bg-zinc-900/50 p-3 ${
+        className={`w-100 h-[374px] flex flex-col justify-center border-2 border-dashed rounded-2xl bg-[#EEFBFF] p-3 ${
           ready ? "cursor-pointer" : "cursor-not-allowed"
-        } hover:bg-zinc-900/90`}
+        } hover:bg-[#EEFBFF]`}
         {...getRootProps()}
       >
         <input {...getInputProps()} />
@@ -125,10 +125,10 @@ export default function UploadFile({
           </div>
         )}
       </div>
-      <div className="text-center text-white text-opacity-50 text-xs font-medium w-[560px] py-2">
+      {/* <div className="text-center text-white text-opacity-50 text-xs font-medium w-[560px] py-2">
         or submit a link
-      </div>
-      <form onSubmit={handleSendLink} className="flex gap-x-2">
+      </div> */}
+      {/* <form onSubmit={handleSendLink} className="flex gap-x-2">
         <input
           disabled={fetchingUrl}
           name="link"
@@ -144,8 +144,8 @@ export default function UploadFile({
         >
           {fetchingUrl ? "Fetching..." : "Fetch website"}
         </button>
-      </form>
-      <div className="mt-6 text-center text-white text-opacity-80 text-xs font-medium w-[560px]">
+      </form> */}
+      <div className="mt-6 text-center text-white text-opacity-80 text-xs font-medium w-100">
         These files will be uploaded to the document processor running on this
         ASK AFADI Library instance. These files are not sent or shared with a third
         party.

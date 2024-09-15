@@ -30,6 +30,7 @@ import { isMobile } from "react-device-detect";
 import Footer from "../Footer";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import SideIcon from '../../media/SideIcon';
 import SaalLogoDark from "./../../media/logo/saal_logo_light.svg";
 import sidebarBg from "./../../media/sidebarBg.png";
 
@@ -271,7 +272,7 @@ const SidebarOptions = ({ user = null, t }) => (
     <Option
       href={paths.settings.system()}
       btnText={t("settings.system")}
-      icon={<SquaresFour className="h-5 w-5 flex-shrink-0" />}
+      icon={<SideIcon className="h-5 w-5 flex-shrink-0" />}
       user={user}
       allowedRole={["admin", "manager"]}
     />

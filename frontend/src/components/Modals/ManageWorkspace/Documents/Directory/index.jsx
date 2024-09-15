@@ -173,122 +173,130 @@ function Directory({
   const filteredFiles = filterFileSearchResults(files, searchTerm);
   return (
     <div className="px-8 pb-8">
-      <div className="flex flex-col gap-y-6">
-        <div className="flex items-center justify-between w-[560px] px-5 relative">
-          <h3 className="text-white text-base font-bold">My Documents</h3>
-          <div className="relative">
-            <input
-              type="search"
-              placeholder="Search for document"
-              onChange={handleSearch}
-              className="search-input bg-zinc-900 text-white placeholder-white/40 text-sm rounded-lg pl-9 pr-2.5 py-2 w-[250px] h-[32px]"
-            />
-            <MagnifyingGlass
-              size={14}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white"
-              weight="bold"
-            />
-          </div>
-          <button
-            className="flex items-center gap-x-2 cursor-pointer px-[14px] py-[7px] -mr-[14px] rounded-lg hover:bg-[#222628]/60 z-20 relative"
-            onClick={openFolderModal}
-          >
-            <Plus size={18} weight="bold" color="#D3D4D4" />
-            <div className="text-[#D3D4D4] text-xs font-bold leading-[18px]">
-              New Folder
+      <div className="flex">
+        <div>
+          <div style={{ backgroundColor: '#E5F4F8', padding: '16px', height: '100%' }} className="flex flex-col items-center w-[348px] px-5 relative">
+            <div style={{ textAlign: 'left', width: '100%', marginBottom: "16px" }}>
+              <h3 style={{ fontWeight: 600 }} className="text-white text-base font-bold">Upload Document</h3>
             </div>
-          </button>
+            <UploadFile
+              workspace={workspace}
+              fetchKeys={fetchKeys}
+              setLoading={setLoading}
+              setLoadingMessage={setLoadingMessage}
+            />
+          </div>
         </div>
-
-        <div className="relative w-[560px] h-[310px] bg-zinc-900 rounded-2xl overflow-hidden">
-          {/* <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 shadow-lg bg-zinc-900"> */}
-          <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 bg-zinc-900">
-            <p className="col-span-6">Name</p>
+        <div className="flex flex-col gap-y-6">
+          <div className="flex items-center justify-between w-[348px] px-5 relative">
+            <h3 className="text-white text-base font-bold">My Documents</h3>
+            <div className="relative">
+              <input
+                type="search"
+                placeholder="Search for document"
+                onChange={handleSearch}
+                className="search-input bg-zinc-900 text-white placeholder-white/40 text-sm rounded-lg pl-9 pr-2.5 py-2 w-[250px] h-[32px]"
+              />
+              <MagnifyingGlass
+                size={14}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white"
+                weight="bold"
+              />
+            </div>
+            <button
+              className="flex items-center gap-x-2 cursor-pointer px-[14px] py-[7px] -mr-[14px] rounded-lg hover:bg-[#222628]/60 z-20 relative"
+              onClick={openFolderModal}
+            >
+              <Plus size={18} weight="bold" color="#D3D4D4" />
+              <div className="text-[#D3D4D4] text-xs font-bold leading-[18px]">
+                New Folder
+              </div>
+            </button>
           </div>
 
-          <div className="overflow-y-auto h-full pt-8">
-            {loading ? (
-              <div className="w-full h-full flex items-center justify-center flex-col gap-y-5">
-                <PreLoader />
-                <p className="text-white/80 text-sm font-semibold animate-pulse text-center w-1/3">
-                  {loadingMessage}
-                </p>
-              </div>
-            ) : filteredFiles.length > 0 ? (
-              filteredFiles.map(
-                (item, index) =>
-                  item.type === "folder" && (
-                    <FolderRow
-                      key={index}
-                      item={item}
-                      selected={isSelected(
-                        item.id,
-                        item.type === "folder" ? item : null
+          <div className="relative w-[348px] h-[310px] bg-zinc-900 rounded-2xl overflow-hidden">
+            {/* <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 shadow-lg bg-zinc-900"> */}
+            <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 bg-zinc-900">
+              <p className="col-span-6">Name</p>
+            </div>
+
+            <div className="overflow-y-auto h-full pt-8">
+              {loading ? (
+                <div className="w-full h-full flex items-center justify-center flex-col gap-y-5">
+                  <PreLoader />
+                  <p className="text-white/80 text-sm font-semibold animate-pulse text-center w-1/3">
+                    {loadingMessage}
+                  </p>
+                </div>
+              ) : filteredFiles.length > 0 ? (
+                filteredFiles.map(
+                  (item, index) =>
+                    item.type === "folder" && (
+                      <FolderRow
+                        key={index}
+                        item={item}
+                        selected={isSelected(
+                          item.id,
+                          item.type === "folder" ? item : null
+                        )}
+                        onRowClick={() => toggleSelection(item)}
+                        toggleSelection={toggleSelection}
+                        isSelected={isSelected}
+                        autoExpanded={index === 0}
+                      />
+                    )
+                )
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <p className="text-white text-opacity-40 text-sm font-medium">
+                    No Documents
+                  </p>
+                </div>
+              )}
+            </div>
+            {amountSelected !== 0 && (
+              <div className="absolute bottom-[12px] left-0 right-0 flex justify-center pointer-events-none">
+                <div className="mx-auto bg-white/40 rounded-lg py-1 px-2 pointer-events-auto">
+                  <div className="flex flex-row items-center gap-x-2">
+                    <button
+                      onClick={moveToWorkspace}
+                      onMouseEnter={() => setHighlightWorkspace(true)}
+                      onMouseLeave={() => setHighlightWorkspace(false)}
+                      className="border-none text-sm font-semibold bg-white h-[30px] px-2.5 rounded-lg hover:text-white hover:bg-neutral-800/80"
+                    >
+                      Move to Workspace
+                    </button>
+                    <div className="relative">
+                      <button
+                        onClick={() =>
+                          setShowFolderSelection(!showFolderSelection)
+                        }
+                        className="border-none text-sm font-semibold bg-white h-[32px] w-[32px] rounded-lg text-dark-text hover:bg-neutral-800/80 flex justify-center items-center group"
+                      >
+                        <MoveToFolderIcon className="text-dark-text group-hover:text-white" />
+                      </button>
+                      {showFolderSelection && (
+                        <FolderSelectionPopup
+                          folders={files.items.filter(
+                            (item) => item.type === "folder"
+                          )}
+                          onSelect={moveToFolder}
+                          onClose={() => setShowFolderSelection(false)}
+                        />
                       )}
-                      onRowClick={() => toggleSelection(item)}
-                      toggleSelection={toggleSelection}
-                      isSelected={isSelected}
-                      autoExpanded={index === 0}
-                    />
-                  )
-              )
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <p className="text-white text-opacity-40 text-sm font-medium">
-                  No Documents
-                </p>
+                    </div>
+                    <button
+                      onClick={deleteFiles}
+                      className="border-none text-sm font-semibold bg-white h-[32px] w-[32px] rounded-lg text-dark-text hover:text-white hover:bg-neutral-800/80 flex justify-center items-center"
+                    >
+                      <Trash size={18} weight="bold" />
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>
-          {amountSelected !== 0 && (
-            <div className="absolute bottom-[12px] left-0 right-0 flex justify-center pointer-events-none">
-              <div className="mx-auto bg-white/40 rounded-lg py-1 px-2 pointer-events-auto">
-                <div className="flex flex-row items-center gap-x-2">
-                  <button
-                    onClick={moveToWorkspace}
-                    onMouseEnter={() => setHighlightWorkspace(true)}
-                    onMouseLeave={() => setHighlightWorkspace(false)}
-                    className="border-none text-sm font-semibold bg-white h-[30px] px-2.5 rounded-lg hover:text-white hover:bg-neutral-800/80"
-                  >
-                    Move to Workspace
-                  </button>
-                  <div className="relative">
-                    <button
-                      onClick={() =>
-                        setShowFolderSelection(!showFolderSelection)
-                      }
-                      className="border-none text-sm font-semibold bg-white h-[32px] w-[32px] rounded-lg text-dark-text hover:bg-neutral-800/80 flex justify-center items-center group"
-                    >
-                      <MoveToFolderIcon className="text-dark-text group-hover:text-white" />
-                    </button>
-                    {showFolderSelection && (
-                      <FolderSelectionPopup
-                        folders={files.items.filter(
-                          (item) => item.type === "folder"
-                        )}
-                        onSelect={moveToFolder}
-                        onClose={() => setShowFolderSelection(false)}
-                      />
-                    )}
-                  </div>
-                  <button
-                    onClick={deleteFiles}
-                    className="border-none text-sm font-semibold bg-white h-[32px] w-[32px] rounded-lg text-dark-text hover:text-white hover:bg-neutral-800/80 flex justify-center items-center"
-                  >
-                    <Trash size={18} weight="bold" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
-
-        <UploadFile
-          workspace={workspace}
-          fetchKeys={fetchKeys}
-          setLoading={setLoading}
-          setLoadingMessage={setLoadingMessage}
-        />
       </div>
       {isFolderModalOpen && (
         <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-30">

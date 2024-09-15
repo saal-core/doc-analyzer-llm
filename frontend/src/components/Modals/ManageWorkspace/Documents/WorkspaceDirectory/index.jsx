@@ -23,12 +23,12 @@ function WorkspaceDirectory({
   if (loading) {
     return (
       <div className="px-8">
-        <div className="flex items-center justify-start w-[560px]">
+        <div className="flex items-center justify-start w-[400px]">
           <h3 className="text-white text-base font-bold ml-5">
             {workspace.name}
           </h3>
         </div>
-        <div className="relative w-[560px] h-[445px] bg-zinc-900 rounded-2xl mt-5">
+        <div className="relative w-[400px] h-[445px] bg-zinc-900 rounded-2xl mt-5">
           <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-8">
             <p className="col-span-5">Name</p>
             <p className="col-span-2" />
@@ -47,13 +47,13 @@ function WorkspaceDirectory({
   return (
     <>
       <div className="px-8">
-        <div className="flex items-center justify-start w-[560px]">
+        <div className="flex items-center justify-start w-[400px]">
           <h3 className="text-white text-base font-bold ml-5">
             {workspace.name}
           </h3>
         </div>
         <div
-          className={`relative w-[560px] h-[445px] bg-zinc-900 rounded-2xl mt-5 overflow-y-auto border-4 ${
+          className={`relative w-[400px] h-[445px] bg-zinc-900 rounded-2xl mt-5 overflow-y-auto border-4 ${
             highlightWorkspace ? "border-cyan-300/80" : "border-transparent"
           }`}
         >
