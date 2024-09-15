@@ -62,13 +62,18 @@ export default function SpeechToText({ sendCommand }) {
       data-tooltip-id="tooltip-text-size-btn"
       data-tooltip-content="Speak your prompt"
       aria-label="Speak your prompt"
+      style={{
+        position: "absolute",
+        bottom: "60px",
+        right: "45px",
+      }}
       onClick={listening ? endTTSSession : startSTTSession}
-      className={`relative flex justify-center items-center opacity-60 hover:opacity-100 cursor-pointer ${
+      className={`relative flex justify-center items-center hover:opacity-100 cursor-pointer ${
         !!listening ? "!opacity-100" : ""
       }`}
     >
       <Microphone
-        weight="fill"
+        // weight="fill"
         className="w-6 h-6 pointer-events-none text-white"
       />
       <Tooltip

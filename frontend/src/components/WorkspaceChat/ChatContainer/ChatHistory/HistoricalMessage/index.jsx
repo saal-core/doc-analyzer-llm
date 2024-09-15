@@ -61,45 +61,56 @@ const HistoricalMessage = ({
 
   return (
     <div
-      key={uuid}
-      className={`flex justify-center items-end w-full group ${
-        role === "user" ? USER_BACKGROUND_COLOR : AI_BACKGROUND_COLOR
-      }`}
+      style={{
+        width: "80%",
+        margin: "0 auto",
+        display: "flex",
+        ...(role === "user" && { justifyContent: "right" }),
+      }}
     >
-      <div className={`py-8 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}>
-        <div className="flex gap-x-5">
-          <ProfileImage role={role} workspace={workspace} />
-          {isEditing ? (
-            <EditMessageForm
-              role={role}
-              chatId={chatId}
+      <div
+        key={uuid}
+        className={`flex justify-center items-end w-full group ${
+          role === "user" ? USER_BACKGROUND_COLOR : AI_BACKGROUND_COLOR
+        }`}
+      >
+        <div
+          className={`${role !== "user" ? "py-4 px-4" : ""} w-full flex gap-x-5 md:max-w-[100%] flex-col`}
+        >
+          <div className="flex gap-x-5">
+            <ProfileImage role={role} workspace={workspace} />
+            {isEditing ? (
+              <EditMessageForm
+                role={role}
+                chatId={chatId}
+                message={message}
+                adjustTextArea={adjustTextArea}
+                saveChanges={saveEditedMessage}
+              />
+            ) : (
+              <span
+                className={`flex flex-col gap-y-1`}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(renderMarkdown(message)),
+                }}
+              />
+            )}
+          </div>
+          <div className="flex gap-x-5">
+            <div className="relative w-[35px] h-[35px] rounded-full flex-shrink-0 overflow-hidden" />
+            <Actions
               message={message}
-              adjustTextArea={adjustTextArea}
-              saveChanges={saveEditedMessage}
+              feedbackScore={feedbackScore}
+              chatId={chatId}
+              slug={workspace?.slug}
+              isLastMessage={isLastMessage}
+              regenerateMessage={regenerateMessage}
+              isEditing={isEditing}
+              role={role}
             />
-          ) : (
-            <span
-              className={`flex flex-col gap-y-1`}
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(renderMarkdown(message)),
-              }}
-            />
-          )}
+          </div>
+          {role === "assistant" && <Citations sources={sources} />}
         </div>
-        <div className="flex gap-x-5">
-          <div className="relative w-[35px] h-[35px] rounded-full flex-shrink-0 overflow-hidden" />
-          <Actions
-            message={message}
-            feedbackScore={feedbackScore}
-            chatId={chatId}
-            slug={workspace?.slug}
-            isLastMessage={isLastMessage}
-            regenerateMessage={regenerateMessage}
-            isEditing={isEditing}
-            role={role}
-          />
-        </div>
-        {role === "assistant" && <Citations sources={sources} />}
       </div>
     </div>
   );

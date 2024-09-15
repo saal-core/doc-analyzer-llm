@@ -133,31 +133,55 @@ export default function ChatHistory({
 
   if (history.length === 0) {
     return (
-      <div className="flex flex-col h-full md:mt-0 md:pb-40 w-full justify-end items-center" style={{ paddingBottom: '20rem' }}>
-        <div className="flex flex-col items-center md:items-start md:max-w-[600px] w-full px-4">
-          <p className="text-white/60 text-lg font-base py-4">
-            Welcome to your new workspace.
-          </p>
+      <div className="flex flex-col h-full md:mt-0 md:pb-40 w-full justify-center items-center new-space" style={{ paddingBottom: '8rem' }}>
+        <div
+          className="flex flex-col items-center md:items-start md:max-w-[650px] w-full px-4"
+          style={{
+            background: "white",
+            borderRadius: "20px",
+            padding: "72px 56px",
+          }}
+        >
+          <img src="/public/chat_avatar.png" width="80px" height="80px" style={{ margin: "auto" }} />
+          <div style={{ margin: "auto", fontWeight: "bold" }} className="text-white text-lg font-base py-6">
+            ASK AFADI Library
+          </div>
+          <div
+            style={{
+              textAlign: "center",
+              fontWeight: "14px",
+              lineHeight: "22px",
+              color: "rgba(0, 0, 0, 0.45)",
+              marginBottom: "24px",
+            }}
+          >
+            When you upload documents essential to your study, AFADI LLM quickly becomes an expert in the information thats most important to you
+          </div>
           {!user || user.role !== "default" ? (
-            <p className="w-full items-center text-white/60 text-lg font-base flex flex-col md:flex-row gap-x-1">
-              To get started either{" "}
-              <span
-                className="underline font-medium cursor-pointer"
-                onClick={showModal}
-              >
-                upload a document
-              </span>
-              or <b className="font-medium italic">send a chat.</b>
-            </p>
+            <div style={{ padding: "16px", backgroundColor: "#EEFBFF", borderRadius: "12px"  }} className="w-full items-center text-white text-lg font-base flex flex-col md:flex-col gap-x-1">
+              <div>
+                <img width="35px" height="35px" src="/public/upload_box.png" />
+              </div>
+              <p style={{ marginTop: "16px" }}>
+                To get started either{" "}
+                <span
+                  className="underline font-medium cursor-pointer"
+                  onClick={showModal}
+                >
+                  upload a document
+                </span>
+                &nbsp;or <b className="font-medium italic">send a chat.</b>
+              </p>
+            </div>
           ) : (
-            <p className="w-full items-center text-white/60 text-lg font-base flex flex-col md:flex-row gap-x-1">
+            <p style={{ padding: "16px", backgroundColor: "#EEFBFF", borderRadius: "12px"  }} className="w-full items-center text-white text-lg font-base flex flex-col md:flex-row gap-x-1">
               To get started <b className="font-medium italic">send a chat.</b>
             </p>
           )}
-          <WorkspaceChatSuggestions
+          {/* <WorkspaceChatSuggestions
             suggestions={workspace?.suggestedMessages ?? []}
             sendSuggestion={handleSendSuggestedMessage}
-          />
+          /> */}
         </div>
         {showing && (
           <ManageWorkspace
@@ -171,7 +195,7 @@ export default function ChatHistory({
 
   return (
     <div
-      className={`markdown text-white/80 font-light ${textSize} h-full md:h-[57%] pb-[100px] pt-6 md:pt-0 md:pb-20 md:mx-0 overflow-y-scroll flex flex-col justify-start no-scroll`}
+      className={`markdown text-white/80 font-light ${textSize} h-full md:h-[82%] pb-[100px] pt-6 md:pt-0 md:pb-20 md:mx-0 overflow-y-scroll flex flex-col justify-start no-scroll`}
       style={{
         paddingBottom: "0px",
       }}
@@ -266,7 +290,7 @@ function WorkspaceChatSuggestions({ suggestions = [], sendSuggestion }) {
       {suggestions.map((suggestion, index) => (
         <button
           key={index}
-          className="text-left p-2.5 border rounded-xl border-white/20 bg-sidebar hover:bg-workspace-item-selected-gradient"
+          className="text-left p-2.5 border rounded-xl border-white/20"
           onClick={() => sendSuggestion(suggestion.heading, suggestion.message)}
         >
           <p className="font-semibold">{suggestion.heading}</p>
