@@ -135,24 +135,26 @@ export default function DefaultChatContainer() {
     </React.Fragment>,
 
     <React.Fragment>
-      <div
-        className={`flex justify-center items-end w-full ${USER_BACKGROUND_COLOR}`}
-      >
+      <div style={{ width: "80%", margin: "auto", display: "flex", justifyContent: "right" }}>
         <div
-          className={`py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
+          className={`flex justify-center items-end w-full ${USER_BACKGROUND_COLOR}`}
         >
-          <div className="flex gap-x-5">
-            <UserIcon
-              user={{ uid: userFromStorage()?.username }}
-              logo={UserLogo}
-              role={"user"}
-            />
+          {/* <div
+            className={`py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
+          > */}
+            <div className="flex gap-x-5">
+              <UserIcon
+                user={{ uid: userFromStorage()?.username }}
+                logo={UserLogo}
+                role={"user"}
+              />
 
-            <span
-              className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
-            >
-              How do I get started?!
-            </span>
+              <span
+                className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
+              >
+                How do I get started?!
+              </span>
+            {/* </div> */}
           </div>
         </div>
       </div>
@@ -200,25 +202,27 @@ export default function DefaultChatContainer() {
     </React.Fragment>,
 
     <React.Fragment>
-      <div
-        className={`flex justify-center items-end w-full ${USER_BACKGROUND_COLOR}`}
-      >
+      <div style={{ width: "80%", margin: "auto", display: "flex", justifyContent: "right" }}>
         <div
-          className={`py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
+          className={`flex justify-center items-end w-full ${USER_BACKGROUND_COLOR}`}
         >
-          <div className="flex gap-x-5">
-            <UserIcon
-              user={{ uid: userFromStorage()?.username }}
-              logo={UserLogo}
-              role={"user"}
-            />
+          <div
+            // className={`py-6 px-4 w-full flex gap-x-5 flex-col`}
+          >
+            <div className="flex gap-x-5">
+              <UserIcon
+                user={{ uid: userFromStorage()?.username }}
+                logo={UserLogo}
+                role={"user"}
+              />
 
-            <span
-              className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
-            >
-              Is this like an AI dropbox or something? What about chatting? It
-              is a chatbot isn't it?
-            </span>
+              <span
+                className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
+              >
+                Is this like an AI dropbox or something? What about chatting? It
+                is a chatbot isn't it?
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -267,24 +271,26 @@ export default function DefaultChatContainer() {
     </React.Fragment>,
 
     <React.Fragment>
-      <div
-        className={`flex justify-center items-end w-full ${USER_BACKGROUND_COLOR}`}
-      >
+      <div style={{ width: "80%", margin: "auto", display: "flex", justifyContent: "right" }}>
         <div
-          className={`py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
+          className={`flex justify-center items-end w-full ${USER_BACKGROUND_COLOR}`}
         >
-          <div className="flex gap-x-5">
-            <UserIcon
-              user={{ uid: userFromStorage()?.username }}
-              logo={UserLogo}
-              role={"user"}
-            />
+          <div
+            // className={`py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}
+          >
+            <div className="flex gap-x-5">
+              <UserIcon
+                user={{ uid: userFromStorage()?.username }}
+                logo={UserLogo}
+                role={"user"}
+              />
 
-            <span
-              className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
-            >
-              Wow, this sounds amazing, let me try it out already!
-            </span>
+              <span
+                className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
+              >
+                Wow, this sounds amazing, let me try it out already!
+              </span>
+            </div>
           </div>
         </div>
       </div>
