@@ -387,6 +387,10 @@ button.rounded-2xl {
   border-bottom-right-radius: 0px !important;
 }
 
+.bg-main-gradient.upload-file {
+  margin-left: 0px !important;
+}
+
 .bg-main-gradient.chat-box {
   border-radius: 8px !important;
   padding-block: 8px !important;

@@ -24,7 +24,7 @@ function WorkspaceDirectory({
     return (
       <div className="px-8">
         <div className="flex items-center justify-start w-[400px]">
-          <h3 className="text-white text-base font-bold ml-5">
+          <h3 className="text-white text-base font-bold">
             {workspace.name}
           </h3>
         </div>
@@ -46,22 +46,23 @@ function WorkspaceDirectory({
 
   return (
     <>
-      <div className="px-8">
+      <div className="p-[16px] flex flex-col">
         <div className="flex items-center justify-start w-[400px]">
           <h3 className="text-white text-base font-bold ml-5">
             {workspace.name}
           </h3>
         </div>
         <div
-          className={`relative w-[400px] h-[445px] bg-zinc-900 rounded-2xl mt-5 overflow-y-auto border-4 ${
-            highlightWorkspace ? "border-cyan-300/80" : "border-transparent"
+          className={`relative w-[400px] bg-zinc-900 rounded-2xl mt-5 overflow-y-auto border-4 ${
+            highlightWorkspace ? "border-cyan-300/80" : ""
           }`}
+          style={{ border: '1px solid rgba(0, 0, 0, 0.15)', height: "472px", maxHeight: "472px", marginTop: "72px" }}
         >
           <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 bg-zinc-900 sticky top-0 z-10">
             <p className="col-span-5">Name</p>
             <p className="col-span-2" />
           </div>
-          <div className="w-full h-full flex flex-col z-0">
+          <div className="w-full flex flex-col z-0" style={{ height: "398px" }}>
             {Object.values(files.items).some(
               (folder) => folder.items.length > 0
             ) || movedItems.length > 0 ? (

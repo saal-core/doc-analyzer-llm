@@ -3,7 +3,7 @@ import PreLoader from "@/components/Preloader";
 import { memo, useEffect, useState } from "react";
 import FolderRow from "./FolderRow";
 import System from "@/models/system";
-import { MagnifyingGlass, Plus, Trash } from "@phosphor-icons/react";
+import { MagnifyingGlass, Plus, Trash, FolderPlus } from "@phosphor-icons/react";
 import Document from "@/models/document";
 import showToast from "@/utils/toast";
 import FolderSelectionPopup from "./FolderSelectionPopup";
@@ -172,8 +172,8 @@ function Directory({
 
   const filteredFiles = filterFileSearchResults(files, searchTerm);
   return (
-    <div className="px-8 pb-8">
-      <div className="flex">
+    <div className="" style={{ height: '100%' }}>
+      <div className="flex" style={{ height: '100%' }}>
         <div>
           <div style={{ backgroundColor: '#E5F4F8', padding: '16px', height: '100%' }} className="flex flex-col items-center w-[348px] px-5 relative">
             <div style={{ textAlign: 'left', width: '100%', marginBottom: "16px" }}>
@@ -187,10 +187,10 @@ function Directory({
             />
           </div>
         </div>
-        <div className="flex flex-col gap-y-6">
-          <div className="flex items-center justify-between w-[348px] px-5 relative">
-            <h3 className="text-white text-base font-bold">My Documents</h3>
-            <div className="relative">
+        <div style={{ padding: "16px" }} className="flex flex-col gap-y-6">
+          <div className="flex flex-col justify-between w-[400px] relative">
+            <h3 style={{ fontWeight: 600 }} className="text-white text-base font-bold">Available Files</h3>
+            <div className="flex items-center relative" style={{ marginTop: "16px" }}>
               <input
                 type="search"
                 placeholder="Search for document"
@@ -202,19 +202,25 @@ function Directory({
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white"
                 weight="bold"
               />
+
+              <button
+                className="flex items-center gap-x-2 cursor-pointer px-[14px] py-[7px] -mr-[14px] rounded-lg hover:bg-[#00A5D4]/60 z-20 relative"
+                onClick={openFolderModal}
+                style={{
+                  background: "#00A5D4",
+                  borderRadius: "6px",
+                  marginLeft: "12px",
+                }}
+              >
+                <FolderPlus size={18} weight="bold" color="white" />
+                <div className="text-[white] text-xs font-bold leading-[18px]">
+                  Folder
+                </div>
+              </button>
             </div>
-            <button
-              className="flex items-center gap-x-2 cursor-pointer px-[14px] py-[7px] -mr-[14px] rounded-lg hover:bg-[#222628]/60 z-20 relative"
-              onClick={openFolderModal}
-            >
-              <Plus size={18} weight="bold" color="#D3D4D4" />
-              <div className="text-[#D3D4D4] text-xs font-bold leading-[18px]">
-                New Folder
-              </div>
-            </button>
           </div>
 
-          <div className="relative w-[348px] h-[310px] bg-zinc-900 rounded-2xl overflow-hidden">
+          <div className="relative w-[400px] h-[310px] bg-zinc-900 rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(0, 0, 0, 0.15)", flexGrow: 1 }}>
             {/* <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 shadow-lg bg-zinc-900"> */}
             <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 bg-zinc-900">
               <p className="col-span-6">Name</p>

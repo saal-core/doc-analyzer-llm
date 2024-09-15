@@ -40,13 +40,14 @@ export default function WorkspaceFileRow({
   const isMovedItem = movedItems?.some((movedItem) => movedItem.id === item.id);
   return (
     <div
-      className={`items-center text-white/80 text-xs grid grid-cols-12 py-2 pl-3.5 pr-8 hover:bg-sky-500/20 cursor-pointer ${
+      className={`items-center text-white/80 text-xs grid grid-cols-12 py-1 pl-3.5 pr-8 hover:bg-sky-500/20 cursor-pointer ${
         isMovedItem ? "bg-green-800/40" : "file-row"
       }`}
     >
       <div
         data-tooltip-id={`directory-item-${item.url}`}
         className="col-span-10 w-fit flex gap-x-[4px] items-center relative"
+        style={{ width: "100%" }}
       >
         <File
           className="shrink-0 text-base font-bold w-4 h-4 mr-[3px] ml-3"

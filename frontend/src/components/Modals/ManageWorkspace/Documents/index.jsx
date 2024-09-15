@@ -191,7 +191,7 @@ export default function DocumentSettings({ workspace, systemSettings }) {
   };
 
   return (
-    <div className="flex upload-modal -mt-6 z-10 relative">
+    <div className="flex upload-modal -mt-6 z-10 relative" style={{ backgroundColor: "#f5f5f5", height: "600px", columnGap: "0px" }}>
       <Directory
         files={availableDocs}
         setFiles={setAvailableDocs}
@@ -211,20 +211,22 @@ export default function DocumentSettings({ workspace, systemSettings }) {
       <div className="upload-modal-arrow">
         <ArrowsDownUp className="text-white text-base font-bold rotate-90 w-11 h-11" />
       </div>
-      <WorkspaceDirectory
-        workspace={workspace}
-        files={workspaceDocs}
-        highlightWorkspace={highlightWorkspace}
-        loading={loading}
-        loadingMessage={loadingMessage}
-        setLoadingMessage={setLoadingMessage}
-        setLoading={setLoading}
-        fetchKeys={fetchKeys}
-        hasChanges={hasChanges}
-        saveChanges={updateWorkspace}
-        embeddingCosts={embeddingsCost}
-        movedItems={movedItems}
-      />
+      <div className="flex h-100">
+        <WorkspaceDirectory
+          workspace={workspace}
+          files={workspaceDocs}
+          highlightWorkspace={highlightWorkspace}
+          loading={loading}
+          loadingMessage={loadingMessage}
+          setLoadingMessage={setLoadingMessage}
+          setLoading={setLoading}
+          fetchKeys={fetchKeys}
+          hasChanges={hasChanges}
+          saveChanges={updateWorkspace}
+          embeddingCosts={embeddingsCost}
+          movedItems={movedItems}
+        />
+      </div>
     </div>
   );
 }

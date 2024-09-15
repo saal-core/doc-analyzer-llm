@@ -86,7 +86,8 @@ export default function UploadFile({
         <input {...getInputProps()} />
         {ready === false ? (
           <div className="flex flex-col items-center justify-center h-full">
-            <CloudArrowUp className="w-8 h-8 text-white/80" />
+            {/* <CloudArrowUp className="w-8 h-8 text-white/80" /> */}
+            <img src="/public/upload_box.png" width={"48px"} height={"48px"} />
             <div className="text-white text-opacity-80 text-sm font-semibold py-1">
               Document Processor Unavailable
             </div>
@@ -97,12 +98,12 @@ export default function UploadFile({
           </div>
         ) : files.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
-            <CloudArrowUp className="w-8 h-8 text-white/80" />
-            <div className="text-white text-opacity-80 text-sm font-semibold py-1">
-              Click to upload or drag and drop
+            <img src="/public/upload_box.png" width={"48px"} height={"48px"} />
+            <div className="text-white" style={{ fontSize: "16px", lineHeight: "24px", paddingBlock: "16px" }}>
+              Click or drag file to this area to upload
             </div>
-            <div className="text-white text-opacity-60 text-xs font-medium py-1">
-              supports text files, csv's, spreadsheets, audio files, and more!
+            <div className="text-white text-center text-opacity-60 text-xs font-medium py-1">
+              Supports text files, csv's, spreadsheets, audio files, and more!
             </div>
           </div>
         ) : (
