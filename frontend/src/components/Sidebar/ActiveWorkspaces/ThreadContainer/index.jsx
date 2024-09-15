@@ -173,7 +173,7 @@ function NewThreadButton({ workspace }) {
       onClick={onClick}
       className="w-full border border-white relative flex h-[40px] items-center hover:bg-slate-600/20 rounded-lg"
     >
-      <div className="flex w-full gap-x-2 items-center pl-4">
+      <div className="flex w-full gap-x-2 items-center flex justify-center">
         <div
           // className="bg-zinc-600 p-2 rounded-lg h-[24px] w-[24px] flex items-center justify-center"
           className="p-2 rounded-lg h-[24px] w-[24px] flex items-center justify-center"

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Plus, List } from "@phosphor-icons/react";
+import { Plus, List, ListPlus } from "@phosphor-icons/react";
 import NewWorkspaceModal, {
   useNewWorkspaceModal,
 } from "../Modals/NewWorkspace";
@@ -50,26 +50,29 @@ export default function Sidebar() {
           marginBottom: "16px",
           // backgroundColor: "#fff",
           background: `url(${sidebarBg})`,
-          backgroundSize: "contain",
+          backgroundSize: "294px 100%",
           backgroundPosition: "center",
           marginRight: "0px",
           borderRadius: "0px",
           border: "none",
-          paddingInline: "16px 26px"
+          paddingInline: "16px 16px"
         }}
         className="relative m-[16px] rounded-[8px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-88px)]"
       >
         <div className="flex flex-col h-full overflow-x-hidden">
           <div className="flex-grow flex flex-col min-w-[252px]">
-            <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between overflow-y-scroll no-scroll">
-              <div className="flex flex-col gap-y-2 pb-[120px] overflow-y-scroll no-scroll">
+            <div className="relative h-[calc(100%-60px)] pr-[10px] flex flex-col w-full justify-between overflow-y-scroll no-scroll">
+              <div
+                // className="flex flex-col gap-y-2 pb-[120px] overflow-y-scroll no-scroll"
+                className="flex flex-col gap-y-2 pb-[120px]"
+              >
                 <div className="flex gap-x-2 items-center justify-between">
                   {(!user || user?.role !== "default") && (
                     <button
                       onClick={showNewWsModal}
                       className="add-new-space flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-2.5 mb-2 rounded-[8px] text-sidebar justify-center items-center transition-all duration-300"
                     >
-                      <Plus size={18} weight="bold" />
+                      <ListPlus size={18} weight="bold" />
                       <p
                         className="text-sm font-semibold"
                         style={{ color: "#fff" }}
@@ -201,7 +204,7 @@ export function SidebarMobileHeader() {
                         onClick={showNewWsModal}
                         className="flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-4 bg-white rounded-lg text-sidebar justify-center items-center hover:bg-opacity-80 transition-all duration-300"
                       >
-                        <Plus className="h-5 w-5" />
+                        <ListPlus className="h-5 w-5" />
                         <p
                           className="text-sm font-semibold"
                           style={{ color: "#fff" }}

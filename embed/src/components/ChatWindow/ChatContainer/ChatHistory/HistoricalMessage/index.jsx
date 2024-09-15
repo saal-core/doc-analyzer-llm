@@ -24,7 +24,7 @@ const HistoricalMessage = forwardRef(
             className={`text-[10px] font-medium text-gray-400 ml-[54px] mr-6 mb-2 text-left`}
           >
             {embedderSettings.settings.assistantName ||
-              "DataPrism 360 Chat Assistant"}
+              "ASK AFADI Library Chat Assistant"}
           </div>
         )}
         <div
@@ -37,7 +37,7 @@ const HistoricalMessage = forwardRef(
           {role === "assistant" && (
             <img
               src={embedderSettings.settings.assistantIcon || AnythingLLMIcon}
-              alt="DataPrism 360 Icon"
+              alt="ASK AFADI Library Icon"
               className="w-9 h-9 flex-shrink-0 ml-2 mt-2"
               id="anything-llm-icon"
             />

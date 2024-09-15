@@ -34,12 +34,12 @@ import { useTranslation } from "react-i18next";
 
 const EMBEDDERS = [
   {
-    name: "DataPrism 360 Embedder",
+    name: "ASK AFADI Library Embedder",
     value: "native",
     logo: AnythingLLMIcon,
     options: (settings) => <NativeEmbeddingOptions settings={settings} />,
     description:
-      "Use the built-in embedding provider for DataPrism 360. Zero setup!",
+      "Use the built-in embedding provider for ASK AFADI Library. Zero setup!",
   },
   {
     name: "OpenAI",

@@ -147,7 +147,7 @@ export default function UploadFile({
       </form>
       <div className="mt-6 text-center text-white text-opacity-80 text-xs font-medium w-[560px]">
         These files will be uploaded to the document processor running on this
-        DataPrism 360 instance. These files are not sent or shared with a third
+        ASK AFADI Library instance. These files are not sent or shared with a third
         party.
       </div>
     </div>

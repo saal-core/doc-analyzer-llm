@@ -20,8 +20,8 @@ const webBrowsing = {
               call: JSON.stringify({ query: "Winner of today's world series" }),
             },
             {
-              prompt: "What is DataPrism 360?",
-              call: JSON.stringify({ query: "DataPrism 360" }),
+              prompt: "What is ASK AFADI Library?",
+              call: JSON.stringify({ query: "ASK AFADI Library" }),
             },
             {
               prompt: "Current AAPL stock price",

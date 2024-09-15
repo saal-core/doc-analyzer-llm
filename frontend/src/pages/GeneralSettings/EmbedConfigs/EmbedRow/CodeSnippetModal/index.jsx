@@ -54,7 +54,7 @@ https://github.com/Mintplex-Labs/anything-llm/tree/master/embed/README.md
   data-base-api-url="${serverHost}/api/embed"
   src="${scriptHost}/embed/anythingllm-chat-widget.min.js">
 </script>
-<!-- DataPrism 360 (https://useanything.com) -->
+<!-- ASK AFADI Library (https://useanything.com) -->
 `;
 }
 

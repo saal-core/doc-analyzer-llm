@@ -23,7 +23,7 @@ export default function SpeechToText({ sendCommand }) {
   function startSTTSession() {
     if (!isMicrophoneAvailable) {
       alert(
-        "DataPrism 360 does not have access to microphone. Please enable for this site to use this feature."
+        "ASK AFADI Library does not have access to microphone. Please enable for this site to use this feature."
       );
       return;
     }

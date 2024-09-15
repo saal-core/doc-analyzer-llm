@@ -156,7 +156,7 @@ export default function SettingsSidebar() {
           marginTop: "26px",
           marginBottom: "16px",
           background: `url(${sidebarBg})`,
-          backgroundSize: "contain",
+          backgroundSize: "294px 100%",
           backgroundPosition: "center",
           marginRight: "0px",
           borderRadius: "0px",
@@ -178,7 +178,10 @@ export default function SettingsSidebar() {
           </div>
           <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between pt-[10px] overflow-y-scroll no-scroll">
             <div className="h-auto sidebar-items">
-              <div className="flex flex-col gap-y-2 pb-[120px] overflow-y-scroll no-scroll">
+              <div
+                // className="flex flex-col gap-y-2 pb-[120px] overflow-y-scroll no-scroll"
+                className="flex flex-col gap-y-2 pb-[120px]"
+              >
                 <SidebarOptions user={user} t={t} />
               </div>
             </div>

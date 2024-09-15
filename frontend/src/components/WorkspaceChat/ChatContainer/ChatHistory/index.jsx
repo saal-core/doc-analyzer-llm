@@ -139,7 +139,7 @@ export default function ChatHistory({
           style={{
             background: "white",
             borderRadius: "20px",
-            padding: "72px 56px",
+            padding: "56px",
           }}
         >
           <img src="/public/chat_avatar.png" width="80px" height="80px" style={{ margin: "auto" }} />

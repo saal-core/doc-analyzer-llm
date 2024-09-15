@@ -15,7 +15,7 @@ function useSwagger(app) {
       fs.readFileSync(path.resolve(__dirname, 'index.css')),
       fs.readFileSync(path.resolve(__dirname, 'dark-swagger.css'))
     ].join('\n\n\n'),
-    customSiteTitle: 'DataPrism 360 Developer API Documentation',
+    customSiteTitle: 'ASK AFADI Library Developer API Documentation',
     customfavIcon: faviconUrl(),
   }
 

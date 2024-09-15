@@ -79,11 +79,11 @@ export default function SingleUserAuth({ logo }) {
                   {t("login.multi-user.welcome")}
                 </h3>
                 <p className="text-4xl md:text-2xl font-bold bg-gradient-to-r from-[#75D6FF] via-[#FFFFFF] to-[#FFFFFF] bg-clip-text text-transparent">
-                  {customAppName || "DataPrism 360"}
+                  {customAppName || "ASK AFADI Library"}
                 </p>
               </div>
               <p className="text-sm text-white/90 text-center">
-                {t("login.sign-in.start")} {customAppName || "DataPrism 360"}{" "}
+                {t("login.sign-in.start")} {customAppName || "ASK AFADI Library"}{" "}
                 {t("login.sign-in.end")}
               </p>
             </div>
