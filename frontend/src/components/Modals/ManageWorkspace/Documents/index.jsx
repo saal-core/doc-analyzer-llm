@@ -191,7 +191,7 @@ export default function DocumentSettings({ workspace, systemSettings }) {
   };
 
   return (
-    <div className="flex upload-modal -mt-6 z-10 relative" style={{ backgroundColor: "#f5f5f5", height: "600px", columnGap: "0px" }}>
+    <div className="flex upload-modal -mt-6 z-10 relative" style={{ backgroundColor: "#f5f5f5", height: "670px", columnGap: "0px" }}>
       <Directory
         files={availableDocs}
         setFiles={setAvailableDocs}

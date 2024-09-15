@@ -62,7 +62,7 @@ function WorkspaceDirectory({
             <p className="col-span-5">Name</p>
             <p className="col-span-2" />
           </div>
-          <div className="w-full flex flex-col z-0" style={{ height: "398px" }}>
+          <div className="w-full flex flex-col z-0" style={{ height: "431px" }}>
             {Object.values(files.items).some(
               (folder) => folder.items.length > 0
             ) || movedItems.length > 0 ? (
