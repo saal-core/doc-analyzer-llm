@@ -64,8 +64,8 @@ export default function SpeechToText({ sendCommand }) {
       aria-label="Speak your prompt"
       style={{
         position: "absolute",
-        bottom: "60px",
-        right: "45px",
+        bottom: "55px",
+        right: "-55px",
       }}
       onClick={listening ? endTTSSession : startSTTSession}
       className={`relative flex justify-center items-center hover:opacity-100 cursor-pointer ${

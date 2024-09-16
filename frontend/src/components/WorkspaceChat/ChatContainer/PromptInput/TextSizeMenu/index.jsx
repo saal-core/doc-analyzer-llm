@@ -11,6 +11,7 @@ export default function TextSizeButton() {
       <div
         ref={buttonRef}
         id="text-size-btn"
+        style={{ width: "18px" }}
         data-tooltip-id="tooltip-text-size-btn"
         data-tooltip-content="Change text size"
         aria-label="Change text size"
@@ -72,7 +73,7 @@ function TextSizeMenu({ showing, setShowing, buttonRef }) {
     <div hidden={!showing}>
       <div
         ref={formRef}
-        className="absolute bottom-16 -ml-8 w-[140px] p-2 bg-zinc-800 rounded-lg shadow-md flex flex-col justify-center items-start gap-2 z-50"
+        className="absolute bottom-8 -ml-8 w-[140px] p-2 bg-zinc-800 rounded-lg shadow-md flex flex-col justify-center items-start gap-2 z-50"
       >
         <button
           onClick={(e) => {

@@ -11,6 +11,7 @@ export default function AvailableAgentsButton({ showing, setShowAgents }) {
   return (
     <div
       id="agent-list-btn"
+      style={{ width: "18px" }}
       data-tooltip-id="tooltip-agent-list-btn"
       data-tooltip-content="View all available agents you can use for chatting."
       aria-label="View all available agents you can use for chatting."
@@ -19,7 +20,7 @@ export default function AvailableAgentsButton({ showing, setShowAgents }) {
         showing ? "!opacity-100" : ""
       }`}
     >
-      <At className="w-6 h-6 pointer-events-none text-white" />
+      <At size={14} className="w-6 h-6 pointer-events-none text-white" />
       <Tooltip
         id="tooltip-agent-list-btn"
         place="top"

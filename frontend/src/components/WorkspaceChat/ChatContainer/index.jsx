@@ -244,6 +244,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
         />
         <PromptInput
           submit={handleSubmit}
+          workspace={workspace}
           onChange={handleMessageChange}
           inputDisabled={loadingResponse}
           buttonDisabled={loadingResponse}

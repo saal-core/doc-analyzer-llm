@@ -18,6 +18,7 @@ export default function SlashCommandsButton({ showing, setShowSlashCommand }) {
     >
       <img
         src={SlashCommandIcon}
+        style={{ width: "14px", height: "14px" }}
         className="w-6 h-6 pointer-events-none"
         alt="Slash commands button"
       />

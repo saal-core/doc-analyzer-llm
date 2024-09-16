@@ -6,6 +6,8 @@ import SlashCommandsButton, {
 import debounce from "lodash.debounce";
 import { PaperPlaneRight, FilePlus } from "@phosphor-icons/react";
 import StopGenerationButton from "./StopGenerationButton";
+import { useManageWorkspaceModal } from "../../../Modals/ManageWorkspace";
+import ManageWorkspace from "../../../Modals/ManageWorkspace";
 import AvailableAgentsButton, {
   AvailableAgents,
   useAvailableAgents,
@@ -21,6 +23,7 @@ export default function PromptInput({
   inputDisabled,
   buttonDisabled,
   sendCommand,
+  workspace,
 }) {
   const [promptInput, setPromptInput] = useState("");
   const { showAgents, setShowAgents } = useAvailableAgents();
@@ -28,6 +31,7 @@ export default function PromptInput({
   const formRef = useRef(null);
   const textareaRef = useRef(null);
   const [_, setFocused] = useState(false);
+  const { showing, showModal, hideModal } = useManageWorkspaceModal();
 
   // To prevent too many re-renders we remotely listen for updates from the parent
   // via an event cycle. Otherwise, using message as a prop leads to a re-render every
@@ -104,11 +108,21 @@ export default function PromptInput({
         sendCommand={sendCommand}
         promptRef={textareaRef}
       />
+      {showing && (
+        <ManageWorkspace hideModal={hideModal} providedSlug={workspace.slug} />
+      )}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-y-1 rounded-t-lg mx-auto"
       >
-        <div className="flex items-center rounded-lg md:mb-4">
+        <div className="flex items-center rounded-lg md:mb-4" style={{ alignItems: "flex-start", columnGap: "20px" }}>
+          {
+            workspace?.slug &&
+            <button style={{ minHeight: "48px", display: "flex", alignItems: "center", padding: "4px 12px", borderRadius: "4px", columnGap: "4px", background: "#E1F8FF", border: "1px solid #91D8ED" }} type="button" onClick={showModal}>
+              <FilePlus size={20} />
+              <span style={{ fontSize: "12px", lineHeight: "20px" }}>Manage</span>
+            </button>
+          }
           <div style={{ position: "relative", overflow: "visible" }} className="chat-box w-[800px] bg-main-gradient shadow-2xl border border-white/50 rounded-2xl flex flex-col px-4 overflow-hidden">
             <div className="flex items-center w-full">
               <textarea
@@ -169,7 +183,8 @@ export default function PromptInput({
                 </>
               )}
             </div>
-            <div style={{ position: "absolute", bottom: "-48px", left: "0px", width: "100%" }} className="flex justify-between py-3.5">
+            <div style={{ position: "absolute", bottom: "-8px", left: "-108px", width: "900px", borderTop: "1px solid rgba(0, 0, 0, 0.06)" }} />
+            <div style={{ position: "absolute", bottom: "-43px", left: "-108px", width: "100%" }} className="flex justify-between py-2">
               <div className="flex gap-x-2">
                 <SlashCommandsButton
                   showing={showSlashCommand}
