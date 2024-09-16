@@ -228,7 +228,6 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     handleWSS();
   }, [socketId]);
 
-  console.log('chatHistory>>>', chatHistory);
   return (
     <div
       style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}

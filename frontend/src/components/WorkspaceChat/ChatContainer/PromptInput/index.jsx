@@ -4,7 +4,7 @@ import SlashCommandsButton, {
   useSlashCommands,
 } from "./SlashCommands";
 import debounce from "lodash.debounce";
-import { PaperPlaneRight } from "@phosphor-icons/react";
+import { PaperPlaneRight, FilePlus } from "@phosphor-icons/react";
 import StopGenerationButton from "./StopGenerationButton";
 import AvailableAgentsButton, {
   AvailableAgents,

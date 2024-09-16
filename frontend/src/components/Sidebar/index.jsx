@@ -57,7 +57,7 @@ export default function Sidebar() {
           border: "none",
           paddingInline: "16px 16px"
         }}
-        className="relative m-[16px] rounded-[8px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-88px)]"
+        className="relative m-[16px] rounded-[8px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-74px)]"
       >
         <div className="flex flex-col h-full overflow-x-hidden">
           <div className="flex-grow flex flex-col min-w-[252px]">

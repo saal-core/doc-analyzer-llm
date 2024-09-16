@@ -76,7 +76,7 @@ export default function SpeechToTextProvider({ settings }) {
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full">
-      <div className="flex flex-col w-full px-1 md:pl-6 md:pr-[50px] md:py-6 py-16">
+      <div className="flex flex-col w-full px-1 md:pl-6 md:pr-6 md:py-6 py-16">
         <div className="w-full flex flex-col gap-y-1 pb-6 border-white border-b-2 border-opacity-10">
           <div className="flex gap-x-4 items-center">
             <p className="text-lg leading-6 font-bold text-white">

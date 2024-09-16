@@ -25,6 +25,7 @@ const HistoricalMessage = ({
   isLastMessage = false,
   regenerateMessage,
   saveEditedMessage,
+  showModal,
 }) => {
   const { isEditing } = useEditMessage({ chatId, role });
   const adjustTextArea = (event) => {

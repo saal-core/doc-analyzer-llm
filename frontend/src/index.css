@@ -65,7 +65,7 @@ a {
 }
 
 .w-screen.h-screen.overflow-hidden.bg-sidebar.flex > div:nth-child(2) {
-  height: calc(100% - 92px) !important;
+  height: calc(100% - 74px) !important;
   margin-top: 74px !important;
   margin-bottom: 16px;
   border: 1px solid #e3e3e3;
@@ -73,7 +73,7 @@ a {
 }
 
 .w-screen.h-screen.overflow-hidden.bg-sidebar.flex > div:nth-child(2).border-2 {
-  height: calc(100% - 88px) !important;
+  height: calc(100% - 74px) !important;
 }
 
 .text-white {

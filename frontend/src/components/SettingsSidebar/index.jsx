@@ -164,7 +164,7 @@ export default function SettingsSidebar() {
           border: "none",
           paddingInline: "16px 26px"
         }}
-        className="transition-all duration-500 relative m-[16px] rounded-[8px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-92px)]"
+        className="transition-all duration-500 relative m-[16px] rounded-[8px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-74px)]"
       >
         <div className="w-full h-full flex flex-col overflow-x-hidden items-between min-w-[252px]">
           <div
@@ -306,14 +306,14 @@ const SidebarOptions = ({ user = null, t }) => (
       allowedRole={["admin", "manager"]}
     />
 
-    <Option
+    {/* <Option
       href={paths.settings.agentSkills()}
       btnText="Agent Skills"
       icon={<Robot className="h-5 w-5 flex-shrink-0" />}
       user={user}
       flex={true}
       allowedRole={["admin", "manager"]}
-    />
+    /> */}
     <Option
       href={paths.settings.appearance()}
       btnText={t("settings.appearance")}

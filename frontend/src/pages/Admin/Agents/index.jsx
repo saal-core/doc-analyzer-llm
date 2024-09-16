@@ -132,13 +132,13 @@ export default function AdminAgents() {
           />
 
           {/* Skill settings nav */}
-          <div hidden={showSkillModal} className="flex flex-col gap-y-[18px]">
-            <div className="text-white flex items-center gap-x-2">
+          {/* <div hidden={showSkillModal} className="flex flex-col gap-y-[18px]"> */}
+            {/* <div className="text-white flex items-center gap-x-2">
               <Robot size={24} />
               <p className="text-lg font-medium">Agent Skills</p>
-            </div>
+            </div> */}
             {/* Default skills */}
-            <SkillList
+            {/* <SkillList
               isDefault={true}
               skills={defaultSkills}
               selectedSkill={selectedSkill}
@@ -146,9 +146,10 @@ export default function AdminAgents() {
                 setSelectedSkill(skill);
                 setShowSkillModal(true);
               }}
-            />
+            /> */}
+
             {/* Configurable skills */}
-            <SkillList
+            {/* <SkillList
               skills={configurableSkills}
               selectedSkill={selectedSkill}
               handleClick={(skill) => {
@@ -156,8 +157,8 @@ export default function AdminAgents() {
                 setShowSkillModal(true);
               }}
               activeSkills={agentSkills}
-            />
-          </div>
+            /> */}
+          {/* </div> */}
 
           {/* Selected agent skill modal */}
           {showSkillModal && (
