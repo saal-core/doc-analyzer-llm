@@ -36,13 +36,28 @@ export default function PasswordModal({ mode = "single" }) {
         }}
         className="absolute left-0 top-0 z-0 h-full w-full"
       />
-      <div className="hidden md:flex md:w-1/2 md:h-full md:items-center md:justify-center">
+      <div style={{ position: "relative" }} className="hidden md:flex md:w-1/2 md:h-full md:items-center md:justify-center">
         <img
           // className="w-full h-full object-contain z-50"
           className="w-full h-full z-50"
           src={illustration}
+          style={{ zIndex: 1 }}
+          // style={{ objectFit: "cover" }}
           alt="login illustration"
         />
+        <div style={{ zIndex: 2, maxWidth: "616px", position: "absolute", bottom: 60, left: 0, right: 0, margin: "auto", textAlign: "center", padding: "0px 24px", color: "white" }}>
+          <div style={{ fontWeight: 500, fontSize: "38px", lineHeight: "46px" }}>
+            Excel in the Digital Era
+          </div>
+
+          <div
+            style={{
+              fontWeight: 400, fontSize: "16px", lineHeight: "24px", marginTop: "16px"
+            }}
+          >
+            Ask AFADI Library is an innovative AI-powered application designed to revolutionize the way you interact with books. With this cutting-edge tool, you can engage in dynamic conversations about your favorite literature, gain deeper insights, and enhance your reading experience like never before.
+          </div>
+        </div>
       </div>
       <div
         style={{ background: "white" }}
