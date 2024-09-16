@@ -38,20 +38,20 @@ export default function ThreadItem({
     >
       {/* Curved line Element and leader if required */}
       <div
-        style={{ width: THREAD_CALLOUT_DETAIL_WIDTH / 2 }}
+        style={{ width: THREAD_CALLOUT_DETAIL_WIDTH / 2, borderColor: 'rgba(255, 255, 255, 0.25)' }}
         className={`${
           isActive
-            ? "border-l-2 border-b-2 border-white"
+            ? "border-l border-b-2 border-slate-300"
             : "border-l border-b border-slate-300"
         } h-[50%] absolute top-0 z-10 left-2 rounded-bl-lg`}
       ></div>
       {/* Downstroke border for next item */}
       {hasNext && (
         <div
-          style={{ width: THREAD_CALLOUT_DETAIL_WIDTH / 2 }}
+          style={{ width: THREAD_CALLOUT_DETAIL_WIDTH / 2, borderColor: 'rgba(255, 255, 255, 0.25)' }}
           className={`${
             idx <= activeIdx && !isActive
-              ? "border-l-2 border-white"
+              ? "border-l border-slate-300"
               : "border-l border-slate-300"
           } h-[100%] absolute top-0 z-1 left-2`}
         ></div>

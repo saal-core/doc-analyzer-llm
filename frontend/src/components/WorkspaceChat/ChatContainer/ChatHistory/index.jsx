@@ -137,7 +137,7 @@ export default function ChatHistory({
         <div
           className="flex flex-col items-center md:items-start md:max-w-[650px] w-full px-4"
           style={{
-            background: "white",
+            background: "radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, rgba(28, 145, 198, 0.15) 100%)",
             borderRadius: "20px",
             padding: "56px",
           }}
