@@ -74,8 +74,21 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
             style={{
               position: "relative",
               top: "-20px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingLeft: "16px",
             }}
           >
+            <span
+              style={{
+                fontWeight: 600,
+                fontSize: "16px",
+                lineHeight: "24px",
+              }}
+            >
+              File Manager
+            </span>
             <button
               onClick={hideModal}
               type="button"
