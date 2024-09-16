@@ -70,7 +70,7 @@ export default function Sidebar() {
                   {(!user || user?.role !== "default") && (
                     <button
                       onClick={showNewWsModal}
-                      className="add-new-space flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-2.5 mb-2 rounded-[8px] text-sidebar justify-center items-center transition-all duration-300"
+                      className="add-new-space flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-2.5 rounded-[8px] text-sidebar justify-center items-center transition-all duration-300"
                     >
                       <ListPlus size={18} weight="bold" />
                       <p
@@ -82,6 +82,9 @@ export default function Sidebar() {
                     </button>
                   )}
                 </div>
+                <div style={{ color: "white", fontSize: "14px", lineHeight: "22px", fontWeight: 600 }}>
+                  Workspaces
+                </div>
                 <ActiveWorkspaces />
               </div>
             </div>
@@ -90,6 +93,7 @@ export default function Sidebar() {
               style={{
                 backgroundColor: "transparent",
                 height: "0px",
+                padding: "0px",
               }}
             >
               <Footer />
