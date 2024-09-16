@@ -7,6 +7,8 @@ import { ArrowDown } from "@phosphor-icons/react";
 import debounce from "lodash.debounce";
 import useUser from "@/hooks/useUser";
 import Chartable from "./Chartable";
+import ChatAvatar from "@/media/logo/chat_avatar.png";
+import UploadBox from "@/media/upload_box.png";
 import Workspace from "@/models/workspace";
 import { useParams } from "react-router-dom";
 
@@ -142,7 +144,7 @@ export default function ChatHistory({
             padding: "56px",
           }}
         >
-          <img src="/public/chat_avatar.png" width="80px" height="80px" style={{ margin: "auto" }} />
+          <img src={ChatAvatar} width="80px" height="80px" style={{ margin: "auto" }} />
           <div style={{ margin: "auto", fontWeight: "bold" }} className="text-white text-lg font-base py-6">
             ASK AFADI <span style={{ color: "#2F54EB" }}>AI</span>
           </div>
@@ -160,7 +162,7 @@ export default function ChatHistory({
           {!user || user.role !== "default" ? (
             <div style={{ padding: "16px", backgroundColor: "#EEFBFF", borderRadius: "12px"  }} className="w-full items-center text-white text-lg font-base flex flex-col md:flex-col gap-x-1">
               <div>
-                <img width="35px" height="35px" src="/public/upload_box.png" />
+                <img width="35px" height="35px" src={UploadBox} />
               </div>
               <p style={{ marginTop: "16px" }}>
                 To get started either{" "}

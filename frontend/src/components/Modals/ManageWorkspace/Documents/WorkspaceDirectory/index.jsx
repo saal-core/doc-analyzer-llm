@@ -22,13 +22,21 @@ function WorkspaceDirectory({
 }) {
   if (loading) {
     return (
-      <div className="px-8">
+      <div className="p-[16px]">
         <div className="flex items-center justify-start w-[400px]">
           <h3 className="text-white text-base font-bold">
             {workspace.name}
           </h3>
         </div>
-        <div className="relative w-[400px] h-[445px] bg-zinc-900 rounded-2xl mt-5">
+        <div
+          style={{ fontSize: "14px", lineHeight: "32px", color: "black", marginBlock: "16px", marginBottom: "26px" }}
+        >
+          Add or remove file to this section to get information while chat 
+        </div>
+        <div
+          className="relative w-[400px] h-[445px] bg-zinc-900 rounded-2xl mt-5"
+          style={{ border: '1px solid rgba(0, 0, 0, 0.15)', height: "472px", maxHeight: "472px" }}
+        >
           <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-8">
             <p className="col-span-5">Name</p>
             <p className="col-span-2" />
@@ -48,15 +56,20 @@ function WorkspaceDirectory({
     <>
       <div className="p-[16px] flex flex-col">
         <div className="flex items-center justify-start w-[400px]">
-          <h3 className="text-white text-base font-bold ml-5">
+          <h3 className="text-white text-base font-bold">
             {workspace.name}
           </h3>
+        </div>
+        <div
+          style={{ fontSize: "14px", lineHeight: "32px", color: "black", marginBlock: "16px" }}
+        >
+          Add or remove file to this section to get information while chat 
         </div>
         <div
           className={`relative w-[400px] bg-zinc-900 rounded-2xl mt-5 overflow-y-auto border-4 ${
             highlightWorkspace ? "border-cyan-300/80" : ""
           }`}
-          style={{ border: '1px solid rgba(0, 0, 0, 0.15)', height: "472px", maxHeight: "472px", marginTop: "72px" }}
+          style={{ border: '1px solid rgba(0, 0, 0, 0.15)', height: "472px", maxHeight: "472px", marginTop: "6px" }}
         >
           <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 bg-zinc-900 sticky top-0 z-10">
             <p className="col-span-5">Name</p>

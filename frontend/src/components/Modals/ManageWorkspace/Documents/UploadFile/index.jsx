@@ -7,6 +7,8 @@ import { v4 } from "uuid";
 import FileUploadProgress from "./FileUploadProgress";
 import Workspace from "../../../../../models/workspace";
 import debounce from "lodash.debounce";
+import UploadBox from "@/media/upload_box.png";
+
 
 export default function UploadFile({
   workspace,
@@ -87,7 +89,7 @@ export default function UploadFile({
         {ready === false ? (
           <div className="flex flex-col items-center justify-center h-full">
             {/* <CloudArrowUp className="w-8 h-8 text-white/80" /> */}
-            <img src="/public/upload_box.png" width={"48px"} height={"48px"} />
+            <img src={UploadBox} width={"48px"} height={"48px"} />
             <div className="text-white text-opacity-80 text-sm font-semibold py-1">
               Document Processor Unavailable
             </div>
@@ -98,7 +100,7 @@ export default function UploadFile({
           </div>
         ) : files.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
-            <img src="/public/upload_box.png" width={"48px"} height={"48px"} />
+            <img src={UploadBox} width={"48px"} height={"48px"} />
             <div className="text-white" style={{ fontSize: "16px", lineHeight: "24px", paddingBlock: "16px" }}>
               Click or drag file to this area to upload
             </div>

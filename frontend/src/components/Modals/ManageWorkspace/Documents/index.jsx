@@ -208,7 +208,7 @@ export default function DocumentSettings({ workspace, systemSettings }) {
         moveToWorkspace={moveSelectedItemsToWorkspace}
         setLoadingMessage={setLoadingMessage}
       />
-      <div className="upload-modal-arrow">
+      <div className="upload-modal-arrow" style={{ opacity: "0.3" }}>
         <ArrowsDownUp className="text-white text-base font-bold rotate-90 w-11 h-11" />
       </div>
       <div className="flex h-100">

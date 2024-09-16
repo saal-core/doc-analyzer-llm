@@ -117,8 +117,8 @@ export default function DefaultChatContainer() {
                 little overhead you wont even notice it's there! No GPU needed.
                 Cloud and on-premises installation is available as well.
                 <br />
-                The AI tooling ecosystem gets more powerful everyday. DataPrism
-                360 makes it easy to use.
+                The AI tooling ecosystem gets more powerful everyday. ASK AFADI
+                AI makes it easy to use.
               </span>
               {/* <a
                 href={paths.github()}
