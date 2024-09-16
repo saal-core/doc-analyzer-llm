@@ -186,7 +186,7 @@ input::placeholder {
 }
 
 button[type="submit"] {
-  background-color: #008ece !important; /* Background color */
+  background-color: #00A5D4 !important; /* Background color */
   color: #fff;
 }
 button[type="submit"]:hover {
@@ -336,7 +336,7 @@ button.bg-sidebar-button.bg-transparent {
 .hover\:bg-stone-900:hover,
 .bg-\[\#F4FFD0\]\/10,
 .bg-zinc-900\/50 {
-  background-color: rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(0, 0, 0, 0.02) !important;
 }
 .bg-historical-msg-user {
   background-color: #E1F8FF;
@@ -391,6 +391,10 @@ button.rounded-2xl {
   margin-left: 0px !important;
 }
 
+.bg-main-gradient.rounded-lg {
+  border-radius: 8px !important;
+}
+
 .bg-main-gradient.chat-box {
   border-radius: 8px !important;
   padding-block: 8px !important;
@@ -398,8 +402,13 @@ button.rounded-2xl {
 }
 
 .absolute .bg-main-gradient {
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
 }
+
+.cancel-button {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
 .bg-zinc-900\/50 {
   background-color: rgb(255 255 255 / 0.5);
 }
