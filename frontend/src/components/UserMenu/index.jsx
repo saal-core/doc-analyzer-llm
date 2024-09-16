@@ -22,7 +22,7 @@ export default function UserMenu({ children }) {
             style={{
               display: "flex",
               justifyContent: "center",
-              marginTop: "22px",
+              marginTop: "16px",
               cursor: "pointer",
               height: "40px",
               borderLeft: "4px solid #00A5D4",
