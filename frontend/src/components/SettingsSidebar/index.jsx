@@ -272,7 +272,7 @@ const SidebarOptions = ({ user = null, t }) => (
     <Option
       href={paths.settings.system()}
       btnText={t("settings.system")}
-      icon={<SideIcon className="h-5 w-5 flex-shrink-0" />}
+      icon={<SquaresFour className="h-5 w-5 flex-shrink-0" />}
       user={user}
       allowedRole={["admin", "manager"]}
     />
