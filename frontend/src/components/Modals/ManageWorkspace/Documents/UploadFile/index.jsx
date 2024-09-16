@@ -148,7 +148,7 @@ export default function UploadFile({
       </form> */}
       <div className="mt-6 text-center text-white text-opacity-80 text-xs font-medium w-100">
         These files will be uploaded to the document processor running on this
-        ASK AFADI Library instance. These files are not sent or shared with a third
+        ASK AFADI AI instance. These files are not sent or shared with a third
         party.
       </div>
     </div>

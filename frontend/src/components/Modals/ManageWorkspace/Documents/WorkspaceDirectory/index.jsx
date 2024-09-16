@@ -155,7 +155,7 @@ const PinAlert = memo(() => {
           </div>
           <div className="w-full p-6 text-white text-md flex flex-col gap-y-2">
             <p>
-              When you <b>pin</b> a document in ASK AFADI Library we will inject the
+              When you <b>pin</b> a document in ASK AFADI AI we will inject the
               entire content of the document into your prompt window for your
               LLM to fully comprehend.
             </p>
@@ -164,7 +164,7 @@ const PinAlert = memo(() => {
               that are critical to its knowledge-base.
             </p>
             <p>
-              If you are not getting the answers you desire from ASK AFADI Library
+              If you are not getting the answers you desire from ASK AFADI AI
               by default then pinning is a great way to get higher quality
               answers in a click.
             </p>

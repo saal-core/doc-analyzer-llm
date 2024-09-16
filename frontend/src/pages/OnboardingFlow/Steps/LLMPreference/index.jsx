@@ -48,7 +48,7 @@ import { useNavigate } from "react-router-dom";
 
 const TITLE = "LLM Preference";
 const DESCRIPTION =
-  "ASK AFADI Library can work with many LLM providers. This will be the service which handles chatting.";
+  "ASK AFADI AI can work with many LLM providers. This will be the service which handles chatting.";
 
 const LLMS = [
   {
@@ -188,7 +188,7 @@ const LLMS = [
     logo: AnythingLLMIcon,
     options: (settings) => <NativeLLMOptions settings={settings} />,
     description:
-      "Use a downloaded custom Llama model for chatting on this ASK AFADI Library instance.",
+      "Use a downloaded custom Llama model for chatting on this ASK AFADI AI instance.",
   },
 ];
 
@@ -231,7 +231,7 @@ export default function LLMPreference({
     const data = {};
     const formData = new FormData(form);
     data.LLMProvider = selectedLLM;
-    // Default to ASK AFADI Library embedder and LanceDB
+    // Default to ASK AFADI AI embedder and LanceDB
     data.EmbeddingEngine = "native";
     data.VectorDB = "lancedb";
     for (var [key, value] of formData.entries()) data[key] = value;

@@ -261,7 +261,7 @@ const TRANSLATIONS = {
       system: "系统",
       user: "用户",
       message: "消息",
-      assistant: "ASK AFADI Library 聊天助手",
+      assistant: "ASK AFADI AI 聊天助手",
       "double-click": "双击以编辑...",
       save: "保存消息",
     },
@@ -277,7 +277,7 @@ const TRANSLATIONS = {
   api: {
     title: "API 密钥",
     description:
-      "API 密钥允许持有者以编程方式访问和管理此 ASK AFADI Library 实例。",
+      "API 密钥允许持有者以编程方式访问和管理此 ASK AFADI AI 实例。",
     link: "阅读 API 文档",
     generate: "生成新的 API 密钥",
     table: {
@@ -291,7 +291,7 @@ const TRANSLATIONS = {
   llm: {
     title: "LLM 偏好",
     description:
-      "这些是您首选的 LLM 聊天和嵌入提供商的凭据和设置。重要的是，这些密钥是最新的和正确的，否则 ASK AFADI Library 将无法正常运行。",
+      "这些是您首选的 LLM 聊天和嵌入提供商的凭据和设置。重要的是，这些密钥是最新的和正确的，否则 ASK AFADI AI 将无法正常运行。",
     provider: "LLM 提供商",
   },
 
@@ -301,7 +301,7 @@ const TRANSLATIONS = {
       "这些是您的首选转录模型提供商的凭据和设置。重要的是这些密钥是最新且正确的，否则媒体文件和音频将无法转录。",
     provider: "转录提供商",
     "warn-start":
-      "在 RAM 或 CPU 有限的计算机上使用本地耳语模型可能会在处理媒体文件时停止 ASK AFADI Library。",
+      "在 RAM 或 CPU 有限的计算机上使用本地耳语模型可能会在处理媒体文件时停止 ASK AFADI AI。",
     "warn-recommend": "我们建议至少 2GB RAM 并上传 <10Mb 的文件。",
     "warn-end": "内置模型将在首次使用时自动下载。",
   },
@@ -311,10 +311,10 @@ const TRANSLATIONS = {
     "desc-start":
       "当使用本身不支持嵌入引擎的 LLM 时，您可能需要额外指定用于嵌入文本的凭据。",
     "desc-end":
-      "嵌入是将文本转换为矢量的过程。需要这些凭据才能将您的文件和提示转换为 ASK AFADI Library 可以用来处理的格式。",
+      "嵌入是将文本转换为矢量的过程。需要这些凭据才能将您的文件和提示转换为 ASK AFADI AI 可以用来处理的格式。",
     provider: {
       title: "嵌入引擎提供商",
-      description: "使用 ASK AFADI Library 的本机嵌入引擎时不需要设置。",
+      description: "使用 ASK AFADI AI 的本机嵌入引擎时不需要设置。",
     },
   },
 
@@ -341,7 +341,7 @@ const TRANSLATIONS = {
   vector: {
     title: "向量数据库",
     description:
-      "这些是 ASK AFADI Library 实例如何运行的凭据和设置。重要的是，这些密钥是最新的和正确的。",
+      "这些是 ASK AFADI AI 实例如何运行的凭据和设置。重要的是，这些密钥是最新的和正确的。",
     provider: {
       title: "向量数据库提供商",
       description: "LanceDB 不需要任何配置。",

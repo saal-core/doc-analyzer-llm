@@ -144,18 +144,18 @@ export default function ChatHistory({
         >
           <img src="/public/chat_avatar.png" width="80px" height="80px" style={{ margin: "auto" }} />
           <div style={{ margin: "auto", fontWeight: "bold" }} className="text-white text-lg font-base py-6">
-            ASK AFADI Library
+            ASK AFADI <span style={{ color: "#2F54EB" }}>AI</span>
           </div>
           <div
             style={{
               textAlign: "center",
               fontWeight: "14px",
               lineHeight: "22px",
-              color: "rgba(0, 0, 0, 0.45)",
+              color: "rgba(0, 0, 0, 1)",
               marginBottom: "24px",
             }}
           >
-            When you upload documents essential to your study, AFADI LLM quickly becomes an expert in the information thats most important to you
+            When you upload documents essential to your <span style={{ fontWeight: "bold" }}>AOC Officers Course</span> , <span style={{ color: "#2F54EB", fontWeight: "bold" }}>Ask AFADI AI</span> quickly becomes an expert in the information that most important to you
           </div>
           {!user || user.role !== "default" ? (
             <div style={{ padding: "16px", backgroundColor: "#EEFBFF", borderRadius: "12px"  }} className="w-full items-center text-white text-lg font-base flex flex-col md:flex-col gap-x-1">

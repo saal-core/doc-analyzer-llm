@@ -20,8 +20,8 @@ const webBrowsing = {
               call: JSON.stringify({ query: "Winner of today's world series" }),
             },
             {
-              prompt: "What is ASK AFADI Library?",
-              call: JSON.stringify({ query: "ASK AFADI Library" }),
+              prompt: "What is ASK AFADI AI?",
+              call: JSON.stringify({ query: "ASK AFADI AI" }),
             },
             {
               prompt: "Current AAPL stock price",

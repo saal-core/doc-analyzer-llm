@@ -24,7 +24,7 @@ export default function OnboardingHome() {
             <p className="text-zinc-300 font-thin text-[24px]">Welcome to</p>
             <img
               src={AnythingLLMLogo}
-              alt="ASK AFADI Library"
+              alt="ASK AFADI AI"
               className="md:h-[50px] flex-shrink-0 max-w-[300px]"
             />
             <button

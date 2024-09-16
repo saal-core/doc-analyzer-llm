@@ -57,9 +57,9 @@ export default function DefaultChatContainer() {
             <span
               className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
             >
-              Welcome to ASK AFADI Library, ASK AFADI Library is an open-source AI tool
+              Welcome to ASK AFADI AI, ASK AFADI AI is an open-source AI tool
               by Mintplex Labs that turns anything into a trained chatbot you
-              can query and chat with. ASK AFADI Library is a BYOK
+              can query and chat with. ASK AFADI AI is a BYOK
               (bring-your-own-keys) software so there is no subscription, fee,
               or charges for this software outside of the services you want to
               use with it.
@@ -86,7 +86,7 @@ export default function DefaultChatContainer() {
             <span
               className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
             >
-              ASK AFADI Library is the easiest way to put powerful AI products like
+              ASK AFADI AI is the easiest way to put powerful AI products like
               OpenAi, GPT-4, LangChain, PineconeDB, ChromaDB, and other services
               together in a neat package with no fuss to increase your
               productivity by 100x.
@@ -113,7 +113,7 @@ export default function DefaultChatContainer() {
               <span
                 className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
               >
-                ASK AFADI Library can run totally locally on your machine with
+                ASK AFADI AI can run totally locally on your machine with
                 little overhead you wont even notice it's there! No GPU needed.
                 Cloud and on-premises installation is available as well.
                 <br />
@@ -245,10 +245,10 @@ export default function DefaultChatContainer() {
             <span
               className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
             >
-              ASK AFADI Library is more than a smarter Dropbox.
+              ASK AFADI AI is more than a smarter Dropbox.
               <br />
               <br />
-              ASK AFADI Library offers two ways of talking with your data:
+              ASK AFADI AI offers two ways of talking with your data:
               <br />
               <br />
               <i>Query:</i> Your chats will return data or inferences found with

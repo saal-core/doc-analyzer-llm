@@ -34,12 +34,12 @@ import { useTranslation } from "react-i18next";
 
 const EMBEDDERS = [
   {
-    name: "ASK AFADI Library Embedder",
+    name: "ASK AFADI AI Embedder",
     value: "native",
     logo: AnythingLLMIcon,
     options: (settings) => <NativeEmbeddingOptions settings={settings} />,
     description:
-      "Use the built-in embedding provider for ASK AFADI Library. Zero setup!",
+      "Use the built-in embedding provider for ASK AFADI AI. Zero setup!",
   },
   {
     name: "OpenAI",

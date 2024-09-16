@@ -217,7 +217,7 @@ export const AVAILABLE_LLM_PROVIDERS = [
     logo: AnythingLLMIcon,
     options: (settings) => <NativeLLMOptions settings={settings} />,
     description:
-      "Use a downloaded custom Llama model for chatting on this ASK AFADI Library instance.",
+      "Use a downloaded custom Llama model for chatting on this ASK AFADI AI instance.",
     requiredConfig: [],
   },
 ];

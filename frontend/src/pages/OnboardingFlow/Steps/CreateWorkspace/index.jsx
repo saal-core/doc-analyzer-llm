@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 const TITLE = "Create your first workspace";
 const DESCRIPTION =
-  "Create your first workspace and get started with ASK AFADI Library.";
+  "Create your first workspace and get started with ASK AFADI AI.";
 
 export default function CreateWorkspace({
   setHeader,

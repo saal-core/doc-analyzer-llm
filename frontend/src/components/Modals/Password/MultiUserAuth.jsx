@@ -326,12 +326,12 @@ export default function MultiUserAuth({ logo }) {
                   // className="text-4xl md:text-2xl font-bold bg-gradient-to-r from-[#75D6FF] via-[#FFFFFF] to-[#FFFFFF] bg-clip-text text-transparent"
                   className="text-4xl md:text-2xl font-bold"
                 >
-                  {customAppName || "ASK AFADI Library"}
+                  {customAppName || "ASK AFADI AI"}
                 </p> */}
               </div>
               <p className="text-sm text-white text-center">
                 Please provide your credentials to securely access your account.
-                {/* {t("login.sign-in.start")} {customAppName || "ASK AFADI Library"}{" "}
+                {/* {t("login.sign-in.start")} {customAppName || "ASK AFADI AI"}{" "}
                 {t("login.sign-in.end")} */}
               </p>
             </div>

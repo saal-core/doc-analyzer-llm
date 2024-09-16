@@ -1,11 +1,11 @@
 <a name="readme-top"></a>
 
 <p align="center">
-  <a href="https://useanything.com"><img src="https://github.com/Mintplex-Labs/anything-llm/blob/master/images/wordmark.png?raw=true" alt="ASK AFADI Library logo"></a>
+  <a href="https://useanything.com"><img src="https://github.com/Mintplex-Labs/anything-llm/blob/master/images/wordmark.png?raw=true" alt="ASK AFADI AI logo"></a>
 </p>
 
 <p align="center">
-    <b>ASK AFADI Library：</b> 您一直在寻找的全方位AI应用程序。<br />
+    <b>ASK AFADI AI：</b> 您一直在寻找的全方位AI应用程序。<br />
     与您的文档聊天，使用AI代理，高度可配置，多用户，无需繁琐的设置。
 </p>
 

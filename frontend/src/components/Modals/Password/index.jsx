@@ -55,7 +55,7 @@ export default function PasswordModal({ mode = "single" }) {
               fontWeight: 400, fontSize: "16px", lineHeight: "24px", marginTop: "16px"
             }}
           >
-            Ask AFADI Library is an innovative AI-powered application designed to revolutionize the way you interact with books. With this cutting-edge tool, you can engage in dynamic conversations about your favorite literature, gain deeper insights, and enhance your reading experience like never before.
+            ASK AFADI AI is an innovative AI-powered application designed to revolutionize the way you interact with books. With this cutting-edge tool, you can engage in dynamic conversations about your favorite literature, gain deeper insights, and enhance your reading experience like never before.
           </div>
         </div>
       </div>
