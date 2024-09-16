@@ -3,6 +3,7 @@ import System from "../../../models/system";
 import { AUTH_TOKEN, AUTH_USER } from "../../../utils/constants";
 import paths from "../../../utils/paths";
 import showToast from "@/utils/toast";
+import { User, Lock } from "@phosphor-icons/react";
 import ModalWrapper from "@/components/ModalWrapper";
 import { useModal } from "@/hooks/useModal";
 import RecoveryCodeModal from "@/components/Modals/DisplayRecoveryCodeModal";
@@ -35,9 +36,11 @@ const RecoveryForm = ({ onSubmit, setShowRecoveryForm, logo }) => {
         minWidth: "460px",
       }}
       // className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-12 px-0 py-12 w-full md:w-fit mt-10 md:mt-0"
-      className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-16 px-0 py-12 w-full md:w-fit mt-10 md:mt-0"
+      className="flex flex-col justify-center items-center relative rounded-2xl md:px-4 px-0 py-12 w-full md:w-fit mt-10 md:mt-0"
     >
-      {logo}
+      <div style={{ width: "100%" }}>
+        {logo}
+      </div>
       <div
         // className="flex items-start justify-between pt-11 pb-9 w-screen md:w-full md:px-12 px-6 "
         className="flex items-start justify-between pt-11 pb-9 w-screen md:w-full"
@@ -64,8 +67,8 @@ const RecoveryForm = ({ onSubmit, setShowRecoveryForm, logo }) => {
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-              className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[34px]"
+              // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[40px]"
+              className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[40px]"
               required
             />
           </div>
@@ -83,8 +86,8 @@ const RecoveryForm = ({ onSubmit, setShowRecoveryForm, logo }) => {
                   onChange={(e) =>
                     handleRecoveryCodeChange(index, e.target.value)
                   }
-                  // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-                  className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[34px]"
+                  // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[40px]"
+                  className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[40px]"
                   required
                 />
               </div>
@@ -95,8 +98,8 @@ const RecoveryForm = ({ onSubmit, setShowRecoveryForm, logo }) => {
       <div className="flex items-center md:p-12 md:px-0 px-6 mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8">
         <button
           type="submit"
-          // className="md:text-primary-button md:bg-transparent md:w-[300px] text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#46C8FF] md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
-          className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#008ECE] md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
+          // className="md:text-primary-button md:bg-transparent md:w-[300px] text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#46C8FF] md:h-[40px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
+          className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#008ECE] md:h-[40px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
         >
           Reset Password
         </button>
@@ -150,8 +153,8 @@ const ResetPasswordForm = ({ onSubmit, logo }) => {
               placeholder="New Password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-              className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[34px]"
+              // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[40px]"
+              className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[40px]"
               required
             />
           </div>
@@ -162,8 +165,8 @@ const ResetPasswordForm = ({ onSubmit, logo }) => {
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-              className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[34px]"
+              // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[40px]"
+              className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[40px]"
               required
             />
           </div>
@@ -172,8 +175,8 @@ const ResetPasswordForm = ({ onSubmit, logo }) => {
       <div className="flex items-center md:p-12 md:px-0 px-6 mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8">
         <button
           type="submit"
-          // className="md:text-primary-button md:bg-transparent md:w-[300px] text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#46C8FF] md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
-          className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#008ECE] md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
+          // className="md:text-primary-button md:bg-transparent md:w-[300px] text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#46C8FF] md:h-[40px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
+          className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#008ECE] md:h-[40px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
         >
           Reset Password
         </button>
@@ -341,27 +344,31 @@ export default function MultiUserAuth({ logo }) {
             className="w-full"
           >
             <div className="w-full flex flex-col gap-y-4">
-              <div className="w-screen md:w-full md:px-0 px-6">
+              <div className="w-screen md:w-full md:px-0 px-6 relative">
                 <input
                   name="username"
                   type="text"
+                  style={{ paddingLeft: "30px" }}
                   placeholder={t("login.multi-user.placeholder-username")}
-                  // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-                  className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[34px]"
+                  // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[40px]"
+                  className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[40px]"
                   required={true}
                   autoComplete="off"
                 />
+                <User style={{ position: "absolute", top: 0, bottom: 0, margin: "auto", left: '8px' }} color="rgba(0, 0, 0, 0.45)" />
               </div>
-              <div className="w-screen md:w-full md:px-0 px-6">
+              <div className="w-screen md:w-full md:px-0 px-6 relative">
                 <input
                   name="password"
                   type="password"
+                  style={{ paddingLeft: "30px" }}
                   placeholder={t("login.multi-user.placeholder-password")}
-                  // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-                  className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[34px]"
+                  // className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[40px]"
+                  className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:h-[40px]"
                   required={true}
                   autoComplete="off"
                 />
+                <Lock style={{ position: "absolute", top: 0, bottom: 0, margin: "auto", left: '8px' }} color="rgba(0, 0, 0, 0.45)" />
               </div>
               {error && <p className="text-red-400 text-sm">Error: {error}</p>}
             </div>
@@ -373,8 +380,8 @@ export default function MultiUserAuth({ logo }) {
             <button
               disabled={loading}
               type="submit"
-              // className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#46C8FF] md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
-              className="text-primary-button text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#008ECE] md:h-[34px] h-[48px] text-black bg-primary-button focus:z-10 w-full"
+              // className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#46C8FF] md:h-[40px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
+              className="text-primary-button text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#008ECE] md:h-[40px] h-[48px] text-black bg-primary-button focus:z-10 w-full"
             >
               {loading
                 ? t("login.multi-user.validating")
