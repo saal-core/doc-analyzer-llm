@@ -126,7 +126,7 @@ function WorkspaceDirectory({
               onClick={saveChanges}
               className="border bg-primary-button border-slate-200 px-5 py-2.5 rounded-lg text-white text-sm items-center flex gap-x-2"
             >
-              Save and Embed
+              Save
             </button>
           </div>
         )}
