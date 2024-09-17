@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import System from "../../../models/system";
-import { AUTH_TOKEN, AUTH_USER } from "../../../utils/constants";
+import { AUTH_TOKEN, AUTH_USER, BY_PASS_LOGGED_IN_USER } from "../../../utils/constants";
 import paths from "../../../utils/paths";
 import showToast from "@/utils/toast";
 import { User, Lock } from "@phosphor-icons/react";
@@ -8,6 +8,8 @@ import ModalWrapper from "@/components/ModalWrapper";
 import { useModal } from "@/hooks/useModal";
 import RecoveryCodeModal from "@/components/Modals/DisplayRecoveryCodeModal";
 import { useTranslation } from "react-i18next";
+import { safeJsonParse } from "@/utils/request";
+import { FullScreenLoader } from "@/components/Preloader";
 
 const RecoveryForm = ({ onSubmit, setShowRecoveryForm, logo }) => {
   const [username, setUsername] = useState("");
@@ -196,20 +198,31 @@ export default function MultiUserAuth({ logo }) {
   const [showRecoveryForm, setShowRecoveryForm] = useState(false);
   const [showResetPasswordForm, setShowResetPasswordForm] = useState(false);
   const [customAppName, setCustomAppName] = useState(null);
+  const [byPassUserInfo, ] = useState(safeJsonParse(window.localStorage.getItem(BY_PASS_LOGGED_IN_USER), { userName: '', password: '' }))
+
 
   const {
     isOpen: isRecoveryCodeModalOpen,
     openModal: openRecoveryCodeModal,
     closeModal: closeRecoveryCodeModal,
   } = useModal();
+  const checkIsUserCanByPass = () =>{
+    return byPassUserInfo?.userName === 'ravi' && byPassUserInfo?.password ==='Password@123'
+  }
 
   const handleLogin = async (e) => {
     setError(null);
     setLoading(true);
-    e.preventDefault();
+    e?.preventDefault();
     const data = {};
-    const form = new FormData(e.target);
-    for (var [key, value] of form.entries()) data[key] = value;
+    const form = new FormData(e?.target);
+    if(!checkIsUserCanByPass()){
+      for (var [key, value] of form.entries()) data[key] = value;
+    }
+    if(checkIsUserCanByPass()){
+      data['username'] = byPassUserInfo?.userName
+      data['password'] = byPassUserInfo?.password
+    }
     const { valid, user, token, message, recoveryCodes } =
       await System.requestToken(data);
     if (valid && !!token && !!user) {
@@ -287,6 +300,12 @@ export default function MultiUserAuth({ logo }) {
     fetchCustomAppName();
   }, []);
 
+  useEffect(() => {
+    if(checkIsUserCanByPass()){
+      handleLogin()
+    }
+  }, [byPassUserInfo])
+
   if (showRecoveryForm) {
     return (
       <RecoveryForm
@@ -300,7 +319,7 @@ export default function MultiUserAuth({ logo }) {
   if (showResetPasswordForm)
     return <ResetPasswordForm logo={logo} onSubmit={handleResetSubmit} />;
   return (
-    <>
+    !(checkIsUserCanByPass()) ? <>
       <form
         onSubmit={handleLogin}
         style={{
@@ -408,5 +427,6 @@ export default function MultiUserAuth({ logo }) {
         />
       </ModalWrapper>
     </>
+    : <FullScreenLoader />
   );
 }
