@@ -191,7 +191,7 @@ function systemEndpoints(app) {
             user: User.filterFields(existingUser),
             token: makeJWT(
               { id: existingUser.id, username: existingUser.username },
-              "30d"
+              "30y"
             ),
             message: null,
             recoveryCodes: plainTextCodes,
@@ -204,7 +204,7 @@ function systemEndpoints(app) {
           user: User.filterFields(existingUser),
           token: makeJWT(
             { id: existingUser.id, username: existingUser.username },
-            "30d"
+            "30y"
           ),
           message: null,
         });
@@ -236,7 +236,7 @@ function systemEndpoints(app) {
         });
         response.status(200).json({
           valid: true,
-          token: makeJWT({ p: password }, "30d"),
+          token: makeJWT({ p: password }, "30y"),
           message: null,
         });
       }
