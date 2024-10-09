@@ -16,15 +16,25 @@ export default function UserIcon({ size = 36, user, role, logo }) {
     divRef.current.appendChild(result);
   }, [pfp, role, seed, size]);
   return (
-    <div className="relative w-[35px] h-[35px] rounded-full flex-shrink-0 overflow-hidden">
+    <div
+      className="relative w-[40px] h-[40px] rounded-full flex-shrink-0 overflow-hidden"
+      style={{
+        backgroundColor: "white",
+        borderRadius: "50%",
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
+      }}
+    >
       {((logo && !pfp) || (logo && role !== "user")) ? (
         <img
           src={logo}
           style={{
-            backgroundColor: "white",
+            width: "24px",
+            height: "24px",
           }}
           alt="logo"
-          className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+          // className="absolute top-0 left-0 w-full h-full object-cover"
         />
       ) : (
         <div ref={divRef} />
