@@ -113,17 +113,17 @@ export default function PromptInput({
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-y-1 rounded-t-lg mx-auto"
+        className="flex flex-col gap-y-1 rounded-t-lg mx-auto w-full"
       >
-        <div className="flex items-center rounded-lg md:mb-4" style={{ alignItems: "flex-start", columnGap: "20px" }}>
-          {
+        <div className="flex items-center rounded-lg md:mb-4" style={{ alignItems: "flex-start", justifyContent: "center", columnGap: "20px", width: "100%" }}>
+          {/* {
             workspace?.slug &&
             <button style={{ minHeight: "48px", display: "flex", alignItems: "center", padding: "4px 12px", borderRadius: "4px", columnGap: "4px", background: "#E1F8FF", border: "1px solid #91D8ED" }} type="button" onClick={showModal}>
               <FilePlus size={20} />
               <span style={{ fontSize: "12px", lineHeight: "20px" }}>Manage</span>
             </button>
-          }
-          <div style={{ position: "relative", overflow: "visible" }} className="chat-box w-[800px] bg-main-gradient shadow-2xl border border-white/50 rounded-2xl flex flex-col px-4 overflow-hidden">
+          } */}
+          <div style={{ position: "relative", overflow: "visible", width: "85%" }} className="chat-box bg-main-gradient shadow-2xl border border-white/50 rounded-2xl flex flex-col px-4 overflow-hidden">
             <div className="flex items-center w-full">
               <textarea
                 ref={textareaRef}
@@ -183,8 +183,8 @@ export default function PromptInput({
                 </>
               )}
             </div>
-            <div style={{ position: "absolute", bottom: "-8px", left: "-108px", width: "900px", borderTop: "1px solid rgba(0, 0, 0, 0.06)" }} />
-            <div style={{ position: "absolute", bottom: "-43px", left: "-108px", width: "100%" }} className="flex justify-between py-2">
+            <div style={{ position: "absolute", bottom: "-8px", borderTop: "1px solid rgba(0, 0, 0, 0.06)", width: "100%", left: 0 }} />
+            <div style={{ position: "absolute", bottom: "-43px", width: "100%", left: 0 }} className="flex justify-between py-2">
               <div className="flex gap-x-2">
                 <SlashCommandsButton
                   showing={showSlashCommand}
@@ -196,7 +196,7 @@ export default function PromptInput({
                 />
                 <TextSizeButton />
               </div>
-              <div className="flex gap-x-2">
+              <div className="flex">
                 <SpeechToText sendCommand={sendCommand} />
               </div>
             </div>

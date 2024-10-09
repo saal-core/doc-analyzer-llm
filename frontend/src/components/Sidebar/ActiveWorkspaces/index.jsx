@@ -25,7 +25,7 @@ export default function ActiveWorkspaces() {
   const { showing, showModal, hideModal } = useManageWorkspaceModal();
   const { user } = useUser();
   const isInWorkspaceSettings = !!useMatch("/workspace/:slug/settings/:tab");
-
+  console.log('workspaces>>>>', workspaces);
   useEffect(() => {
     async function getWorkspaces() {
       const workspaces = await Workspace.all();

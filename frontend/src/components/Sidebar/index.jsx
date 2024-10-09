@@ -61,7 +61,7 @@ export default function Sidebar() {
       >
         <div className="flex flex-col h-full overflow-x-hidden">
           <div className="flex-grow flex flex-col min-w-[236px]">
-            <div className="relative h-[calc(100%-60px)] pr-[10px] flex flex-col w-full justify-between overflow-y-scroll no-scroll">
+            <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between overflow-y-scroll no-scroll">
               <div
                 // className="flex flex-col gap-y-2 pb-[120px] overflow-y-scroll no-scroll"
                 className="flex flex-col gap-y-2 pb-[120px]"

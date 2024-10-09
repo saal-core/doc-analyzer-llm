@@ -32,7 +32,6 @@ export default function ThreadContainer({ workspace }) {
       window.removeEventListener(THREAD_RENAME_EVENT, chatHandler);
     };
   }, []);
-
   useEffect(() => {
     async function fetchThreads() {
       if (!workspace.slug) return;

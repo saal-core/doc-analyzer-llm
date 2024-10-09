@@ -7,11 +7,16 @@ import { isMobile } from "react-device-detect";
 import { SidebarMobileHeader } from "../../Sidebar";
 import { useParams } from "react-router-dom";
 import { v4 } from "uuid";
+import Doc from "./Svgr/Doc";
+import Guide from "./Svgr/Guide";
+import Pin from "./Svgr/Pin";
+import Cross from "./Svgr/Cross";
 import handleSocketResponse, {
   websocketURI,
   AGENT_SESSION_END,
   AGENT_SESSION_START,
 } from "@/utils/chat/agent";
+import { Icon } from "@tremor/react";
 
 export default function ChatContainer({ workspace, knownHistory = [] }) {
   const { threadSlug = null } = useParams();
@@ -21,6 +26,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   const [socketId, setSocketId] = useState(null);
   const [websocket, setWebsocket] = useState(null);
 
+  const [selectedSection, setSelectedSection] = useState();
   // Maintain state of message from whatever is in PromptInput
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -52,6 +58,23 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
 
     setChatHistory(prevChatHistory);
     setMessageEmit("");
+    setLoadingResponse(true);
+  };
+
+  const sendMessage = async (message) => {
+    const prevChatHistory = [
+      ...chatHistory,
+      { content: message, role: "user" },
+      {
+        content: "",
+        role: "assistant",
+        pending: true,
+        userMessage: message,
+        animate: true,
+      },
+    ];
+
+    setChatHistory(prevChatHistory);
     setLoadingResponse(true);
   };
 
@@ -110,7 +133,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
       var _chatHistory = [...remHistory];
 
       // Override hook for new messages to now go to agents until the connection closes
-      if (!!websocket) {
+      if (websocket) {
         if (!promptMessage || !promptMessage?.userMessage) return false;
         websocket.send(
           JSON.stringify({
@@ -123,7 +146,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
 
       // TODO: Simplify this
       if (!promptMessage || !promptMessage?.userMessage) return false;
-      if (!!threadSlug) {
+      if (threadSlug) {
         await Workspace.threads.streamChat(
           { workspaceSlug: workspace.slug, threadSlug },
           promptMessage.userMessage,
@@ -228,28 +251,236 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     handleWSS();
   }, [socketId]);
 
+  console.log("chatHistory>>>", chatHistory);
+  console.log("workSpace>>>", workspace, knownHistory);
   return (
     <div
       style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
       className={`${!chatHistory?.length ? "chat-bg" : ""} chat-screen transition-all duration-500 relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] bg-main-gradient w-full h-full overflow-y-scroll border-2 border-outline`}
     >
       {isMobile && <SidebarMobileHeader />}
-      <div className="flex flex-col h-full w-full md:mt-0 mt-[40px]">
-        <ChatHistory
-          history={chatHistory}
-          workspace={workspace}
-          sendCommand={sendCommand}
-          updateHistory={setChatHistory}
-          regenerateAssistantMessage={regenerateAssistantMessage}
-        />
-        <PromptInput
-          submit={handleSubmit}
-          workspace={workspace}
-          onChange={handleMessageChange}
-          inputDisabled={loadingResponse}
-          buttonDisabled={loadingResponse}
-          sendCommand={sendCommand}
-        />
+      <div className="flex h-full w-full md:mt-0 mt-[40px]">
+        <div
+          className="flex flex-col h-full relative"
+          style={{
+            flexGrow: 1,
+            marginRight: selectedSection ? "423px" : "85px",
+          }}
+        >
+          <ChatHistory
+            history={chatHistory}
+            workspace={workspace}
+            sendCommand={sendCommand}
+            updateHistory={setChatHistory}
+            regenerateAssistantMessage={regenerateAssistantMessage}
+          />
+          <PromptInput
+            submit={handleSubmit}
+            workspace={workspace}
+            onChange={handleMessageChange}
+            inputDisabled={loadingResponse}
+            buttonDisabled={loadingResponse}
+            sendCommand={sendCommand}
+          />
+        </div>
+
+        <div>
+          {selectedSection && (
+            <div
+              style={{
+                width: "338px",
+                height: "100%",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                position: "absolute",
+                right: "85px",
+                top: "0px",
+                bottom: "0px",
+                padding: "16px",
+                boxShadow:
+                  "0px 2px 4px 0px rgba(0, 0, 0, 0.02), 0px 1px 6px -1px rgba(0, 0, 0, 0.02), 0px 2px 4px 1px rgba(0, 0, 0, 0.03)",
+              }}
+            >
+              <div className="w-full h-full relative">
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    top: 0,
+                    height: "24px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  onClick={() => {
+                    setSelectedSection(null);
+                  }}
+                >
+                  <Cross />
+                </div>
+
+                {selectedSection === "guide" && (
+                  <StyleGuide sendMessage={sendMessage} />
+                )}
+                {selectedSection === "notes" && <Notes />}
+                {selectedSection === "doc" && <Documents />}
+                {selectedSection === "podcast" && <Podcasts />}
+              </div>
+            </div>
+          )}
+          <SideSections
+            selectedSection={selectedSection}
+            setSelectedSection={setSelectedSection}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const sections = [
+  {
+    label: "Guide",
+    Icon: Guide,
+    key: "guide",
+  },
+  {
+    label: "Notes",
+    Icon: Pin,
+    key: "notes",
+  },
+  {
+    label: "Doc",
+    Icon: Doc,
+    key: "doc",
+  },
+  {
+    label: "Podcast",
+    Icon: Doc,
+    key: "podcast",
+  },
+];
+
+function SideSections({ selectedSection, setSelectedSection }) {
+  return (
+    <div
+      style={{
+        width: "84px",
+        position: "absolute",
+        right: "0px",
+        bottom: "0px",
+        top: "0px",
+        background: "#fff",
+        borderLeft: "1px solid #F0F0F0",
+      }}
+    >
+      {sections?.map((section) => (
+        <div
+          className="flex flex-col"
+          style={{
+            height: "74px",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: "14px",
+            lineHeight: "22px",
+            color: "#666666",
+            borderBottom: "1px solid #F0F0F0",
+            rowGap: "4px",
+            cursor: "pointer",
+            borderRight: "4px solid transparent",
+            ...(section?.key === selectedSection && {
+              background: "#E4F5FE",
+              borderRight: "4px solid #291CA6",
+              color: "#291CA6",
+            }),
+          }}
+          onClick={() => {
+            setSelectedSection(section?.key);
+          }}
+          key={section?.label}
+        >
+          <section.Icon />
+          <div>{section?.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StyleGuide({ sendMessage }) {
+  return (
+    <div className="flex flex-col">
+      <div
+        style={{
+          fontSize: "16px",
+          fontWeight: 600,
+          lineHeight: "24px",
+          color: "rgba(41, 28, 165, 1)",
+        }}
+      >
+        Study guide
+      </div>
+
+      <button
+        style={{
+          border: '1px solid',
+          marginTop: "16px",
+        }}
+        onClick={() => {
+          sendMessage('Generate Prompt');
+        }}
+      >
+        Generate Prompt
+      </button>
+    </div>
+  );
+}
+
+function Notes() {
+  return (
+    <div className="flex flex-col">
+      <div
+        style={{
+          fontSize: "16px",
+          fontWeight: 600,
+          lineHeight: "24px",
+          color: "rgba(41, 28, 165, 1)",
+        }}
+      >
+        Saved Resources
+      </div>
+    </div>
+  );
+}
+
+function Documents() {
+  return (
+    <div className="flex flex-col">
+      <div
+        style={{
+          fontSize: "16px",
+          fontWeight: 600,
+          lineHeight: "24px",
+          color: "rgba(41, 28, 165, 1)",
+        }}
+      >
+        Documents
+      </div>
+    </div>
+  );
+}
+
+function Podcasts() {
+  return (
+    <div className="flex flex-col">
+      <div
+        style={{
+          fontSize: "16px",
+          fontWeight: 600,
+          lineHeight: "24px",
+          color: "rgba(41, 28, 165, 1)",
+        }}
+      >
+        Saved Podcasts
       </div>
     </div>
   );
