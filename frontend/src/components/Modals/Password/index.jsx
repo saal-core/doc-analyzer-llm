@@ -17,7 +17,7 @@ export default function PasswordModal({ mode = "single" }) {
       src={loginLogo}
       alt="Logo"
       // className={`hidden relative md:flex w-fit m-4 z-30 relative max-h-[65px]  md:shadow-[0_4px_14px_rgba(0,0,0,0.25)]`}
-      className={`hidden relative md:flex w-fit z-30 relative max-h-[65px]`}
+      className={`hidden relative md:flex w-fit z-30 relative max-h-[40px]`}
       style={{ objectFit: "contain" }}
     />
   );
@@ -55,7 +55,7 @@ export default function PasswordModal({ mode = "single" }) {
               fontWeight: 400, fontSize: "16px", lineHeight: "24px", marginTop: "16px"
             }}
           >
-            ASK AFADI AI is an innovative AI-powered application designed to revolutionize the way you interact with books. With this cutting-edge tool, you can engage in dynamic conversations about your favorite literature, gain deeper insights, and enhance your reading experience like never before.
+            Digital Guide is an innovative AI-powered application designed to revolutionize the way you interact with books. With this cutting-edge tool, you can engage in dynamic conversations about your favorite literature, gain deeper insights, and enhance your reading experience like never before.
           </div>
         </div>
       </div>

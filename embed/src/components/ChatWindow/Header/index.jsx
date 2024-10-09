@@ -52,7 +52,7 @@ export default function ChatWindowHeader({
         <img
           style={{ maxWidth: 48, maxHeight: 48 }}
           src={iconUrl ?? AnythingLLMIcon}
-          alt={iconUrl ? "Brand" : "ASK AFADI AI Logo"}
+          alt={iconUrl ? "Brand" : "Digital Guide Logo"}
         />
       </div>
       <div className="absolute right-0 flex gap-x-1 items-center px-[22px]">

@@ -69,7 +69,7 @@ a {
   margin-top: 74px !important;
   margin-bottom: 16px;
   border: 1px solid #e3e3e3;
-  background-color: #fff;
+  background-color: #F1F6FC;
 }
 
 .w-screen.h-screen.overflow-hidden.bg-sidebar.flex > div:nth-child(2).border-2 {
@@ -201,7 +201,8 @@ button[type="submit"].send-message {
 }
 
 .bg-sidebar {
-  background-color: #030852;  
+  /* background-color: #030852; */
+  background: linear-gradient(90deg, #281BA5 52.5%, #237489 100%);
 }
 
 .text-zinc-200 {
@@ -305,7 +306,7 @@ button[type="submit"].send-message {
 }
 
 .bg-sidebar.border-outline {
-  margin-left: 60px;
+  margin-left: 0px;
 }
 
 .bg-sidebar-button {
@@ -383,8 +384,7 @@ button.rounded-2xl {
   padding: 16px;
   margin-left: -10px !important;
   z-index: 11 !important;
-  border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
+  border-radius: 0px !important;
 }
 
 .bg-main-gradient.upload-file {
@@ -419,11 +419,11 @@ button.rounded-2xl {
   /* background-color: rgb(255 255 255 / 0.9) !important; */
 }
 .add-new-space {
-  background-color: #008ece;
+  background: linear-gradient(90deg, #291CA6 0%, #00A5D4 100%);
 }
 
 .add-new-space:hover {
-  background-color: #007abe;
+  opacity: 0.8;
 }
 
 svg[fill="#D3D4D4"] {
@@ -479,7 +479,7 @@ button.bg-dark-input {
 }
 
 .chat-bg {
-  background-image: url("/public/chat_bg.png");
+  /* background-image: url("/public/chat_bg.png"); */
   background-size: cover;
   background-position: center;
 }

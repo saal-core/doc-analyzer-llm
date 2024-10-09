@@ -75,7 +75,7 @@ const TRANSLATIONS = {
       add: "Add new message",
       save: "Save Messages",
       heading: "Explain to me",
-      body: "the benefits of ASK AFADI AI",
+      body: "the benefits of Digital Guide",
     },
     pfp: {
       title: "Assistant Profile Image",
@@ -275,7 +275,7 @@ const TRANSLATIONS = {
       system: "system",
       user: "user",
       message: "message",
-      assistant: "ASK AFADI AI Chat Assistant",
+      assistant: "Digital Guide Chat Assistant",
       "double-click": "Double click to edit...",
       save: "Save Messages",
     },
@@ -292,7 +292,7 @@ const TRANSLATIONS = {
   api: {
     title: "API Keys",
     description:
-      "API keys allow the holder to programmatically access and manage this ASK AFADI AI instance.",
+      "API keys allow the holder to programmatically access and manage this Digital Guide instance.",
     link: "Read the API documentation",
     generate: "Generate New API Key",
     table: {
@@ -305,7 +305,7 @@ const TRANSLATIONS = {
   llm: {
     title: "LLM Preference",
     description:
-      "These are the credentials and settings for your preferred LLM chat & embedding provider. Its important these keys are current and correct or else ASK AFADI AI will not function properly.",
+      "These are the credentials and settings for your preferred LLM chat & embedding provider. Its important these keys are current and correct or else Digital Guide will not function properly.",
     provider: "LLM Provider",
   },
 
@@ -315,7 +315,7 @@ const TRANSLATIONS = {
       "These are the credentials and settings for your preferred transcription model provider. Its important these keys are current and correct or else media files and audio will not transcribe.",
     provider: "Transcription Provider",
     "warn-start":
-      "Using the local whisper model on machines with limited RAM or CPU can stall ASK AFADI AI when processing media files.",
+      "Using the local whisper model on machines with limited RAM or CPU can stall Digital Guide when processing media files.",
     "warn-recommend":
       "We recommend at least 2GB of RAM and upload files <10Mb.",
     "warn-end":
@@ -327,11 +327,11 @@ const TRANSLATIONS = {
     "desc-start":
       "When using an LLM that does not natively support an embedding engine - you may need to additionally specify credentials to for embedding text.",
     "desc-end":
-      "Embedding is the process of turning text into vectors. These credentials are required to turn your files and prompts into a format which ASK AFADI AI can use to process.",
+      "Embedding is the process of turning text into vectors. These credentials are required to turn your files and prompts into a format which Digital Guide can use to process.",
     provider: {
       title: "Embedding Provider",
       description:
-        "There is no set up required when using ASK AFADI AI's native embedding engine.",
+        "There is no set up required when using Digital Guide's native embedding engine.",
     },
   },
 
@@ -362,7 +362,7 @@ const TRANSLATIONS = {
   vector: {
     title: "Vector Database",
     description:
-      "These are the credentials and settings for how your ASK AFADI AI instance will function. It's important these keys are current and correct.",
+      "These are the credentials and settings for how your Digital Guide instance will function. It's important these keys are current and correct.",
     provider: {
       title: "Vector Database Provider",
       description: "There is no configuration needed for LanceDB.",
@@ -410,7 +410,7 @@ const TRANSLATIONS = {
     password: {
       title: "Password Protection",
       description:
-        "Protect your ASK AFADI AI instance with a password. If you forget this there is no recovery method so ensure you save this password.",
+        "Protect your Digital Guide instance with a password. If you forget this there is no recovery method so ensure you save this password.",
     },
     instance: {
       title: "Password Protect Instance",
@@ -437,7 +437,7 @@ const TRANSLATIONS = {
   privacy: {
     title: "Privacy & Data-Handling",
     description:
-      "This is your configuration for how connected third party providers and ASK AFADI AI handle your data.",
+      "This is your configuration for how connected third party providers and Digital Guide handle your data.",
     llm: "LLM Selection",
     embedding: "Embedding Preference",
     vector: "Vector Database",

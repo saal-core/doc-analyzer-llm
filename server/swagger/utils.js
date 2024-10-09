@@ -15,7 +15,7 @@ function useSwagger(app) {
       fs.readFileSync(path.resolve(__dirname, 'index.css')),
       fs.readFileSync(path.resolve(__dirname, 'dark-swagger.css'))
     ].join('\n\n\n'),
-    customSiteTitle: 'ASK AFADI AI Developer API Documentation',
+    customSiteTitle: 'Digital Guide Developer API Documentation',
     customfavIcon: faviconUrl(),
   }
 

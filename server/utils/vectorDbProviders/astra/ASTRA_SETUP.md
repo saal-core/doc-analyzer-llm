@@ -1,4 +1,4 @@
-# How to setup Astra Vector Database for ASK AFADI AI
+# How to setup Astra Vector Database for Digital Guide
 
 [Official Astra DB Docs](https://docs.datastax.com/en/astra/astra-db-vector/get-started/quickstart.html) for reference.
 

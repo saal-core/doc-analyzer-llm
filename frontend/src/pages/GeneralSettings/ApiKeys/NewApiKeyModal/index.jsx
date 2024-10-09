@@ -65,7 +65,7 @@ export default function NewApiKeyModal({ closeModal }) {
               )}
               <p className="text-white text-xs md:text-sm">
                 Once created the API key can be used to programmatically access
-                and configure this ASK AFADI AI instance.
+                and configure this Digital Guide instance.
               </p>
               <a
                 href={paths.apiDocs()}

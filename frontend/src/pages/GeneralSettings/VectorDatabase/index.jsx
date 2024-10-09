@@ -112,7 +112,7 @@ export default function GeneralVectorDatabase() {
       logo: LanceDbLogo,
       options: <LanceDBOptions />,
       description:
-        "100% local vector DB that runs on the same instance as ASK AFADI AI.",
+        "100% local vector DB that runs on the same instance as Digital Guide.",
     },
     {
       name: "Chroma",

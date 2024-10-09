@@ -18,10 +18,10 @@ const DEFAULT_SETTINGS = {
   userBgColor: "#2C2F35", // user text bubble color
   assistantBgColor: "#2563eb", // assistant text bubble color
   noSponsor: null, // Shows sponsor in footer of chat
-  sponsorText: "Powered by ASK AFADI AI", // default sponsor text
+  sponsorText: "Powered by Digital Guide", // default sponsor text
   sponsorLink: "https://useanything.com", // default sponsor link
   position: "bottom-right", // position of chat button/window
-  assistantName: "ASK AFADI AI Chat Assistant", // default assistant name
+  assistantName: "Digital Guide Chat Assistant", // default assistant name
   assistantIcon: null, // default assistant icon
   windowHeight: null, // height of chat window in number:css-prefix
   windowWidth: null, // width of chat window in number:css-prefix
@@ -46,7 +46,7 @@ export default function useGetScriptAttributes() {
         !embedderSettings.settings.embedId
       )
         throw new Error(
-          "[ASK AFADI AI Embed Module::Abort] - Invalid script tag setup detected. Missing required parameters for boot!"
+          "[Digital Guide Embed Module::Abort] - Invalid script tag setup detected. Missing required parameters for boot!"
         );
 
       setSettings({

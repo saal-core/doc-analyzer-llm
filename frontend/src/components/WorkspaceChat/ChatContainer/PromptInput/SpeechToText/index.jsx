@@ -23,7 +23,7 @@ export default function SpeechToText({ sendCommand }) {
   function startSTTSession() {
     if (!isMicrophoneAvailable) {
       alert(
-        "ASK AFADI AI does not have access to microphone. Please enable for this site to use this feature."
+        "Digital Guide does not have access to microphone. Please enable for this site to use this feature."
       );
       return;
     }

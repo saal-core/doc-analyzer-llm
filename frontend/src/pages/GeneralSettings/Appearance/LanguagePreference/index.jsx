@@ -15,7 +15,7 @@ export default function LanguagePreference() {
           Display Language
         </h2>
         <p className="text-xs leading-[18px] font-base text-white/60">
-          Select the preferred language to render ASK AFADI AI's UI in, when
+          Select the preferred language to render Digital Guide's UI in, when
           applicable.
         </p>
       </div>

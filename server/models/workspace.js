@@ -42,7 +42,7 @@ const Workspace = {
 
     try {
       const workspace = await prisma.workspaces.create({
-        data: { name, slug, createdBy: creatorId },
+        data: { name, slug },
       });
 
       // If created with a user then we need to create the relationship as well.

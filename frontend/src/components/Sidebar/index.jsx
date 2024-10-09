@@ -11,7 +11,7 @@ import Footer from "../Footer";
 import SettingsButton from "../SettingsButton";
 import { Link } from "react-router-dom";
 import paths from "@/utils/paths";
-import SaalLogoDark from "./../../media/logo/saal_logo_light.svg";
+// import SaalLogoDark from "./../../media/logo/saal_logo_light.svg";
 import sidebarBg from "./../../media/sidebarBg.png";
 
 
@@ -46,7 +46,7 @@ export default function Sidebar() {
       <div
         ref={sidebarRef}
         style={{
-          marginTop: "26px",
+          marginTop: "29px",
           marginBottom: "16px",
           // backgroundColor: "#fff",
           background: `url(${sidebarBg})`,
@@ -57,10 +57,10 @@ export default function Sidebar() {
           border: "none",
           paddingInline: "16px 16px"
         }}
-        className="relative m-[16px] rounded-[8px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-74px)]"
+        className="relative m-[16px] rounded-[8px] bg-sidebar border-2 border-outline min-w-[236px] p-[10px] h-[calc(100%-74px)]"
       >
         <div className="flex flex-col h-full overflow-x-hidden">
-          <div className="flex-grow flex flex-col min-w-[252px]">
+          <div className="flex-grow flex flex-col min-w-[236px]">
             <div className="relative h-[calc(100%-60px)] pr-[10px] flex flex-col w-full justify-between overflow-y-scroll no-scroll">
               <div
                 // className="flex flex-col gap-y-2 pb-[120px] overflow-y-scroll no-scroll"
@@ -77,13 +77,13 @@ export default function Sidebar() {
                         className="text-sm font-semibold"
                         style={{ color: "#fff" }}
                       >
-                        New Workspace
+                        New Module
                       </p>
                     </button>
                   )}
                 </div>
                 <div style={{ color: "white", fontSize: "14px", lineHeight: "22px", fontWeight: 600 }}>
-                  Workspaces
+                  Modules
                 </div>
                 <ActiveWorkspaces />
               </div>

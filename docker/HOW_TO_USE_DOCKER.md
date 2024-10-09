@@ -1,11 +1,11 @@
-# How to use Dockerized ASK AFADI AI
+# How to use Dockerized Digital Guide
 
-Use the Dockerized version of ASK AFADI AI for a much faster and complete startup of ASK AFADI AI.
+Use the Dockerized version of Digital Guide for a much faster and complete startup of Digital Guide.
 
 ### Minimum Requirements
 
 > [!TIP]
-> Running ASK AFADI AI on AWS/GCP/Azure?
+> Running Digital Guide on AWS/GCP/Azure?
 > You should aim for at least 2GB of RAM. Disk storage is proportional to however much data
 > you will be storing (documents, vectors, models, etc). Minimum 10GB recommended.
 
@@ -13,23 +13,23 @@ Use the Dockerized version of ASK AFADI AI for a much faster and complete startu
 - `yarn` and `node` on your machine
 - access to an LLM running locally or remotely
 
-\*ASK AFADI AI by default uses a built-in vector database powered by [LanceDB](https://github.com/lancedb/lancedb)
+\*Digital Guide by default uses a built-in vector database powered by [LanceDB](https://github.com/lancedb/lancedb)
 
-\*ASK AFADI AI by default embeds text on instance privately [Learn More](../server/storage/models/README.md)
+\*Digital Guide by default embeds text on instance privately [Learn More](../server/storage/models/README.md)
 
-## Recommend way to run dockerized ASK AFADI AI!
+## Recommend way to run dockerized Digital Guide!
 
 > [!IMPORTANT]
 > If you are running another service on localhost like Chroma, LocalAi, or LMStudio
 > you will need to use http://host.docker.internal:xxxx to access the service from within
-> the docker container using ASK AFADI AI as `localhost:xxxx` will not resolve for the host system.
+> the docker container using Digital Guide as `localhost:xxxx` will not resolve for the host system.
 >
 > **Requires** Docker v18.03+ on Win/Mac and 20.10+ on Linux/Ubuntu for host.docker.internal to resolve!
 >
 > _Linux_: add `--add-host=host.docker.internal:host-gateway` to docker run command for this to resolve.
 >
 > eg: Chroma host URL running on localhost:8000 on host machine needs to be http://host.docker.internal:8000
-> when used in ASK AFADI AI.
+> when used in Digital Guide.
 
 > [!TIP]
 > It is best to mount the containers storage volume to a folder on your host machine
@@ -43,7 +43,7 @@ docker pull mintplexlabs/anythingllm
 
 <table>
 <tr>
-<th colspan="2">Mount the storage locally and run ASK AFADI AI in Docker</th>
+<th colspan="2">Mount the storage locally and run Digital Guide in Docker</th>
 </tr>
 <tr>
 <td>
@@ -136,7 +136,7 @@ volumes:
 </tr>
 </table>
 
-Go to `http://localhost:3001` and you are now using ASK AFADI AI! All your data and progress will persist between
+Go to `http://localhost:3001` and you are now using Digital Guide! All your data and progress will persist between
 container rebuilds or pulls from Docker Hub.
 
 ## How to use the user interface
@@ -159,12 +159,12 @@ Your docker host will show the image as online once the build process is complet
 
 ## Integrations and one-click setups
 
-The integrations below are templates or tooling built by the community to make running the docker experience of ASK AFADI AI easier.
+The integrations below are templates or tooling built by the community to make running the docker experience of Digital Guide easier.
 
-### Use the Midori AI Subsystem to Manage ASK AFADI AI
+### Use the Midori AI Subsystem to Manage Digital Guide
 
 Follow the setup found on [Midori AI Subsystem Site](https://io.midori-ai.xyz/subsystem/manager/) for your host OS
-After setting that up install the ASK AFADI AI docker backend to the Midori AI Subsystem.
+After setting that up install the Digital Guide docker backend to the Midori AI Subsystem.
 
 Once that is done, you are all set!
 
@@ -182,7 +182,7 @@ If you are in docker and cannot connect to a service running on your host machin
 > On linux `http://host.docker.internal:xxxx` does not work.
 > Use `http://172.17.0.1:xxxx` instead to emulate this functionality.
 
-Then in docker you need to replace that localhost part with `host.docker.internal`. For example, if running Ollama on the host machine, bound to http://127.0.0.1:11434 you should put `http://host.docker.internal:11434` into the connection URL in ASK AFADI AI.
+Then in docker you need to replace that localhost part with `host.docker.internal`. For example, if running Ollama on the host machine, bound to http://127.0.0.1:11434 you should put `http://host.docker.internal:11434` into the connection URL in Digital Guide.
 
 
 ### API is not working, cannot login, LLM is "offline"?

@@ -1,7 +1,7 @@
 const { WorkspaceChats } = require("../../../../models/workspaceChats");
 
 /**
- * Plugin to save chat history to ASK AFADI AI DB.
+ * Plugin to save chat history to Digital Guide DB.
  */
 const chatHistory = {
   name: "chat-history",

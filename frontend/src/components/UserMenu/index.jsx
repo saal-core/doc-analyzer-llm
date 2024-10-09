@@ -7,7 +7,7 @@ import paths from "@/utils/paths";
 export default function UserMenu({ children }) {
   return (
     <div className="w-auto h-auto bg-sidebar">
-      {children && (
+      {/* {children && (
         <div
           style={{
             position: "fixed",
@@ -36,7 +36,7 @@ export default function UserMenu({ children }) {
             </Link>
           </div>
         </div>
-      )}
+      )} */}
       <UserButton />
       {children}
     </div>

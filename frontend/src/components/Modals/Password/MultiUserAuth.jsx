@@ -7,6 +7,7 @@ import { User, Lock } from "@phosphor-icons/react";
 import ModalWrapper from "@/components/ModalWrapper";
 import { useModal } from "@/hooks/useModal";
 import RecoveryCodeModal from "@/components/Modals/DisplayRecoveryCodeModal";
+import AppNameLogo from "@/media/illustrations/app-name.png";
 import { useTranslation } from "react-i18next";
 
 const RecoveryForm = ({ onSubmit, setShowRecoveryForm, logo }) => {
@@ -43,8 +44,10 @@ const RecoveryForm = ({ onSubmit, setShowRecoveryForm, logo }) => {
       </div>
       <div
         // className="flex items-start justify-between pt-11 pb-9 w-screen md:w-full md:px-12 px-6 "
-        className="flex items-start justify-between pt-11 pb-9 w-screen md:w-full"
+        className="flex items-start justify-between w-screen md:w-full"
+        style={{ flexDirection: 'column', paddingTop: '32px', paddingBotttom: "16px" }}
       >
+        <img src={AppNameLogo} alt="app_name" style={{ height: '41px', width: "fit-content", marginTop: '24px', marginBottom: "16px" }} />
         <div className="flex flex-col gap-y-4 w-full">
           <h3 className="text-4xl md:text-lg font-bold text-white text-center md:text-left">
             Password Reset
@@ -95,11 +98,15 @@ const RecoveryForm = ({ onSubmit, setShowRecoveryForm, logo }) => {
           </div>
         </div>
       </div>
-      <div className="flex items-center md:p-12 md:px-0 px-6 mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8">
+      <div className="flex items-center md:p-4 md:px-0 px-6 mt-4 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-4">
         <button
           type="submit"
           // className="md:text-primary-button md:bg-transparent md:w-[300px] text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#46C8FF] md:h-[40px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
           className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#008ECE] md:h-[40px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
+          style={{
+            background: "linear-gradient(90deg, #291CA6 0%, #00A5D4 100%)",
+            border: "none",
+          }}
         >
           Reset Password
         </button>
@@ -134,6 +141,7 @@ const ResetPasswordForm = ({ onSubmit, logo }) => {
       className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-16 px-0 py-4 w-full md:w-fit -mt-24 md:-mt-28"
     >
       {logo}
+      <img src={AppNameLogo} alt="app_name" style={{ height: '41px', width: "fit-content", marginTop: '24px' }} />
       <div className="flex items-start justify-between pt-11 pb-9 w-screen md:w-full md:px-12 px-6">
         <div className="flex flex-col gap-y-4 w-full">
           <h3 className="text-4xl md:text-2xl font-bold text-white text-center md:text-left">
@@ -313,28 +321,30 @@ export default function MultiUserAuth({ logo }) {
           className="flex flex-col justify-center relative rounded-2xl md:bg-login-gradient md:px-4 -mt-4 md:mt-0"
         >
           {logo}
+          <img src={AppNameLogo} alt="app_name" style={{ height: '41px', width: "fit-content", marginTop: '24px' }} />
           <div
             // className="flex items-start justify-between pt-11 pb-9 rounded-t"
-            className="flex items-start justify-between pt-8 pb-9 rounded-t"
+            className="flex items-start justify-between rounded-t"
             style={{
-              width: '100%'
+              width: '100%',
+              marginTop: '8px'
             }}
           >
-            <div className="flex flex-col" style={{ rowGap: "12px" }}>
+            <div className="flex flex-col" style={{ rowGap: "8px" }}>
               <div className="w-100 flex gap-x-1">
-                <h3 style={{ color: "black", fontWeight: 500, fontSize: "20px", lineHeight: "28px" }} className="text-md md:text-2xl font-bold text-white white-space-nowrap hidden md:block">
+                <h3 style={{ color: "black", fontWeight: 600, fontSize: "20px", lineHeight: "28px" }} className="text-md md:text-2xl font-bold text-white white-space-nowrap hidden md:block">
                   {t("login.multi-user.welcome")}
                 </h3>
                 {/* <p
                   // className="text-4xl md:text-2xl font-bold bg-gradient-to-r from-[#75D6FF] via-[#FFFFFF] to-[#FFFFFF] bg-clip-text text-transparent"
                   className="text-4xl md:text-2xl font-bold"
                 >
-                  {customAppName || "ASK AFADI AI"}
+                  {customAppName || "Digital Guide"}
                 </p> */}
               </div>
               <p className="text-sm text-white text-center">
                 Please provide your credentials to securely access your account.
-                {/* {t("login.sign-in.start")} {customAppName || "ASK AFADI AI"}{" "}
+                {/* {t("login.sign-in.start")} {customAppName || "Digital Guide"}{" "}
                 {t("login.sign-in.end")} */}
               </p>
             </div>
@@ -342,6 +352,9 @@ export default function MultiUserAuth({ logo }) {
           <div
             // className="w-full px-4 md:px-12"
             className="w-full"
+            style={{
+              marginTop: "32px",
+            }}
           >
             <div className="w-full flex flex-col gap-y-4">
               <div className="w-screen md:w-full md:px-0 px-6 relative">
@@ -375,13 +388,17 @@ export default function MultiUserAuth({ logo }) {
           </div>
           <div
             // className="flex items-center md:p-12 px-10 mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8"
-            className="flex items-center md:py-12  mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8"
+            className="flex items-center md:py-4  mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-4"
           >
             <button
               disabled={loading}
               type="submit"
               // className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#46C8FF] md:h-[40px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
               className="text-primary-button text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-[#008ECE] md:h-[40px] h-[48px] text-black bg-primary-button focus:z-10 w-full"
+              style={{
+                background: "linear-gradient(90deg, #291CA6 0%, #00A5D4 100%)",
+                border: "none",
+              }}
             >
               {loading
                 ? t("login.multi-user.validating")
