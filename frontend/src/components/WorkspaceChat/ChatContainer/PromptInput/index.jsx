@@ -115,7 +115,7 @@ export default function PromptInput({
         onSubmit={handleSubmit}
         className="flex flex-col gap-y-1 rounded-t-lg mx-auto w-full"
       >
-        <div className="flex items-center rounded-lg md:mb-4" style={{ alignItems: "flex-start", justifyContent: "center", columnGap: "20px", width: "100%" }}>
+        <div className="flex items-center rounded-lg" style={{ alignItems: "flex-start", justifyContent: "center", columnGap: "20px", width: "100%" }}>
           {/* {
             workspace?.slug &&
             <button style={{ minHeight: "48px", display: "flex", alignItems: "center", padding: "4px 12px", borderRadius: "4px", columnGap: "4px", background: "#E1F8FF", border: "1px solid #91D8ED" }} type="button" onClick={showModal}>
