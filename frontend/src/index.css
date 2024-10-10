@@ -399,6 +399,8 @@ button.rounded-2xl {
   border-radius: 8px !important;
   padding-block: 8px !important;
   margin-bottom: 53px;
+  border-radius: 48px !important;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12) !important;
 }
 
 .absolute .bg-main-gradient {

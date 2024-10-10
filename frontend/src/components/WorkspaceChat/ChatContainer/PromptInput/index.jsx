@@ -123,7 +123,7 @@ export default function PromptInput({
               <span style={{ fontSize: "12px", lineHeight: "20px" }}>Manage</span>
             </button>
           } */}
-          <div style={{ position: "relative", overflow: "visible", width: "85%" }} className="chat-box bg-main-gradient shadow-2xl border border-white/50 rounded-2xl flex flex-col px-4 overflow-hidden">
+          <div style={{ position: "relative", overflow: "visible", width: "85%", border: "1px solid rgba(240, 240, 240, 1)" }} className="chat-box bg-main-gradient shadow-2xl rounded-2xl flex flex-col px-4 overflow-hidden">
             <div className="flex items-center w-full">
               <textarea
                 ref={textareaRef}
