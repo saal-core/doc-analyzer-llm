@@ -7,7 +7,7 @@ import { userFromStorage } from "@/utils/request";
 import { Person } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
 import AccountModal from "../AccountModal";
-import { AUTH_TIMESTAMP, AUTH_TOKEN, AUTH_USER } from "@/utils/constants";
+import { AUTH_TIMESTAMP, AUTH_TOKEN, AUTH_USER, BY_PASS_LOGGED_IN_USER } from "@/utils/constants";
 
 export default function UserButton() {
   const mode = useLoginMode();
@@ -94,6 +94,7 @@ export default function UserButton() {
                 window.localStorage.removeItem(AUTH_USER);
                 window.localStorage.removeItem(AUTH_TOKEN);
                 window.localStorage.removeItem(AUTH_TIMESTAMP);
+                window.localStorage.removeItem(BY_PASS_LOGGED_IN_USER);
                 window.location.replace(paths.home());
               }}
               type="button"
