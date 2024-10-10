@@ -8,6 +8,7 @@ import { SidebarMobileHeader } from "../../Sidebar";
 import { useParams } from "react-router-dom";
 import { v4 } from "uuid";
 import Doc from "./Svgr/Doc";
+import PDF from "./Svgr/Pdf";
 import Guide from "./Svgr/Guide";
 import Pin from "./Svgr/Pin";
 import Cross from "./Svgr/Cross";
@@ -16,7 +17,8 @@ import handleSocketResponse, {
   AGENT_SESSION_END,
   AGENT_SESSION_START,
 } from "@/utils/chat/agent";
-import { Icon } from "@tremor/react";
+import { FilePdf, FileCsv, FileXls } from "@phosphor-icons/react";
+
 
 export default function ChatContainer({ workspace, knownHistory = [] }) {
   const { threadSlug = null } = useParams();
@@ -322,7 +324,9 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                   <StyleGuide sendMessage={sendMessage} />
                 )}
                 {selectedSection === "notes" && <Notes />}
-                {selectedSection === "doc" && <Documents />}
+                {selectedSection === "doc" && (
+                  <Documents workspace={workspace} />
+                )}
                 {selectedSection === "podcast" && <Podcasts />}
               </div>
             </div>
@@ -422,11 +426,11 @@ function StyleGuide({ sendMessage }) {
 
       <button
         style={{
-          border: '1px solid',
+          border: "1px solid",
           marginTop: "16px",
         }}
         onClick={() => {
-          sendMessage('Generate Prompt');
+          sendMessage("Generate Prompt");
         }}
       >
         Generate Prompt
@@ -435,9 +439,28 @@ function StyleGuide({ sendMessage }) {
   );
 }
 
+const notes = [
+  {
+    note_id: "123",
+    chatid: 10,
+    content: "This is the first note",
+    created_at: "2024-10-10T12:00:00Z",
+  },
+  {
+    note_id: "124",
+    chatid: 10,
+    content: "This is the second note",
+    created_at: "2024-10-09T15:30:00Z",
+  },
+];
 function Notes() {
   return (
-    <div className="flex flex-col">
+    <div
+      className="flex flex-col"
+      style={{
+        rowGap: "16px",
+      }}
+    >
       <div
         style={{
           fontSize: "16px",
@@ -448,13 +471,112 @@ function Notes() {
       >
         Saved Resources
       </div>
+      <div>
+        <input
+          placeholder="Search"
+          style={{
+            border: "rgba(212, 214, 216, 1)",
+            height: "46px",
+            borderRadius: "8px",
+            background: "#fff",
+            width: "100%",
+            padding: "12px",
+          }}
+        />
+      </div>
+      <div
+        className="flex flex-col"
+        style={{
+          rowGap: "16px",
+        }}
+      >
+        {notes?.map((note) => (
+          <div
+            className="flex flex-col"
+            key={note?.note_id}
+            style={{
+              border: "1px solid rgba(206, 226, 232, 1)",
+              background:
+                "linear-gradient(253.23deg, #ECFBFF 0%, #F2F0FF 100%)",
+              borderRadius: "8px",
+              padding: "16px",
+            }}
+          >
+            <div
+              className="flex"
+              style={{
+                alignItems: "center",
+                justifyContent: "space-between",
+                columnGap: "12px",
+                fontSize: "16px",
+                lineHeight: "24px",
+              }}
+            >
+              <div
+                className="flex"
+                style={{
+                  columnGap: "12px",
+                }}
+              >
+                <div>icon</div>
+                <div>Notes</div>
+              </div>
+              <div>
+                <input type="checkbox" />
+              </div>
+            </div>
+
+            <div
+              className="flex"
+              style={{
+                fontSize: "14px",
+                lineHeight: "22px",
+              }}
+            >
+              {note?.content}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-function Documents() {
+const extensions = {
+  pdf: {
+    Icon: <PDF />,
+    color: "rgba(245, 34, 45, 1)",
+  },
+  csv: {
+    Icon: <FileCsv color="#fff" />,
+    color: "rgba(87, 47, 246, 1)",
+  },
+  xls: {
+    Icon: <FileXls color="#fff" />,
+    color: "rgba(32, 158, 0, 1)",
+  },
+};
+
+function getFileExtension(filename) {
+  const lastDotIndex = filename.lastIndexOf(".");
+  return lastDotIndex !== -1 ? filename.substring(lastDotIndex + 1) : ""; // Return the substring after the last dot
+}
+
+function Documents({ workspace }) {
+  const docs =
+    workspace?.documents?.map((v) => {
+      const meta = JSON.parse(v?.metadata);
+      return meta?.title;
+    }) || [];
+
+  console.log("docs>>>", docs);
   return (
-    <div className="flex flex-col">
+    <div
+      className="flex flex-col"
+      style={{
+        rowGap: "16px",
+      }}
+    >
       <div
         style={{
           fontSize: "16px",
@@ -465,13 +587,85 @@ function Documents() {
       >
         Documents
       </div>
+      <div>
+        <input
+          placeholder="Search"
+          style={{
+            border: "rgba(212, 214, 216, 1)",
+            height: "46px",
+            borderRadius: "8px",
+            background: "#fff",
+            width: "100%",
+            padding: "12px",
+          }}
+        />
+      </div>
+
+      <div
+        className="flex flex-col"
+        style={{
+          rowGap: "12px",
+        }}
+      >
+        {docs?.map((d, index) => {
+          console.log(getFileExtension(d));
+          return (
+            <div
+              key={`${d}_${index}`}
+              style={{
+                display: "flex",
+                border: "1px solid rgba(206, 226, 232, 1)",
+                borderRadius: "8px",
+                padding: "16px",
+                fontSize: "14px",
+                lineHeight: "22px",
+                alignItems: "flex-start",
+                columnGap: "12px",
+              }}
+            >
+              <div
+                style={{
+                  padding: "7px",
+                  background: extensions?.[getFileExtension(d)]?.color,
+                  borderRadius: "8px",
+                  width: "32px",
+                  height: "32px",
+                  minWidth: "32px",
+                  minHeight: "32px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {extensions?.[getFileExtension(d)]?.Icon}
+              </div>
+
+              <div>{d}</div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
 
+const podcasts = [
+  {
+    Podcast_name: "Podcast_name",
+    Podcast_id: "123",
+    content: "This is the first Podcast on ai",
+    created_at: "2024-10-10T12:00:00Z",
+  },
+];
+
 function Podcasts() {
   return (
-    <div className="flex flex-col">
+    <div
+      className="flex flex-col"
+      style={{
+        rowGap: "16px",
+      }}
+    >
       <div
         style={{
           fontSize: "16px",
@@ -481,6 +675,87 @@ function Podcasts() {
         }}
       >
         Saved Podcasts
+      </div>
+      <div>
+        <input
+          placeholder="Search"
+          style={{
+            border: "rgba(212, 214, 216, 1)",
+            height: "46px",
+            borderRadius: "8px",
+            background: "#fff",
+            width: "100%",
+            padding: "12px",
+          }}
+        />
+      </div>
+      <div
+        className="flex flex-col"
+        style={{
+          rowGap: "16px",
+        }}
+      >
+        {podcasts?.map((podcast) => (
+          <div
+            className="flex flex-col"
+            key={podcast?.Podcast_id}
+            style={{
+              border: "1px solid rgba(206, 226, 232, 1)",
+              background:
+                "linear-gradient(253.23deg, #ECFBFF 0%, #F2F0FF 100%)",
+              borderRadius: "8px",
+              padding: "16px",
+              rowGap: "16px",
+            }}
+          >
+            <div
+              className="flex"
+              style={{
+                alignItems: "center",
+                justifyContent: "space-between",
+                columnGap: "12px",
+                fontSize: "16px",
+                lineHeight: "24px",
+              }}
+            >
+              <div
+                className="flex"
+                style={{
+                  columnGap: "12px",
+                }}
+              >
+                <div>icon</div>
+                <div>{podcast?.Podcast_name}</div>
+              </div>
+              <div>
+                <input type="checkbox" />
+              </div>
+            </div>
+
+            <div
+              style={{
+                border: "1px solid rgba(206, 226, 232, 1)",
+              }}
+            />
+            <div
+              style={{
+                fontSize: "12px",
+                lineHeight: "20px",
+              }}
+            >
+              Tap to listen to your podcast
+            </div>
+            <div
+              className="flex"
+              style={{
+                fontSize: "14px",
+                lineHeight: "22px",
+              }}
+            >
+              {podcast?.content}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
