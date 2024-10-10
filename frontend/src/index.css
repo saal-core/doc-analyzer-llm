@@ -1329,3 +1329,7 @@ does not extend the close button beyond the viewport. */
 .markdown pre {
   margin-bottom: 0px;
 }
+
+.whitespace-pre-line {
+  white-space: normal;
+}

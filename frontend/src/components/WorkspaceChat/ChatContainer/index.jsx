@@ -452,7 +452,7 @@ function StyleGuide({ sendMessage, workspace }) {
 
   useEffect(() => {
     Workspace.streamChat(
-      workspace,
+      { ...workspace, chatMode: "query" },
       "Create summary for Quick Study guide",
       (chatResult) => {
         console.log("result>>>>>", chatResult);
@@ -467,23 +467,25 @@ function StyleGuide({ sendMessage, workspace }) {
   }, [workspace]);
 
   useEffect(() => {
-    Workspace.streamChat(workspace, "Suggest questions", (chatResult) => {
-      console.log("result>>>>>", chatResult);
-      if (chatResult?.type === "textResponseChunk") {
-        questionsRef.current += chatResult?.textResponse;
-      } else if (chatResult?.type === "finalizeResponseStream") {
-        console.log("questionsRef>>>>>", questionsRef.current);
-        const _questions = getFirstFiveQuestions(questionsRef.current);
-        const cleanedQuestions = _questions.map((q) =>
-          q.replace(/^\d+\.\s*/, "")
-        ); // Remove leading numbers
+    console.log("workspace>>>", workspace);
+    Workspace.streamChat(
+      { ...workspace, chatMode: "query" },
+      "Suggest questions",
+      (chatResult) => {
+        if (chatResult?.type === "textResponseChunk") {
+          questionsRef.current += chatResult?.textResponse;
+        } else if (chatResult?.type === "finalizeResponseStream") {
+          console.log("questionsRef>>>>>", questionsRef.current);
+          const _questions = getFirstFiveQuestions(questionsRef.current);
+          const cleanedQuestions = _questions.map((q) =>
+            q.replace(/^\d+\.\s*/, "")
+          ); // Remove leading numbers
 
-        setQuestions(cleanedQuestions);
+          setQuestions(cleanedQuestions);
+        }
       }
-    });
+    );
   }, [workspace]);
-
-  console.log("questions>>>>", questions);
 
   return (
     <div
