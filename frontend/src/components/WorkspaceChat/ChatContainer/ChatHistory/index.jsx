@@ -135,18 +135,36 @@ export default function ChatHistory({
 
   if (history.length === 0) {
     return (
-      <div className="flex flex-col h-full md:mt-0 md:pb-40 w-full justify-center items-center new-space" style={{ paddingBottom: '8rem' }}>
+      <div
+        className="flex flex-col h-full md:mt-0 md:pb-40 w-full justify-center items-center new-space"
+        style={{ paddingBottom: "8rem" }}
+      >
         <div
           className="flex flex-col items-center md:items-start md:max-w-[726px] w-full px-4"
           style={{
-            background: 'linear-gradient(235.24deg, #FFFFFF 1.67%, #ECFBFF 49.09%, #F2F0FF 86.02%)',
+            background:
+              "linear-gradient(235.24deg, #FFFFFF 1.67%, #ECFBFF 49.09%, #F2F0FF 86.02%)",
             borderRadius: "20px",
             padding: "56px",
-            border: '1px solid #01A5D44D',
+            border: "1px solid #01A5D44D",
           }}
         >
-          <img src={ChatAvatar} width="112px" height="130px" style={{ margin: "auto" }} />
-          <div style={{ margin: "auto", fontWeight: 600, color: '#291CA5', fontSize: '30px', lineHeight: '38px' }} className="font-base py-6">
+          <img
+            src={ChatAvatar}
+            width="112px"
+            height="130px"
+            style={{ margin: "auto" }}
+          />
+          <div
+            style={{
+              margin: "auto",
+              fontWeight: 600,
+              color: "#291CA5",
+              fontSize: "30px",
+              lineHeight: "38px",
+            }}
+            className="font-base py-6"
+          >
             Digital guide
           </div>
           <div
@@ -158,14 +176,34 @@ export default function ChatHistory({
               marginBottom: "24px",
             }}
           >
-            When you upload documents essential to your <span style={{ fontWeight: "bold" }}>AOC Officers Course</span> , <span style={{ fontWeight: "bold" }}>Ask Digital guide</span> quickly becomes an expert in the information that most important to you
+            When you upload documents essential to your{" "}
+            <span style={{ fontWeight: "bold" }}>AOC Officers Course</span> ,{" "}
+            <span style={{ fontWeight: "bold" }}>Ask Digital guide</span>{" "}
+            quickly becomes an expert in the information that most important to
+            you
           </div>
           {!user || user.role !== "default" ? (
-            <div style={{ padding: "16px", backgroundColor: "#fff", borderRadius: "8px", border: '1px solid rgba(1, 165, 212, 0.3)', width: '480px', margin: 'auto'  }} className="w-full items-center text-white text-lg font-base flex flex-col md:flex-col gap-x-1">
+            <div
+              style={{
+                padding: "16px",
+                backgroundColor: "#fff",
+                borderRadius: "8px",
+                border: "1px solid rgba(1, 165, 212, 0.3)",
+                width: "480px",
+                margin: "auto",
+              }}
+              className="w-full items-center text-white text-lg font-base flex flex-col md:flex-col gap-x-1"
+            >
               <div>
                 <img width="35px" height="35px" src={UploadBox} />
               </div>
-              <p style={{ marginTop: "16px", fontSize: '16px', lineHeight: '24px' }}>
+              <p
+                style={{
+                  marginTop: "16px",
+                  fontSize: "16px",
+                  lineHeight: "24px",
+                }}
+              >
                 To get started either{" "}
                 <span
                   className="underline font-medium cursor-pointer"
@@ -176,15 +214,27 @@ export default function ChatHistory({
                 &nbsp;or <b className="font-medium italic">send a chat.</b>
               </p>
               <p
-                style={{ fontSize: '14px', lineHeight: '22px', color: 'rgba(0, 0, 0, 0.45)' }}
+                style={{
+                  fontSize: "14px",
+                  lineHeight: "22px",
+                  color: "rgba(0, 0, 0, 0.45)",
+                }}
               >
                 {`supports text files, civ's, spreadsheets, audio files, and more!`}
               </p>
             </div>
           ) : (
             <>
-              <p style={{ paddingTop: "16px", backgroundColor: "#EEFBFF", borderRadius: "12px"  }} className="w-full items-center text-white text-lg font-base flex flex-col md:flex-row gap-x-1">
-                To get started <b className="font-medium italic">send a chat.</b>
+              <p
+                style={{
+                  paddingTop: "16px",
+                  backgroundColor: "#EEFBFF",
+                  borderRadius: "12px",
+                }}
+                className="w-full items-center text-white text-lg font-base flex flex-col md:flex-row gap-x-1"
+              >
+                To get started{" "}
+                <b className="font-medium italic">send a chat.</b>
               </p>
             </>
           )}
@@ -261,7 +311,10 @@ export default function ChatHistory({
         <ManageWorkspace hideModal={hideModal} providedSlug={workspace.slug} />
       )}
       {!isAtBottom && (
-        <div className="fixed bottom-40 right-10 md:right-20 z-50 cursor-pointer animate-pulse">
+        <div
+          className="absolute bottom-40 z-50 cursor-pointer animate-pulse"
+          style={{ right: "0px" }}
+        >
           <div className="flex flex-col items-center">
             <div className="p-1 rounded-full border border-white/10 bg-white/10 hover:bg-white/20 hover:text-white">
               <ArrowDown

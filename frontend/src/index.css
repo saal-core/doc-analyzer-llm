@@ -1315,3 +1315,17 @@ does not extend the close button beyond the viewport. */
 .search-input::-webkit-search-cancel-button {
   filter: grayscale(100%) invert(1) brightness(100) opacity(0.5);
 }
+
+.markdown p {
+  margin-inline: 0px;
+}
+
+.markdown ol {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0px;
+}
+
+.markdown pre {
+  margin-bottom: 0px;
+}

@@ -20,7 +20,7 @@ export default function handleChat(
     chatId = null,
     action = null,
   } = chatResult;
-
+  console.log('chatResult>>>>', chatResult, action);
   if (type === "abort" || type === "statusResponse") {
     setLoadingResponse(false);
     setChatHistory([

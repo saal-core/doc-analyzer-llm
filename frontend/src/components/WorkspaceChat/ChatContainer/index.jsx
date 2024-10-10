@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ChatHistory from "./ChatHistory";
 import PromptInput, { PROMPT_INPUT_EVENT } from "./PromptInput";
 import Workspace from "@/models/workspace";
 import handleChat, { ABORT_STREAM_EVENT } from "@/utils/chat";
 import { isMobile } from "react-device-detect";
+import Scrollbars from "react-custom-scrollbars";
 import { SidebarMobileHeader } from "../../Sidebar";
 import { useParams } from "react-router-dom";
 import { v4 } from "uuid";
@@ -17,8 +18,17 @@ import handleSocketResponse, {
   AGENT_SESSION_END,
   AGENT_SESSION_START,
 } from "@/utils/chat/agent";
-import { FilePdf, FileCsv, FileXls } from "@phosphor-icons/react";
-
+import {
+  ListPlus,
+  FileCsv,
+  FileXls,
+  Question,
+  ListBullets,
+  TreeStructure,
+  Table,
+} from "@phosphor-icons/react";
+import renderMarkdown from "@/utils/chat/markdown";
+import Skeleton from "react-loading-skeleton";
 
 export default function ChatContainer({ workspace, knownHistory = [] }) {
   const { threadSlug = null } = useParams();
@@ -298,11 +308,12 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                 top: "0px",
                 bottom: "0px",
                 padding: "16px",
+                paddingInline: "8px",
                 boxShadow:
                   "0px 2px 4px 0px rgba(0, 0, 0, 0.02), 0px 1px 6px -1px rgba(0, 0, 0, 0.02), 0px 2px 4px 1px rgba(0, 0, 0, 0.03)",
               }}
             >
-              <div className="w-full h-full relative">
+              <div className="w-full h-full flex flex-col relative">
                 <div
                   style={{
                     position: "absolute",
@@ -321,9 +332,11 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                 </div>
 
                 {selectedSection === "guide" && (
-                  <StyleGuide sendMessage={sendMessage} />
+                  <StyleGuide workspace={workspace} sendMessage={sendMessage} />
                 )}
-                {selectedSection === "notes" && <Notes />}
+                {selectedSection === "notes" && (
+                  <Notes chatHistory={chatHistory} />
+                )}
                 {selectedSection === "doc" && (
                   <Documents workspace={workspace} />
                 )}
@@ -410,31 +423,288 @@ function SideSections({ selectedSection, setSelectedSection }) {
   );
 }
 
-function StyleGuide({ sendMessage }) {
+function getFirstFiveQuestions(questionsString) {
+  // Split the string by lines
+  const questionsArray = questionsString
+    .split("\n")
+    .map((q) => q.trim()) // Trim whitespace from each line
+    .filter(
+      (q) =>
+        q.startsWith("1.") ||
+        q.startsWith("2.") ||
+        q.startsWith("3.") ||
+        q.startsWith("4.") ||
+        q.startsWith("5")
+    ); // Filter only questions
+
+  // Get the first five questions
+  const firstFiveQuestions = questionsArray.slice(0, 5);
+
+  return firstFiveQuestions;
+}
+
+function StyleGuide({ sendMessage, workspace }) {
+  const [summary, setSummary] = useState("");
+  const summaryRef = useRef("");
+  const [questions, setQuestions] = useState([]);
+  const questionsRef = useRef("");
+
+  useEffect(() => {
+    Workspace.streamChat(
+      workspace,
+      "Create summary for Quick Study guide",
+      (chatResult) => {
+        console.log("result>>>>>", chatResult);
+        if (chatResult?.type === "textResponseChunk") {
+          summaryRef.current += chatResult?.textResponse;
+        } else if (chatResult?.type === "finalizeResponseStream") {
+          setSummary(summaryRef.current);
+          summaryRef.current = "";
+        }
+      }
+    );
+  }, [workspace]);
+
+  useEffect(() => {
+    Workspace.streamChat(workspace, "Suggest questions", (chatResult) => {
+      console.log("result>>>>>", chatResult);
+      if (chatResult?.type === "textResponseChunk") {
+        questionsRef.current += chatResult?.textResponse;
+      } else if (chatResult?.type === "finalizeResponseStream") {
+        console.log("questionsRef>>>>>", questionsRef.current);
+        const _questions = getFirstFiveQuestions(questionsRef.current);
+        const cleanedQuestions = _questions.map((q) =>
+          q.replace(/^\d+\.\s*/, "")
+        ); // Remove leading numbers
+
+        setQuestions(cleanedQuestions);
+      }
+    });
+  }, [workspace]);
+
+  console.log("questions>>>>", questions);
+
   return (
-    <div className="flex flex-col">
+    <div
+      className="flex flex-col"
+      style={{
+        rowGap: "16px",
+        flexGrow: 1,
+      }}
+    >
       <div
         style={{
           fontSize: "16px",
           fontWeight: 600,
           lineHeight: "24px",
           color: "rgba(41, 28, 165, 1)",
+          paddingInline: "8px",
         }}
       >
         Study guide
       </div>
 
-      <button
-        style={{
-          border: "1px solid",
-          marginTop: "16px",
-        }}
-        onClick={() => {
-          sendMessage("Generate Prompt");
-        }}
-      >
-        Generate Prompt
-      </button>
+      <Scrollbars>
+        <div
+          className="flex flex-col"
+          style={{
+            paddingInline: "8px",
+            rowGap: "24px",
+          }}
+        >
+          <div
+            className="flex flex-col"
+            style={{
+              fontSize: "14px",
+              rowGap: "4px",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: 600,
+              }}
+            >
+              Summary
+            </div>
+            <div>
+              {!summary ? (
+                <Skeleton count={4} />
+              ) : (
+                <StatusResponse content={summary} />
+              )}
+            </div>
+          </div>
+
+          <div
+            style={{
+              borderTop: "1px solid rgba(0, 0, 0, 0.15)",
+            }}
+          />
+          <div
+            className="flex flex-col"
+            style={{
+              fontSize: "14px",
+              rowGap: "16px",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: 600,
+              }}
+            >
+              Help me create
+            </div>
+            <div
+              className="flex"
+              style={{ flexWrap: "wrap", rowGap: "8px", columnGap: "8px" }}
+            >
+              <div
+                style={{
+                  borderRadius: "8px",
+                  padding: "4px 8px",
+                  background: "rgba(228, 245, 254, 1)",
+                  border: "1px solid rgba(145, 216, 237, 1)",
+                  alignItems: "center",
+                  columnGap: "4px",
+                  display: "flex",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  sendMessage("Help me create FAQ");
+                }}
+              >
+                <Question size={16} />
+                <span>FAQ</span>
+              </div>
+
+              <div
+                style={{
+                  borderRadius: "8px",
+                  padding: "4px 8px",
+                  background: "rgba(228, 245, 254, 1)",
+                  border: "1px solid rgba(145, 216, 237, 1)",
+                  alignItems: "center",
+                  columnGap: "4px",
+                  display: "flex",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  sendMessage("Help me create Quick study guide");
+                }}
+              >
+                <Table size={16} />
+                <span>Quick study guide</span>
+              </div>
+
+              <div
+                style={{
+                  borderRadius: "8px",
+                  padding: "4px 8px",
+                  background: "rgba(228, 245, 254, 1)",
+                  border: "1px solid rgba(145, 216, 237, 1)",
+                  alignItems: "center",
+                  columnGap: "4px",
+                  display: "flex",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  sendMessage("Help me create Table of content");
+                }}
+              >
+                <ListBullets size={16} />
+                <span>Table of content</span>
+              </div>
+
+              <div
+                style={{
+                  borderRadius: "8px",
+                  padding: "4px 8px",
+                  background: "rgba(228, 245, 254, 1)",
+                  border: "1px solid rgba(145, 216, 237, 1)",
+                  alignItems: "center",
+                  columnGap: "4px",
+                  display: "flex",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  sendMessage("Help me create Timeline");
+                }}
+              >
+                <TreeStructure size={16} />
+                <span>Timeline</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              borderTop: "1px solid rgba(0, 0, 0, 0.15)",
+            }}
+          />
+
+          <div
+            className="flex flex-col"
+            style={{
+              fontSize: "14px",
+              rowGap: "16px",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: 600,
+              }}
+            >
+              Suggested Questions
+            </div>
+            <div
+              className="flex flex-col"
+              style={{
+                rowGap: "16px",
+              }}
+            >
+              {!questions?.length ? (
+                <Skeleton count={4} />
+              ) : (
+                questions?.map((q, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      background:
+                        "linear-gradient(84.14deg, #F2F0FF 0%, #ECFBFF 100%)",
+                      border: "1px solid rgba(206, 226, 232, 1)",
+                      borderRadius: "8px",
+                      padding: "16px",
+                      cursor: "pointer",
+                      alignItems: "flex-start",
+                      columnGap: "8px",
+                    }}
+                    onClick={() => {
+                      sendMessage(q);
+                    }}
+                    className="flex"
+                  >
+                    <div>
+                      <ListPlus size={18} color="rgba(41, 28, 166, 1)" />
+                    </div>
+                    <div>{q}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+          {/* <button
+            style={{
+              border: "1px solid",
+              marginTop: "16px",
+            }}
+            onClick={() => {
+              sendMessage("Generate Prompt");
+            }}
+          >
+            Generate Prompt
+          </button> */}
+        </div>
+      </Scrollbars>
     </div>
   );
 }
@@ -453,12 +723,13 @@ const notes = [
     created_at: "2024-10-09T15:30:00Z",
   },
 ];
-function Notes() {
+function Notes({ chatHistory }) {
   return (
     <div
       className="flex flex-col"
       style={{
         rowGap: "16px",
+        flexGrow: 1,
       }}
     >
       <div
@@ -467,11 +738,16 @@ function Notes() {
           fontWeight: 600,
           lineHeight: "24px",
           color: "rgba(41, 28, 165, 1)",
+          paddingInline: "8px",
         }}
       >
         Saved Resources
       </div>
-      <div>
+      <div
+        style={{
+          paddingInline: "8px",
+        }}
+      >
         <input
           placeholder="Search"
           style={{
@@ -484,60 +760,63 @@ function Notes() {
           }}
         />
       </div>
-      <div
-        className="flex flex-col"
-        style={{
-          rowGap: "16px",
-        }}
-      >
-        {notes?.map((note) => (
-          <div
-            className="flex flex-col"
-            key={note?.note_id}
-            style={{
-              border: "1px solid rgba(206, 226, 232, 1)",
-              background:
-                "linear-gradient(253.23deg, #ECFBFF 0%, #F2F0FF 100%)",
-              borderRadius: "8px",
-              padding: "16px",
-            }}
-          >
+      <Scrollbars>
+        <div
+          className="flex flex-col"
+          style={{
+            rowGap: "16px",
+            paddingInline: "8px",
+          }}
+        >
+          {chatHistory?.map((note) => (
             <div
-              className="flex"
+              className="flex flex-col"
+              key={note?.note_id}
               style={{
-                alignItems: "center",
-                justifyContent: "space-between",
-                columnGap: "12px",
-                fontSize: "16px",
-                lineHeight: "24px",
+                border: "1px solid rgba(206, 226, 232, 1)",
+                background:
+                  "linear-gradient(253.23deg, #ECFBFF 0%, #F2F0FF 100%)",
+                borderRadius: "8px",
+                padding: "16px",
               }}
             >
               <div
                 className="flex"
                 style={{
+                  alignItems: "center",
+                  justifyContent: "space-between",
                   columnGap: "12px",
+                  fontSize: "16px",
+                  lineHeight: "24px",
                 }}
               >
-                <div>icon</div>
-                <div>Notes</div>
+                <div
+                  className="flex"
+                  style={{
+                    columnGap: "12px",
+                  }}
+                >
+                  <div>icon</div>
+                  <div>Notes</div>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                </div>
               </div>
-              <div>
-                <input type="checkbox" />
-              </div>
-            </div>
 
-            <div
-              className="flex"
-              style={{
-                fontSize: "14px",
-                lineHeight: "22px",
-              }}
-            >
-              {note?.content}
+              <div
+                className="flex"
+                style={{
+                  fontSize: "14px",
+                  lineHeight: "22px",
+                }}
+              >
+                <StatusResponse content={note?.content} />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </Scrollbars>
     </div>
   );
 }
@@ -756,6 +1035,22 @@ function Podcasts() {
             </div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function StatusResponse({ content, error }) {
+  return (
+    <div
+      style={{ wordBreak: "break-word" }}
+      className={`flex markdown flex-col ${error ? "bg-red-200" : {}}`}
+    >
+      <div className="flex gap-x-5">
+        <span
+          className={`reply whitespace-pre-line font-normal text-sm md:text-sm flex flex-col gap-y-1`}
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+        />
       </div>
     </div>
   );

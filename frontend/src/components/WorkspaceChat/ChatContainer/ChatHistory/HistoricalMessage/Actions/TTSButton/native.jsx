@@ -33,6 +33,8 @@ export default function NativeTTSMessage({ message }) {
   }
 
   if (!supported) return null;
+
+  console.log('cominghere>>>')
   return (
     <div className="mt-3 relative">
       <button
