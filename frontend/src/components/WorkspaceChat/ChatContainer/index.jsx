@@ -30,6 +30,7 @@ import {
 } from "@phosphor-icons/react";
 import renderMarkdown from "@/utils/chat/markdown";
 import Skeleton from "react-loading-skeleton";
+import System from "@/models/system";
 
 export default function ChatContainer({ workspace, knownHistory = [] }) {
   const { threadSlug = null } = useParams();
@@ -452,15 +453,15 @@ function StyleGuide({ sendMessage, workspace }) {
 
   useEffect(() => {
     Workspace.streamChat(
-      { ...workspace, chatMode: "query" },
+      { ...workspace },
       "Create summary for Quick Study guide",
       (chatResult) => {
-        console.log("result>>>>>", chatResult);
         if (chatResult?.type === "textResponseChunk") {
           summaryRef.current += chatResult?.textResponse;
         } else if (chatResult?.type === "finalizeResponseStream") {
           setSummary(summaryRef.current);
           summaryRef.current = "";
+          System.deleteChat(chatResult?.chatId);
         }
       }
     );
@@ -469,18 +470,18 @@ function StyleGuide({ sendMessage, workspace }) {
   useEffect(() => {
     console.log("workspace>>>", workspace);
     Workspace.streamChat(
-      { ...workspace, chatMode: "query" },
+      { ...workspace },
       "Suggest questions",
       (chatResult) => {
         if (chatResult?.type === "textResponseChunk") {
           questionsRef.current += chatResult?.textResponse;
         } else if (chatResult?.type === "finalizeResponseStream") {
-          console.log("questionsRef>>>>>", questionsRef.current);
+          console.log("questionsRef>>>>>", chatResult);
           const _questions = getFirstFiveQuestions(questionsRef.current);
           const cleanedQuestions = _questions.map((q) =>
             q.replace(/^\d+\.\s*/, "")
           ); // Remove leading numbers
-
+          System.deleteChat(chatResult?.chatId);
           setQuestions(cleanedQuestions);
         }
       }

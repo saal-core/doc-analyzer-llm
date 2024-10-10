@@ -22,8 +22,9 @@ export default function ThreadItem({
   onRemove,
   toggleMarkForDeletion,
   hasNext,
-  ctrlPressed = false,
+  _ctrlPressed = false,
 }) {
+  const ctrlPressed = false;
   const { slug } = useParams();
   const optionsContainer = useRef(null);
   const [showOptions, setShowOptions] = useState(false);
