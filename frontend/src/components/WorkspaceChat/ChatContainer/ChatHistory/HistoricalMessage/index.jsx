@@ -26,6 +26,9 @@ const HistoricalMessage = ({
   regenerateMessage,
   saveEditedMessage,
   showModal,
+  savedNotes = [],
+  onSaveNote = () => {},
+  isSaveToNotes = true,
 }) => {
   const { isEditing } = useEditMessage({ chatId, role });
   const adjustTextArea = (event) => {
@@ -41,6 +44,7 @@ const HistoricalMessage = ({
         className={`flex justify-center items-end w-full ${
           role === "user" ? USER_BACKGROUND_COLOR : AI_BACKGROUND_COLOR
         }`}
+        id={`${role}_historical_${chatId}`}
       >
         <div className="py-8 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col">
           <div className="flex gap-x-5">
@@ -74,6 +78,7 @@ const HistoricalMessage = ({
         className={`flex justify-center items-end w-full group ${
           role === "user" ? USER_BACKGROUND_COLOR : AI_BACKGROUND_COLOR
         }`}
+        id={`${role}_historical_${chatId}`}
       >
         <div
           className={`${role !== "user" ? "py-4 px-4" : ""} w-full flex gap-x-5 md:max-w-[100%] flex-col`}
@@ -107,6 +112,11 @@ const HistoricalMessage = ({
               isLastMessage={isLastMessage}
               regenerateMessage={regenerateMessage}
               isEditing={isEditing}
+              savedNotes={savedNotes}
+              onSaveNote={(val) => {
+                onSaveNote(val);
+              }}
+              isSaveToNotes={isSaveToNotes}
               role={role}
             />
           </div>
@@ -153,7 +163,8 @@ export default memo(
     return (
       prevProps.message === nextProps.message &&
       prevProps.isLastMessage === nextProps.isLastMessage &&
-      prevProps.chatId === nextProps.chatId
+      prevProps.chatId === nextProps.chatId &&
+      prevProps?.savedNotes === nextProps?.savedNotes
     );
   }
 );

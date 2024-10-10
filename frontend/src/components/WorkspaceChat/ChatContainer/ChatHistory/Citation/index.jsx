@@ -47,7 +47,7 @@ export default function Citations({ sources = [] }) {
         onClick={() => setOpen(!open)}
         className={`text-white/50 font-medium italic text-sm text-left ml-14 pt-2 ${
           open ? "pb-2" : ""
-        } hover:text-white/75 transition-all duration-300`}
+        } transition-all duration-300`}
       >
         {open ? "Hide Citations" : "Show Citations"}
         <CaretRight

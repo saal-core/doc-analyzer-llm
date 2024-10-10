@@ -4,7 +4,7 @@ import SlashCommandsButton, {
   useSlashCommands,
 } from "./SlashCommands";
 import debounce from "lodash.debounce";
-import { PaperPlaneRight, FilePlus } from "@phosphor-icons/react";
+import { PaperPlaneRight, Paperclip } from "@phosphor-icons/react";
 import StopGenerationButton from "./StopGenerationButton";
 import { useManageWorkspaceModal } from "../../../Modals/ManageWorkspace";
 import ManageWorkspace from "../../../Modals/ManageWorkspace";
@@ -116,15 +116,14 @@ export default function PromptInput({
         className="flex flex-col gap-y-1 rounded-t-lg mx-auto w-full"
       >
         <div className="flex items-center rounded-lg" style={{ alignItems: "flex-start", justifyContent: "center", columnGap: "20px", width: "100%" }}>
-          {/* {
-            workspace?.slug &&
-            <button style={{ minHeight: "48px", display: "flex", alignItems: "center", padding: "4px 12px", borderRadius: "4px", columnGap: "4px", background: "#E1F8FF", border: "1px solid #91D8ED" }} type="button" onClick={showModal}>
-              <FilePlus size={20} />
-              <span style={{ fontSize: "12px", lineHeight: "20px" }}>Manage</span>
-            </button>
-          } */}
           <div style={{ position: "relative", overflow: "visible", width: "85%", border: "1px solid rgba(240, 240, 240, 1)" }} className="chat-box bg-main-gradient shadow-2xl rounded-2xl flex flex-col px-4 overflow-hidden">
             <div className="flex items-center w-full">
+              {
+                workspace?.slug &&
+                <div style={{ display: "flex", cursor: "pointer", marginRight: "24px" }} type="button" onClick={showModal}>
+                  <Paperclip size={32} />
+                </div>
+              }
               <textarea
                 ref={textareaRef}
                 onChange={(e) => {

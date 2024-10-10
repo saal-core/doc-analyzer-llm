@@ -10,6 +10,7 @@ import {
 import { Tooltip } from "react-tooltip";
 import Workspace from "@/models/workspace";
 import TTSMessage from "./TTSButton";
+import { PushPin } from "@phosphor-icons/react";
 import { EditMessageAction } from "./EditMessage";
 
 const Actions = ({
@@ -21,6 +22,9 @@ const Actions = ({
   regenerateMessage,
   isEditing,
   role,
+  savedNotes = [],
+  onSaveNote = () => {},
+  isSaveToNotes = false,
 }) => {
   const [selectedFeedback, setSelectedFeedback] = useState(feedbackScore);
   const handleFeedback = async (newFeedback) => {
@@ -29,7 +33,7 @@ const Actions = ({
     await Workspace.updateChatFeedback(chatId, slug, updatedFeedback);
     setSelectedFeedback(updatedFeedback);
   };
-
+  console.log("role>>>>", role, savedNotes);
   return (
     <div className="flex w-full justify-between items-center">
       <div className="flex justify-start items-center gap-x-4">
@@ -61,7 +65,41 @@ const Actions = ({
           </>
         )}
       </div>
-      <TTSMessage slug={slug} chatId={chatId} message={message} />
+      <div className="flex" style={{ alignItems: "center", columnGap: "12px" }}>
+        <TTSMessage slug={slug} chatId={chatId} message={message} />
+        {isSaveToNotes && role === "assistant" && (
+          <div
+            style={{
+              fontSize: "14px",
+              background: "rgba(228, 245, 254, 1)",
+              border: "1px solid rgba(145, 216, 237, 1)",
+              borderRadius: "50px",
+              paddingInline: "16px",
+              height: "32px",
+              alignItems: "center",
+              justifyContent: "center",
+              columnGap: "8px",
+              cursor: "pointer",
+              ...(!!savedNotes?.find((v) => v?.chatId === chatId) && {
+                color: "rgba(41, 28, 166, 1)",
+              }),
+            }}
+            onClick={() => {
+              onSaveNote({ role, chatId, content: message, slug });
+            }}
+            className="flex"
+          >
+            <PushPin
+              weight={
+                savedNotes?.find((v) => v?.chatId === chatId)
+                  ? "fill"
+                  : "regular"
+              }
+            />
+            Save to note
+          </div>
+        )}
+      </div>
     </div>
   );
 };

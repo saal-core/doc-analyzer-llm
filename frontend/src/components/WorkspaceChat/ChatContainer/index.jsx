@@ -27,12 +27,16 @@ import {
   TreeStructure,
   Table,
   MagnifyingGlass,
+  Note,
 } from "@phosphor-icons/react";
 import renderMarkdown from "@/utils/chat/markdown";
 import Skeleton from "react-loading-skeleton";
 import System from "@/models/system";
 
-const ChatHistory = memo(_ChatHistory, (prev, next) => JSON.stringify(prev) === JSON.stringify(next));
+const ChatHistory = memo(
+  _ChatHistory,
+  (prev, next) => JSON.stringify(prev) === JSON.stringify(next)
+);
 
 export default function ChatContainer({ workspace, knownHistory = [] }) {
   const { threadSlug = null } = useParams();
@@ -48,6 +52,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     setMessage(event.target.value);
   };
 
+  console.log("savedNotes>>>>", savedNotes);
   // Emit an update to the state of the prompt input without directly
   // passing a prop in so that it does not re-render constantly.
   function setMessageEmit(messageContent = "") {
@@ -265,7 +270,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
       }
     }
     handleWSS();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socketId]);
 
   console.log("chatHistory>>>", chatHistory);
@@ -289,6 +294,18 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
             workspace={workspace}
             sendCommand={sendCommand}
             updateHistory={setChatHistory}
+            savedNotes={savedNotes}
+            onSaveNote={(val) => {
+              console.log("val>>>>", val);
+              setSavedNotes((v) => {
+                console.log("v>>>", v, val);
+                if (v?.find((_v) => _v?.chatId === val?.chatId)) {
+                  return v?.filter((_v) => _v?.chatId !== val?.chatId);
+                } else {
+                  return [val, ...v];
+                }
+              });
+            }}
             regenerateAssistantMessage={regenerateAssistantMessage}
           />
           <PromptInput
@@ -340,7 +357,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                   <StyleGuide workspace={workspace} sendMessage={sendMessage} />
                 )}
                 {selectedSection === "notes" && (
-                  <Notes chatHistory={chatHistory} />
+                  <Notes chatHistory={savedNotes} />
                 )}
                 {selectedSection === "doc" && (
                   <Documents workspace={workspace} />
@@ -717,21 +734,12 @@ function StyleGuide({ sendMessage, workspace }) {
   );
 }
 
-const notes = [
-  {
-    note_id: "123",
-    chatid: 10,
-    content: "This is the first note",
-    created_at: "2024-10-10T12:00:00Z",
-  },
-  {
-    note_id: "124",
-    chatid: 10,
-    content: "This is the second note",
-    created_at: "2024-10-09T15:30:00Z",
-  },
-];
-function Notes({ chatHistory }) {
+function Notes({ chatHistory: _chatHistory }) {
+  const [searchText, setSearchText] = useState("");
+  const chatHistory = _chatHistory?.filter((v) =>
+    v?.content?.toLowerCase()?.includes(searchText?.toLowerCase())
+  );
+
   return (
     <div
       className="flex flex-col"
@@ -755,6 +763,7 @@ function Notes({ chatHistory }) {
         style={{
           paddingInline: "8px",
         }}
+        className="relative"
       >
         <input
           placeholder="Search"
@@ -764,7 +773,20 @@ function Notes({ chatHistory }) {
             borderRadius: "8px",
             background: "#fff",
             width: "100%",
-            padding: "12px",
+            padding: "12px 30px 12px 12px",
+          }}
+          onChange={(e) => {
+            setSearchText(e?.target?.value);
+          }}
+        />
+        <MagnifyingGlass
+          color="rgba(41, 28, 166, 1)"
+          style={{
+            position: "absolute",
+            right: "20px",
+            top: "0px",
+            bottom: "0px",
+            margin: "auto",
           }}
         />
       </div>
@@ -776,53 +798,83 @@ function Notes({ chatHistory }) {
             paddingInline: "8px",
           }}
         >
-          {chatHistory?.map((note) => (
+          {!chatHistory?.length ? (
             <div
-              className="flex flex-col"
-              key={note?.note_id}
-              style={{
-                border: "1px solid rgba(206, 226, 232, 1)",
-                background:
-                  "linear-gradient(253.23deg, #ECFBFF 0%, #F2F0FF 100%)",
-                borderRadius: "8px",
-                padding: "16px",
-              }}
-            >
+              className="flex"
+              style={{ justifyContent: "center" }}
+            >{`No notes found`}</div>
+          ) : (
+            chatHistory?.map((note) => (
               <div
-                className="flex"
+                className="flex flex-col"
+                key={note?.note_id || note?.chatId}
                 style={{
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  columnGap: "12px",
-                  fontSize: "16px",
-                  lineHeight: "24px",
+                  border: "1px solid rgba(206, 226, 232, 1)",
+                  background:
+                    "linear-gradient(253.23deg, #ECFBFF 0%, #F2F0FF 100%)",
+                  borderRadius: "8px",
+                  padding: "16px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  const ele = document?.getElementById(
+                    `assistant_historical_${note?.chatId}`
+                  );
+                  if (ele) {
+                    ele.scrollIntoView({ behavior: "smooth" });
+                  }
                 }}
               >
                 <div
                   className="flex"
                   style={{
+                    alignItems: "center",
+                    justifyContent: "space-between",
                     columnGap: "12px",
+                    fontSize: "16px",
+                    lineHeight: "24px",
                   }}
                 >
-                  <div>icon</div>
-                  <div>Notes</div>
+                  <div
+                    className="flex"
+                    style={{
+                      columnGap: "12px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: "rgba(244, 243, 255, 1)",
+                        border: "1px solid rgba(225, 222, 255, 1)",
+                        borderRadius: "6px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "32px",
+                        height: "32px",
+                      }}
+                    >
+                      <Note size={18} color="rgba(41, 28, 166, 1)" />
+                    </div>
+                    <div>Notes</div>
+                  </div>
+                  {/* <div>
+                    <input type="checkbox" />
+                  </div> */}
                 </div>
-                <div>
-                  <input type="checkbox" />
-                </div>
-              </div>
 
-              <div
-                className="flex"
-                style={{
-                  fontSize: "14px",
-                  lineHeight: "22px",
-                }}
-              >
-                <StatusResponse content={note?.content} />
+                <div
+                  className="flex"
+                  style={{
+                    fontSize: "14px",
+                    lineHeight: "22px",
+                  }}
+                >
+                  <StatusResponse content={note?.content} />
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </Scrollbars>
     </div>
@@ -894,13 +946,14 @@ function Documents({ workspace }) {
             borderRadius: "8px",
             background: "#fff",
             width: "100%",
-            padding: "12px 24px 12px 12px",
+            padding: "12px 30px 12px 12px",
           }}
           onChange={(e) => {
             setSearchText(e?.target?.value);
           }}
         />
         <MagnifyingGlass
+          color="rgba(41, 28, 166, 1)"
           style={{
             position: "absolute",
             right: "20px",

@@ -18,6 +18,8 @@ export default function ChatHistory({
   sendCommand,
   updateHistory,
   regenerateAssistantMessage,
+  onSaveNote = () => {},
+  savedNotes = [],
 }) {
   const { user } = useUser();
   const { threadSlug = null } = useParams();
@@ -304,6 +306,9 @@ export default function ChatHistory({
             regenerateMessage={regenerateAssistantMessage}
             isLastMessage={isLastBotReply}
             saveEditedMessage={saveEditedMessage}
+            onSaveNote={onSaveNote}
+            savedNotes={savedNotes}
+            isSaveToNotes
           />
         );
       })}
