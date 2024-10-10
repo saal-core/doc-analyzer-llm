@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import ChatHistory from "./ChatHistory";
+import { useState, useEffect, useRef, memo } from "react";
+import _ChatHistory from "./ChatHistory";
 import PromptInput, { PROMPT_INPUT_EVENT } from "./PromptInput";
 import Workspace from "@/models/workspace";
 import handleChat, { ABORT_STREAM_EVENT } from "@/utils/chat";
@@ -32,6 +32,8 @@ import renderMarkdown from "@/utils/chat/markdown";
 import Skeleton from "react-loading-skeleton";
 import System from "@/models/system";
 
+const ChatHistory = memo(_ChatHistory, (prev, next) => JSON.stringify(prev) === JSON.stringify(next));
+
 export default function ChatContainer({ workspace, knownHistory = [] }) {
   const { threadSlug = null } = useParams();
   const [message, setMessage] = useState("");
@@ -39,7 +41,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   const [chatHistory, setChatHistory] = useState(knownHistory);
   const [socketId, setSocketId] = useState(null);
   const [websocket, setWebsocket] = useState(null);
-
+  const [savedNotes, setSavedNotes] = useState([]);
   const [selectedSection, setSelectedSection] = useState();
   // Maintain state of message from whatever is in PromptInput
   const handleMessageChange = (event) => {
@@ -263,6 +265,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
       }
     }
     handleWSS();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socketId]);
 
   console.log("chatHistory>>>", chatHistory);
@@ -452,9 +455,10 @@ function StyleGuide({ sendMessage, workspace }) {
   const questionsRef = useRef("");
 
   useEffect(() => {
+    const documents = workspace?.documents?.map((v) => v?.metadata);
     Workspace.streamChat(
-      { ...workspace },
-      "Create summary for Quick Study guide",
+      { ...workspace, chatMode: "query" },
+      `Provide an overview from the uploaded documents in less than 150 words. Find meta details: ${documents}`,
       (chatResult) => {
         if (chatResult?.type === "textResponseChunk") {
           summaryRef.current += chatResult?.textResponse;
@@ -469,14 +473,14 @@ function StyleGuide({ sendMessage, workspace }) {
 
   useEffect(() => {
     console.log("workspace>>>", workspace);
+    const documents = workspace?.documents?.map((v) => v?.metadata);
     Workspace.streamChat(
       { ...workspace },
-      "Suggest questions",
+      `Suggest questions from the uploaded documents. Find meta details: ${documents}`,
       (chatResult) => {
         if (chatResult?.type === "textResponseChunk") {
           questionsRef.current += chatResult?.textResponse;
         } else if (chatResult?.type === "finalizeResponseStream") {
-          console.log("questionsRef>>>>>", chatResult);
           const _questions = getFirstFiveQuestions(questionsRef.current);
           const cleanedQuestions = _questions.map((q) =>
             q.replace(/^\d+\.\s*/, "")
