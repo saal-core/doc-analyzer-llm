@@ -26,6 +26,7 @@ import {
   ListBullets,
   TreeStructure,
   Table,
+  MagnifyingGlass,
 } from "@phosphor-icons/react";
 import renderMarkdown from "@/utils/chat/markdown";
 import Skeleton from "react-loading-skeleton";
@@ -842,18 +843,23 @@ function getFileExtension(filename) {
 }
 
 function Documents({ workspace }) {
-  const docs =
+  const [searchText, setSearchText] = useState("");
+  const _docs =
     workspace?.documents?.map((v) => {
       const meta = JSON.parse(v?.metadata);
       return meta?.title;
     }) || [];
 
+  const docs = _docs?.filter((v) =>
+    v?.toLowerCase()?.includes(searchText?.toLowerCase())
+  );
   console.log("docs>>>", docs);
   return (
     <div
       className="flex flex-col"
       style={{
         rowGap: "16px",
+        flexGrow: 1,
       }}
     >
       <div
@@ -862,11 +868,17 @@ function Documents({ workspace }) {
           fontWeight: 600,
           lineHeight: "24px",
           color: "rgba(41, 28, 165, 1)",
+          paddingInline: "8px",
         }}
       >
         Documents
       </div>
-      <div>
+      <div
+        className="relative flex"
+        style={{
+          paddingInline: "8px",
+        }}
+      >
         <input
           placeholder="Search"
           style={{
@@ -875,55 +887,81 @@ function Documents({ workspace }) {
             borderRadius: "8px",
             background: "#fff",
             width: "100%",
-            padding: "12px",
+            padding: "12px 24px 12px 12px",
+          }}
+          onChange={(e) => {
+            setSearchText(e?.target?.value);
+          }}
+        />
+        <MagnifyingGlass
+          style={{
+            position: "absolute",
+            right: "20px",
+            top: "0px",
+            bottom: "0px",
+            margin: "auto",
           }}
         />
       </div>
 
-      <div
-        className="flex flex-col"
-        style={{
-          rowGap: "12px",
-        }}
-      >
-        {docs?.map((d, index) => {
-          console.log(getFileExtension(d));
-          return (
+      <Scrollbars>
+        <div
+          className="flex flex-col"
+          style={{
+            rowGap: "12px",
+            paddingInline: "8px",
+          }}
+        >
+          {!docs?.length ? (
             <div
-              key={`${d}_${index}`}
+              className="flex"
               style={{
-                display: "flex",
-                border: "1px solid rgba(206, 226, 232, 1)",
-                borderRadius: "8px",
-                padding: "16px",
-                fontSize: "14px",
-                lineHeight: "22px",
-                alignItems: "flex-start",
-                columnGap: "12px",
+                justifyContent: "center",
               }}
             >
-              <div
-                style={{
-                  padding: "7px",
-                  background: extensions?.[getFileExtension(d)]?.color,
-                  borderRadius: "8px",
-                  width: "32px",
-                  height: "32px",
-                  minWidth: "32px",
-                  minHeight: "32px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {extensions?.[getFileExtension(d)]?.Icon}
-              </div>
-
-              <div>{d}</div>
+              No Documents Found
             </div>
-          );
-        })}
-      </div>
+          ) : (
+            docs?.map((d, index) => {
+              console.log(getFileExtension(d));
+              return (
+                <div
+                  key={`${d}_${index}`}
+                  style={{
+                    display: "flex",
+                    border: "1px solid rgba(206, 226, 232, 1)",
+                    borderRadius: "8px",
+                    padding: "16px",
+                    fontSize: "14px",
+                    lineHeight: "22px",
+                    alignItems: "flex-start",
+                    columnGap: "12px",
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: "7px",
+                      background: extensions?.[getFileExtension(d)]?.color,
+                      borderRadius: "8px",
+                      width: "32px",
+                      height: "32px",
+                      minWidth: "32px",
+                      minHeight: "32px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {extensions?.[getFileExtension(d)]?.Icon}
+                  </div>
+
+                  <div>{d}</div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </Scrollbars>
     </div>
   );
 }
@@ -955,7 +993,7 @@ function Podcasts() {
       >
         Saved Podcasts
       </div>
-      <div>
+      <div className="relative flex">
         <input
           placeholder="Search"
           style={{
@@ -967,6 +1005,7 @@ function Podcasts() {
             padding: "12px",
           }}
         />
+        <MagnifyingGlass />
       </div>
       <div
         className="flex flex-col"
