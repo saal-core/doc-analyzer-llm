@@ -936,6 +936,7 @@ function Documents({ workspace }) {
                     lineHeight: "22px",
                     alignItems: "flex-start",
                     columnGap: "12px",
+                    background: "white",
                   }}
                 >
                   <div
