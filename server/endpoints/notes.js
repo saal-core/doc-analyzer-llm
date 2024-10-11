@@ -47,7 +47,7 @@ function notesEndpoints(app) {
   app.delete("/notes/:id", async (request, response) => {
     try {
       const { id } = request.params;
-      const notes = await Note.delete({ id: id });
+      const notes = await Note.delete({ id: Number(id) });
       response.status(200).json(notes);
     } catch (e) {
       console.error(e);
