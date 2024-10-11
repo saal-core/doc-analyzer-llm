@@ -21,19 +21,18 @@ function podcastEndpoints(app) {
       const podcasts = await Podcasts.get({
         workspaceId: workspaceId,
       });
-      const alist = [];
-      for (const podcast of podcasts) {
-        const chat = await WorkspaceChats.getchatbyid({ id: podcast.chatId });
-        podcast.chat = chat[0];
-        console.log(podcast);
-        alist.push(podcast);
-      }
-      console.log(alist);
-      response.status(200).json(alist);
+      // const alist = [];
+      // for (const podcast of podcasts) {
+      //   const chat = await WorkspaceChats.getchatbyid({ id: podcast.chatId });
+      //   podcast.chat = chat[0];
+      //   console.log(podcast);
+      //   alist.push(podcast);
+      // }
+      response.status(200).json(podcasts);
     } catch (e) {
       console.error(e);
       response.sendStatus(500).end();
-    }å
+    }
   });
 
   app.get(
