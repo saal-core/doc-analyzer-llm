@@ -31,8 +31,8 @@ export default function Sidebar() {
         to={paths.home()}
         className="flex shrink-0 max-w-[55%] items-center justify-start mx-[38px]"
         style={{
-          marginTop: "26px",
-          marginBottom: "18px",
+          marginTop: "5px",
+          marginBottom: "0px",
           marginLeft: "16px",
         }}
         aria-label="Home"
@@ -40,8 +40,22 @@ export default function Sidebar() {
         <img
           src={logo}
           alt="Logo"
-          className="rounded max-h-[24px] object-contain"
+          style={{
+            position: "relative",
+            top: "15px",
+          }}
+          className="rounded max-h-[40px] object-contain"
         />
+        <div
+          style={{
+            color: "white",
+            position: "relative",
+            top: "12px",
+            left: "25px",
+          }}
+        >
+          Digital Guide
+        </div>
       </Link>
       <div
         ref={sidebarRef}
