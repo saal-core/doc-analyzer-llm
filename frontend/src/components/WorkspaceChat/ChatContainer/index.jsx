@@ -363,7 +363,6 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                     (_v) => (_v?.chatId || _v?.id) === val?.chatId
                   );
                   if (found?.noteId) {
-                    console.log("setSavedNotes>>>", found);
                     deleteNote(found?.noteId);
                     showToast(`Note removed successfully`, "success", {
                       clear: true,
@@ -373,6 +372,9 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                     (_v) => (_v?.chatId || _v?.id) !== val?.chatId
                   );
                 } else {
+                  showToast(`Note saved successfully`, "success", {
+                    clear: true,
+                  });
                   saveNote(val, workspace);
                   return [val, ...v];
                 }
@@ -429,7 +431,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                   <StyleGuide workspace={workspace} sendMessage={sendMessage} />
                 )}
                 {selectedSection === "notes" && (
-                  <Notes chatHistory={savedNotes} />
+                  <Notes chatHistory={savedNotes} setSavedNotes={setSavedNotes} deleteNote={deleteNote} />
                 )}
                 {selectedSection === "doc" && (
                   <Documents workspace={workspace} />
@@ -840,7 +842,7 @@ function StyleGuide({ sendMessage, workspace }) {
   );
 }
 
-function Notes({ chatHistory: _chatHistory }) {
+function Notes({ chatHistory: _chatHistory, setSavedNotes, deleteNote }) {
   const [searchText, setSearchText] = useState("");
   const chatHistory = _chatHistory?.filter((v) =>
     (v?.response ? JSON.parse(v?.response)?.text : v?.content)
@@ -980,21 +982,30 @@ function Notes({ chatHistory: _chatHistory }) {
                       <Trash
                         style={{ cursor: "pointer" }}
                         color="rgba(255, 77, 79, 1)"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e?.stopPropagation();
+                          console.log("note>>>>", note);
                           setSavedNotes((v) => {
-                            if (v?.find((_v) => (_v?.chatId || _v?.id) === val?.chatId)) {
+                            if (
+                              v?.find(
+                                (_v) => ((_v?.chatId || _v?.id) === (note?.chatId || note?.id))
+                              )
+                            ) {
                               const found = v?.find(
-                                (_v) => (_v?.chatId || _v?.id) === val?.chatId
+                                (_v) => ((_v?.chatId || _v?.id) === (note?.chatId || note?.id))
                               );
                               if (found?.noteId) {
-                                console.log("setSavedNotes>>>", found);
                                 deleteNote(found?.noteId);
-                                showToast(`Note removed successfully`, "success", {
-                                  clear: true,
-                                });
+                                showToast(
+                                  `Note removed successfully`,
+                                  "success",
+                                  {
+                                    clear: true,
+                                  }
+                                );
                               }
                               return v?.filter(
-                                (_v) => (_v?.chatId || _v?.id) !== val?.chatId
+                                (_v) => (_v?.chatId || _v?.id) !== (note?.chatId || note?.id)
                               );
                             }
                           });
