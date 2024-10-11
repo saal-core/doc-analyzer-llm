@@ -39,6 +39,7 @@ import System from "@/models/system";
 import TTSMessage from "./ChatHistory/HistoricalMessage/Actions/TTSButton";
 import ModalWrapper from "@/components/ModalWrapper";
 import showToast from "@/utils/toast";
+import ShowMoreText from "react-show-more-text";
 
 const ChatHistory = memo(
   _ChatHistory,
@@ -1126,7 +1127,9 @@ function Podcasts({
   const isLoading = useRef(true);
 
   const podcasts = _podcasts?.filter((p) =>
-    (p?.title || p?.podcastName)?.toLowerCase()?.includes(searchText?.toLowerCase())
+    (p?.title || p?.podcastName)
+      ?.toLowerCase()
+      ?.includes(searchText?.toLowerCase())
   );
   useEffect(() => {
     const documents = workspace?.documents?.map((v) => v?.metadata);
@@ -1589,10 +1592,16 @@ function StatusResponse({ content, error }) {
       className={`flex markdown flex-col ${error ? "bg-red-200" : {}}`}
     >
       <div className="flex gap-x-5">
-        <span
-          className={`reply whitespace-pre-line font-normal text-sm md:text-sm flex flex-col gap-y-1`}
-          dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
-        />
+        <ShowMoreText
+          lines={4}
+          more={<div style={{ color: "rgba(0, 165, 212, 1)" }}>Show more</div>}
+          less={<div style={{ color: "rgba(0, 165, 212, 1)" }}>Show less</div>}
+        >
+          <span
+            className={`reply whitespace-pre-line font-normal text-sm md:text-sm flex flex-col gap-y-1`}
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+          />
+        </ShowMoreText>
       </div>
     </div>
   );
