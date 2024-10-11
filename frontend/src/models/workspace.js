@@ -100,6 +100,18 @@ const Workspace = {
 
     return res;
   },
+  deletePodcast: async function (id) {
+    const res = await fetch(`${API_BASE}/podcasts/${id}`, {
+      method: "DELETE",
+      headers: baseHeaders(),
+    })
+      .then((res) => res.json())
+      .catch((e) => {
+        return [];
+      });
+
+    return res;
+  },
   modifyEmbeddings: async function (slug, changes = {}) {
     const { workspace, message } = await fetch(
       `${API_BASE}/workspace/${slug}/update-embeddings`,

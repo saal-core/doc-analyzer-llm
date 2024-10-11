@@ -40,7 +40,7 @@ import System from "@/models/system";
 import TTSMessage from "./ChatHistory/HistoricalMessage/Actions/TTSButton";
 import ModalWrapper from "@/components/ModalWrapper";
 import showToast from "@/utils/toast";
-import ShowMoreText from "react-show-more-text";
+
 
 const ChatHistory = memo(
   _ChatHistory,
@@ -250,7 +250,6 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
           try {
             handleSocketResponse(event, setChatHistory);
           } catch (e) {
-            console.error("Failed to parse data");
             window.dispatchEvent(new CustomEvent(AGENT_SESSION_END));
             socket.close();
           }
@@ -303,21 +302,18 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socketId]);
 
-  async function saveNote({ chatId }, _workSpace) {
+  async function saveNote({ chatId, ...rest }, _workSpace) {
     const res = await Workspace.createNote({
       chatId,
       threadId: threadSlug ? threadSlug : "default",
       workspaceId: _workSpace?.slug,
     });
     if (res) {
+      res.noteId = res.id;
+      res.id = res.chatId;
+      res.content = rest.content;
       setSavedNotes((n) => {
-        n?.forEach((v) => {
-          if (v?.chatId === res?.chatId) {
-            v.noteId = res.noteId;
-          }
-        });
-        console.log("saveNote>>>", n);
-        return n;
+        return [res, ...n];
       });
     }
   }
@@ -326,14 +322,20 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     const res = await Workspace.deleteNote(id);
   }
 
-  console.log("savedNotes>>>>", savedNotes);
-
   async function savePodcast({ title, content }, _workSpace) {
     const res = await Workspace.createPodcast({
       podcastName: title,
       content: content,
       workspaceId: _workSpace?.slug,
     });
+    if (res) {
+      setTimeout(() => {
+        setPodcasts((pd) => {
+          pd[0].id = res?.id;
+          return [...pd];
+        });
+      }, 100);
+    }
   }
 
   return (
@@ -357,28 +359,29 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
             updateHistory={setChatHistory}
             savedNotes={savedNotes}
             onSaveNote={(val) => {
-              setSavedNotes((v) => {
-                if (v?.find((_v) => (_v?.chatId || _v?.id) === val?.chatId)) {
-                  const found = v?.find(
-                    (_v) => (_v?.chatId || _v?.id) === val?.chatId
-                  );
-                  if (found?.noteId) {
-                    deleteNote(found?.noteId);
-                    showToast(`Note removed successfully`, "success", {
-                      clear: true,
-                    });
+              if (!savedNotes?.find((_v) => (_v?.chatId || _v?.id) === val?.chatId)) {
+                showToast(`Note saved successfully`, "success", {
+                  clear: true,
+                });
+                saveNote(val, workspace);
+              } else {
+                setSavedNotes((v) => {
+                  if (v?.find((_v) => (_v?.chatId || _v?.id) === val?.chatId)) {
+                    const found = v?.find(
+                      (_v) => (_v?.chatId || _v?.id) === val?.chatId
+                    );
+                    if (found?.noteId) {
+                      deleteNote(found?.noteId);
+                      showToast(`Note removed successfully`, "success", {
+                        clear: true,
+                      });
+                    }
+                    return v?.filter(
+                      (_v) => (_v?.chatId || _v?.id) !== val?.chatId
+                    );
                   }
-                  return v?.filter(
-                    (_v) => (_v?.chatId || _v?.id) !== val?.chatId
-                  );
-                } else {
-                  showToast(`Note saved successfully`, "success", {
-                    clear: true,
-                  });
-                  saveNote(val, workspace);
-                  return [val, ...v];
-                }
-              });
+                });
+              }
             }}
             regenerateAssistantMessage={regenerateAssistantMessage}
           />
@@ -431,7 +434,11 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                   <StyleGuide workspace={workspace} sendMessage={sendMessage} />
                 )}
                 {selectedSection === "notes" && (
-                  <Notes chatHistory={savedNotes} setSavedNotes={setSavedNotes} deleteNote={deleteNote} />
+                  <Notes
+                    chatHistory={savedNotes}
+                    setSavedNotes={setSavedNotes}
+                    deleteNote={deleteNote}
+                  />
                 )}
                 {selectedSection === "doc" && (
                   <Documents workspace={workspace} />
@@ -849,7 +856,6 @@ function Notes({ chatHistory: _chatHistory, setSavedNotes, deleteNote }) {
       ?.toLowerCase()
       ?.includes(searchText?.toLowerCase())
   );
-
   return (
     <div
       className="flex flex-col"
@@ -917,7 +923,7 @@ function Notes({ chatHistory: _chatHistory, setSavedNotes, deleteNote }) {
             chatHistory?.map((note) => (
               <div
                 className="flex flex-col"
-                key={note?.note_id || note?.chatId}
+                key={note?.noteId || note?.chatId}
                 style={{
                   border: "1px solid rgba(206, 226, 232, 1)",
                   background:
@@ -984,15 +990,18 @@ function Notes({ chatHistory: _chatHistory, setSavedNotes, deleteNote }) {
                         color="rgba(255, 77, 79, 1)"
                         onClick={(e) => {
                           e?.stopPropagation();
-                          console.log("note>>>>", note);
                           setSavedNotes((v) => {
                             if (
                               v?.find(
-                                (_v) => ((_v?.chatId || _v?.id) === (note?.chatId || note?.id))
+                                (_v) =>
+                                  (_v?.chatId || _v?.id) ===
+                                  (note?.chatId || note?.id)
                               )
                             ) {
                               const found = v?.find(
-                                (_v) => ((_v?.chatId || _v?.id) === (note?.chatId || note?.id))
+                                (_v) =>
+                                  (_v?.chatId || _v?.id) ===
+                                  (note?.chatId || note?.id)
                               );
                               if (found?.noteId) {
                                 deleteNote(found?.noteId);
@@ -1005,7 +1014,9 @@ function Notes({ chatHistory: _chatHistory, setSavedNotes, deleteNote }) {
                                 );
                               }
                               return v?.filter(
-                                (_v) => (_v?.chatId || _v?.id) !== (note?.chatId || note?.id)
+                                (_v) =>
+                                  (_v?.chatId || _v?.id) !==
+                                  (note?.chatId || note?.id)
                               );
                             }
                           });
@@ -1534,7 +1545,7 @@ function Podcasts({
             podcasts?.map((podcast) => (
               <div
                 className="flex flex-col"
-                key={podcast?.Podcast_id}
+                key={podcast?.id}
                 style={{
                   border: "1px solid rgba(206, 226, 232, 1)",
                   background:
@@ -1557,42 +1568,72 @@ function Podcasts({
                   <div
                     className="flex"
                     style={{
-                      columnGap: "12px",
-                      alignItems: "flex-start",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      flexGrow: 1,
                     }}
                   >
                     <div
+                      className="flex"
                       style={{
-                        background: "rgba(244, 243, 255, 1)",
-                        border: "1px solid rgba(225, 222, 255, 1)",
-                        width: "32px",
-                        minWidth: "32px",
-                        height: "32px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: "6px",
-                      }}
-                    >
-                      <SpeakerSimpleHigh />
-                    </div>
-                    <div
-                      style={{
-                        lineHeight: "32px",
-                        display: "flex",
-                        alignItems: "center",
-                        minHeight: "32px",
+                        columnGap: "12px",
+                        alignItems: "flex-start",
                       }}
                     >
                       <div
                         style={{
-                          fontSize: "14px",
-                          lineHeight: "18px",
-                          fontWeight: 600,
+                          background: "rgba(244, 243, 255, 1)",
+                          border: "1px solid rgba(225, 222, 255, 1)",
+                          width: "32px",
+                          minWidth: "32px",
+                          height: "32px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: "6px",
                         }}
                       >
-                        {podcast?.title || podcast?.podcastName}
+                        <SpeakerSimpleHigh />
                       </div>
+                      <div
+                        style={{
+                          lineHeight: "32px",
+                          display: "flex",
+                          alignItems: "center",
+                          minHeight: "32px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: "14px",
+                            lineHeight: "18px",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {podcast?.title || podcast?.podcastName}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={(e) => {
+                        e?.stopPropagation();
+                        setPodcasts((p) => {
+                          const filtered = p?.filter(
+                            (v) => v?.id !== podcast?.id
+                          );
+                          Workspace?.deletePodcast(podcast?.id);
+                          showToast(`Podcast deleted successfully`, "success", {
+                            clear: true,
+                          });
+                          return filtered;
+                        });
+                      }}
+                    >
+                      <Trash color="rgba(255, 77, 79, 1)" />
                     </div>
                   </div>
                   {/* <div>
@@ -1682,16 +1723,10 @@ function StatusResponse({ content, error, isShowMoreHide }) {
       className={`flex markdown flex-col ${error ? "bg-red-200" : {}}`}
     >
       <div className="flex gap-x-5">
-        <ShowMoreText
-          lines={4}
-          more={<div style={{ color: "rgba(0, 165, 212, 1)" }}>Show more</div>}
-          less={<div style={{ color: "rgba(0, 165, 212, 1)" }}>Show less</div>}
-        >
-          <span
-            className={`reply whitespace-pre-line font-normal text-sm md:text-sm flex flex-col gap-y-1`}
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
-          />
-        </ShowMoreText>
+        <span
+          className={`reply whitespace-pre-line font-normal text-sm md:text-sm flex flex-col gap-y-1`}
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(content?.slice(0, 150)) }}
+        />
       </div>
     </div>
   );
