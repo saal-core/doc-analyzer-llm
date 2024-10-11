@@ -1,4 +1,4 @@
-const { reqBody } = require("../utils/http");
+const { reqBody, userFromSession } = require("../utils/http");
 const { Note } = require("../models/note");
 function notesEndpoints(app) {
   if (!app) return;
@@ -16,7 +16,7 @@ function notesEndpoints(app) {
   app.get("/notes/thread/:threadId", async (request, response) => {
     try {
       const { threadId } = request.params;
-      const notes = await Note.getallnotes({ threadId: Number(threadId) });
+      const notes = await Note.getallnotes({ threadId: threadId });
       response.status(200).json(notes);
     } catch (e) {
       console.error(e);
@@ -26,12 +26,13 @@ function notesEndpoints(app) {
 
   app.post("/notes", async (request, response) => {
     try {
-      const newNoteParams = reqBody(request);
+      const user = await userFromSession(request, response);
+      let newNoteParams = reqBody(request);
+      newNoteParams.userId = user.id;
       const notes = await Note.create(newNoteParams);
       response.status(200).json(notes);
     } catch (e) {
       console.error(e);
-
       response.sendStatus(500).end(e.message);
     }
   });
@@ -39,7 +40,7 @@ function notesEndpoints(app) {
   app.delete("/notes/:id", async (request, response) => {
     try {
       const { id } = request.params;
-      const notes = await Note.delete({ id: Number(id) });
+      const notes = await Note.delete({ id: id });
       response.status(200).json(notes);
     } catch (e) {
       console.error(e);

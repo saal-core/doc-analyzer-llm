@@ -35,8 +35,9 @@ async function userFromSession(request, response = null) {
   if (!token) {
     return null;
   }
-
+  console.log(token);
   const valid = decodeJWT(token);
+  console.log(valid);
   if (!valid || !valid.id) {
     return null;
   }
