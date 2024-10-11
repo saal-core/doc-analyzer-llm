@@ -36,7 +36,7 @@ const Workspace = {
     return { workspace, message };
   },
   createNote: async function (data = {}) {
-    const { workspace, message } = await fetch(`${API_BASE}/notes`, {
+    const res = await fetch(`${API_BASE}/notes`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: baseHeaders(),
@@ -46,7 +46,7 @@ const Workspace = {
         return {};
       });
 
-    return { workspace, message };
+    return res;
   },
   getNotes: async function (slug, workspaceSlug) {
     const res = await fetch(
@@ -56,6 +56,31 @@ const Workspace = {
         headers: baseHeaders(),
       }
     )
+      .then((res) => res.json())
+      .catch((e) => {
+        return [];
+      });
+
+    return res;
+  },
+  createPodcast: async function (data = {}) {
+    const res = await fetch(`${API_BASE}/podcasts`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: baseHeaders(),
+    })
+      .then((res) => res.json())
+      .catch((e) => {
+        return {};
+      });
+
+    return res;
+  },
+  getPodcasts: async function (workspaceSlug) {
+    const res = await fetch(`${API_BASE}/podcasts/workspace/${workspaceSlug}`, {
+      method: "GET",
+      headers: baseHeaders(),
+    })
       .then((res) => res.json())
       .catch((e) => {
         return [];

@@ -28,12 +28,17 @@ import {
   Table,
   MagnifyingGlass,
   Note,
+  SpeakerSimpleHigh,
+  Play,
+  Pause,
+  Microphone,
 } from "@phosphor-icons/react";
 import renderMarkdown from "@/utils/chat/markdown";
 import Skeleton from "react-loading-skeleton";
 import System from "@/models/system";
+import TTSMessage from "./ChatHistory/HistoricalMessage/Actions/TTSButton";
 import ModalWrapper from "@/components/ModalWrapper";
-import { data } from "autoprefixer";
+import showToast from "@/utils/toast";
 
 const ChatHistory = memo(
   _ChatHistory,
@@ -55,7 +60,6 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     setMessage(event.target.value);
   };
 
-  console.log("savedNotes>>>>", savedNotes);
   // Emit an update to the state of the prompt input without directly
   // passing a prop in so that it does not re-render constantly.
   function setMessageEmit(messageContent = "") {
@@ -73,10 +77,17 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     setSavedNotes(res);
   }
 
+  async function getPodcasts(workspace) {
+    const res = await Workspace.getPodcasts(workspace?.slug);
+    setPodcasts(res);
+  }
+
   useEffect(() => {
     if (workspace) {
       getNotes(workspace);
+      getPodcasts(workspace);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workspace]);
 
   const handleSubmit = async (event) => {
@@ -296,11 +307,16 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
       threadId: threadSlug ? threadSlug : "default",
       workspaceId: _workSpace?.slug,
     });
-    console.log("res>>>>", res, threadSlug);
   }
 
-  console.log("chatHistory>>>", chatHistory);
-  console.log("workSpace>>>", workspace, knownHistory);
+  async function savePodcast({ title, content }, _workSpace) {
+    const res = await Workspace.createPodcast({
+      podcastName: title,
+      content: content,
+      workspaceId: _workSpace?.slug,
+    });
+  }
+
   return (
     <div
       style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
@@ -322,9 +338,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
             updateHistory={setChatHistory}
             savedNotes={savedNotes}
             onSaveNote={(val) => {
-              console.log("val>>>>", val, workspace);
               setSavedNotes((v) => {
-                console.log("v>>>", v, val);
                 if (v?.find((_v) => (_v?.chatId || _v?.id) === val?.chatId)) {
                   return v?.filter(
                     (_v) => (_v?.chatId || _v?.id) !== val?.chatId
@@ -392,7 +406,13 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                   <Documents workspace={workspace} />
                 )}
                 {selectedSection === "podcast" && (
-                  <Podcasts workspace={workspace} sendMessage={sendMessage} />
+                  <Podcasts
+                    workspace={workspace}
+                    savePodcast={savePodcast}
+                    podcasts={podcasts}
+                    setPodcasts={setPodcasts}
+                    sendMessage={sendMessage}
+                  />
                 )}
               </div>
             </div>
@@ -425,9 +445,9 @@ const sections = [
   },
   {
     label: "Podcast",
-    Icon: Doc,
+    Icon: Microphone,
     key: "podcast",
-    disabled: true,
+    disabled: false,
   },
 ];
 
@@ -473,7 +493,7 @@ function SideSections({ selectedSection, setSelectedSection }) {
           }}
           key={section?.label}
         >
-          <section.Icon />
+          <section.Icon size={24} />
           <div>{section?.label}</div>
         </div>
       ))}
@@ -513,7 +533,6 @@ function StyleGuide({ sendMessage, workspace }) {
       { ...workspace, chatMode: "query" },
       `Provide an overview from the uploaded documents in less than 150 words. Find meta details: ${documents}`,
       (chatResult) => {
-        console.log("chatResults>>>", chatResult);
         if (chatResult?.type === "textResponseChunk") {
           summaryRef.current += chatResult?.textResponse;
         } else if (chatResult?.type === "finalizeResponseStream") {
@@ -862,7 +881,7 @@ function Notes({ chatHistory: _chatHistory }) {
             <div
               className="flex"
               style={{ justifyContent: "center" }}
-            >{`No notes found`}</div>
+            >{`No Notes Found`}</div>
           ) : (
             chatHistory?.map((note) => (
               <div
@@ -978,7 +997,6 @@ function Documents({ workspace }) {
   const docs = _docs?.filter((v) =>
     v?.toLowerCase()?.includes(searchText?.toLowerCase())
   );
-  console.log("docs>>>", docs);
   return (
     <div
       className="flex flex-col"
@@ -1049,7 +1067,6 @@ function Documents({ workspace }) {
             </div>
           ) : (
             docs?.map((d, index) => {
-              console.log(getFileExtension(d));
               return (
                 <div
                   key={`${d}_${index}`}
@@ -1093,21 +1110,24 @@ function Documents({ workspace }) {
   );
 }
 
-const podcasts = [
-  {
-    Podcast_name: "Podcast_name",
-    Podcast_id: "123",
-    content: "This is the first Podcast on ai",
-    created_at: "2024-10-10T12:00:00Z",
-  },
-];
-
-function Podcasts({ workspace }) {
+function Podcasts({
+  workspace,
+  savePodcast,
+  podcasts: _podcasts = [],
+  setPodcasts = () => {},
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [questions, setQuestions] = useState([]);
   const questionsRef = useRef("");
+  const podcastRef = useRef("");
+  const [isPodcastCreating, setIsPodcastCreating] = useState(false);
+  const [selectedTopic, setSelectedTopic] = useState("");
+  const [searchText, setSearchText] = useState("");
   const isLoading = useRef(true);
 
+  const podcasts = _podcasts?.filter((p) =>
+    (p?.title || p?.podcastName)?.toLowerCase()?.includes(searchText?.toLowerCase())
+  );
   useEffect(() => {
     const documents = workspace?.documents?.map((v) => v?.metadata);
     isLoading.current = true;
@@ -1115,7 +1135,6 @@ function Podcasts({ workspace }) {
       { ...workspace },
       `Suggest podcast topics less that 5 words from the uploaded documents. Find meta details: ${documents}`,
       (chatResult) => {
-        console.log("podcast_chatResult>>>", chatResult);
         if (chatResult?.type === "textResponseChunk") {
           questionsRef.current += chatResult?.textResponse;
         } else if (chatResult?.type === "finalizeResponseStream") {
@@ -1137,13 +1156,12 @@ function Podcasts({ workspace }) {
     );
   }, [workspace]);
 
-  console.log("podcast_questions>>>>", questions);
-
   return (
     <div
       className="flex flex-col"
       style={{
         rowGap: "16px",
+        flexGrow: 1,
       }}
     >
       <div
@@ -1154,6 +1172,7 @@ function Podcasts({ workspace }) {
           color: "rgba(41, 28, 165, 1)",
           justifyContent: "space-between",
           alignItems: "center",
+          marginInline: "8px",
         }}
         className="flex"
       >
@@ -1191,30 +1210,89 @@ function Podcasts({ workspace }) {
           style={{
             backgroundColor: "white",
             width: "1000px",
-            minHeight: "300px",
+            // minHeight: "300px",
             borderRadius: "8px",
             padding: "24px",
             rowGap: "24px",
           }}
         >
           <div
+            className="flex"
             style={{
               fontSize: "16px",
               fontWeight: 600,
               lineHeight: "24px",
               color: "rgba(41, 28, 165, 1)",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            Suggest the topic
+            <span>Suggest the topic</span>
+            <span
+              style={{
+                cursor: "pointer",
+                ...(isPodcastCreating && {
+                  pointerEvents: "none",
+                  opacity: 0.7,
+                }),
+              }}
+              onClick={() => {
+                setSelectedTopic("");
+                setIsOpen(false);
+              }}
+            >
+              <Cross />
+            </span>
           </div>
           <div
             style={{
               flexGrow: 1,
               justifyContent: "space-between",
+              rowGap: "24px",
             }}
             className="flex flex-col"
           >
-            <div>Suggestions</div>
+            <div
+              style={{
+                flexWrap: "nowrap",
+                display: isLoading?.current ? "block" : "flex",
+                columnGap: "16px",
+              }}
+            >
+              {isLoading?.current ? (
+                <Skeleton count={4} />
+              ) : (
+                questions?.map((q, index) => (
+                  <div
+                    key={q?.id || index}
+                    style={{
+                      background:
+                        "linear-gradient(84.14deg, #F2F0FF 0%, #ECFBFF 100%)",
+                      border: "1px solid rgba(206, 226, 232, 1)",
+                      borderRadius: "8px",
+                      padding: "16px",
+                      cursor: "pointer",
+                      alignItems: "flex-start",
+                      columnGap: "8px",
+                      flex: "0 1 33.3%",
+                      display: "flex",
+                      height: "auto",
+                    }}
+                    onClick={() => {
+                      // sendMessage(q);
+                      setSelectedTopic(q);
+                    }}
+                    className="flex"
+                  >
+                    <div>
+                      <ListPlus size={18} color="rgba(41, 28, 166, 1)" />
+                    </div>
+                    <div>{q}</div>
+                  </div>
+                ))
+              )}
+            </div>
+
             <div>
               <input
                 style={{
@@ -1223,39 +1301,13 @@ function Podcasts({ workspace }) {
                   borderRadius: "8px",
                   width: "100%",
                 }}
+                value={selectedTopic}
+                onChange={(e) => {
+                  setSelectedTopic(e?.target?.value);
+                }}
                 placeholder="Enter your topic here"
               />
             </div>
-          </div>
-          <div className="flex">
-            {isLoading?.current ? (
-              <Skeleton count={4} />
-            ) : (
-              questions?.map((q, index) => (
-                <div
-                  key={index}
-                  style={{
-                    background:
-                      "linear-gradient(84.14deg, #F2F0FF 0%, #ECFBFF 100%)",
-                    border: "1px solid rgba(206, 226, 232, 1)",
-                    borderRadius: "8px",
-                    padding: "16px",
-                    cursor: "pointer",
-                    alignItems: "flex-start",
-                    columnGap: "8px",
-                  }}
-                  onClick={() => {
-                    sendMessage(q);
-                  }}
-                  className="flex"
-                >
-                  <div>
-                    <ListPlus size={18} color="rgba(41, 28, 166, 1)" />
-                  </div>
-                  <div>{q}</div>
-                </div>
-              ))
-            )}
           </div>
           <div className="flex">
             <div
@@ -1267,6 +1319,7 @@ function Podcasts({ workspace }) {
             >
               <button
                 onClick={() => {
+                  setSelectedTopic("");
                   setIsOpen(false);
                 }}
                 className="flex"
@@ -1277,7 +1330,9 @@ function Podcasts({ workspace }) {
                   borderRadius: "8px",
                   border: "1px solid rgba(206, 226, 232, 1)",
                   paddingInline: "16px",
+                  fontSize: "14px",
                 }}
+                disabled={isPodcastCreating}
               >
                 Cancel
               </button>
@@ -1289,18 +1344,71 @@ function Podcasts({ workspace }) {
                   borderRadius: "8px",
                   paddingInline: "16px",
                   color: "white",
+                  fontSize: "14px",
                   background:
                     "linear-gradient(90deg, #291CA6 0%, #00A5D4 100%)",
+                  ...((!selectedTopic || isPodcastCreating) && {
+                    opacity: 0.7,
+                    pointerEvents: "none",
+                  }),
                 }}
                 className="flex"
+                onClick={() => {
+                  setIsPodcastCreating(true);
+                  Workspace.streamChat(
+                    { ...workspace },
+                    `Provide Podcast content on given topic: ${selectedTopic}`,
+                    (chatResult) => {
+                      if (chatResult?.type === "textResponseChunk") {
+                        podcastRef.current += chatResult?.textResponse;
+                      } else if (
+                        chatResult?.type === "finalizeResponseStream"
+                      ) {
+                        setPodcasts((p) => [
+                          {
+                            content: podcastRef.current,
+                            title: selectedTopic,
+                            id: Date?.now(),
+                          },
+                          ...p,
+                        ]);
+                        savePodcast(
+                          {
+                            content: podcastRef.current,
+                            title: selectedTopic,
+                          },
+                          workspace
+                        );
+                        setSelectedTopic("");
+                        setIsPodcastCreating(false);
+                        setIsOpen(false);
+                        showToast(`Podcast created successfully`, "success", {
+                          clear: true,
+                        });
+                        System.deleteChat(chatResult?.chatId);
+                        podcastRef.current = "";
+                      } else if (chatResult?.type === "abort") {
+                        podcastRef.current = "";
+                        setIsPodcastCreating(false);
+                        setSelectedTopic("");
+                        setIsOpen(false);
+                      }
+                    }
+                  );
+                }}
               >
-                Done
+                {isPodcastCreating ? "Creating..." : "Done"}
               </button>
             </div>
           </div>
         </div>
       </ModalWrapper>
-      <div className="relative flex">
+      <div
+        className="relative flex"
+        style={{
+          paddingInline: "8px",
+        }}
+      >
         <input
           placeholder="Search"
           style={{
@@ -1311,77 +1419,165 @@ function Podcasts({ workspace }) {
             width: "100%",
             padding: "12px",
           }}
+          onChange={(e) => {
+            setSearchText(e?.target?.value);
+          }}
         />
-        <MagnifyingGlass />
+        <MagnifyingGlass
+          color="rgba(41, 28, 166, 1)"
+          style={{
+            position: "absolute",
+            right: "20px",
+            top: "0px",
+            bottom: "0px",
+            margin: "auto",
+          }}
+        />
       </div>
-      <div
-        className="flex flex-col"
-        style={{
-          rowGap: "16px",
-        }}
-      >
-        {podcasts?.map((podcast) => (
-          <div
-            className="flex flex-col"
-            key={podcast?.Podcast_id}
-            style={{
-              border: "1px solid rgba(206, 226, 232, 1)",
-              background:
-                "linear-gradient(253.23deg, #ECFBFF 0%, #F2F0FF 100%)",
-              borderRadius: "8px",
-              padding: "16px",
-              rowGap: "16px",
-            }}
-          >
+
+      <Scrollbars>
+        <div
+          className="flex flex-col"
+          style={{
+            rowGap: "16px",
+            paddingInline: "8px",
+          }}
+        >
+          {!podcasts?.length ? (
             <div
-              className="flex"
               style={{
-                alignItems: "center",
-                justifyContent: "space-between",
-                columnGap: "12px",
-                fontSize: "16px",
-                lineHeight: "24px",
+                display: "flex",
+                justifyContent: "center",
               }}
             >
+              No Podcasts Found
+            </div>
+          ) : (
+            podcasts?.map((podcast) => (
               <div
-                className="flex"
+                className="flex flex-col"
+                key={podcast?.Podcast_id}
                 style={{
-                  columnGap: "12px",
+                  border: "1px solid rgba(206, 226, 232, 1)",
+                  background:
+                    "linear-gradient(253.23deg, #ECFBFF 0%, #F2F0FF 100%)",
+                  borderRadius: "8px",
+                  padding: "16px",
+                  rowGap: "16px",
                 }}
               >
-                <div>icon</div>
-                <div>{podcast?.Podcast_name}</div>
-              </div>
-              <div>
-                <input type="checkbox" />
-              </div>
-            </div>
+                <div
+                  className="flex"
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    columnGap: "12px",
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                  }}
+                >
+                  <div
+                    className="flex"
+                    style={{
+                      columnGap: "12px",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: "rgba(244, 243, 255, 1)",
+                        border: "1px solid rgba(225, 222, 255, 1)",
+                        width: "32px",
+                        minWidth: "32px",
+                        height: "32px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "6px",
+                      }}
+                    >
+                      <SpeakerSimpleHigh />
+                    </div>
+                    <div
+                      style={{
+                        lineHeight: "32px",
+                        display: "flex",
+                        alignItems: "center",
+                        minHeight: "32px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: "14px",
+                          lineHeight: "18px",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {podcast?.title || podcast?.podcastName}
+                      </div>
+                    </div>
+                  </div>
+                  {/* <div>
+                  <input type="checkbox" />
+                </div> */}
+                </div>
 
-            <div
-              style={{
-                border: "1px solid rgba(206, 226, 232, 1)",
-              }}
-            />
-            <div
-              style={{
-                fontSize: "12px",
-                lineHeight: "20px",
-              }}
-            >
-              Tap to listen to your podcast
-            </div>
-            <div
-              className="flex"
-              style={{
-                fontSize: "14px",
-                lineHeight: "22px",
-              }}
-            >
-              {podcast?.content}
-            </div>
-          </div>
-        ))}
-      </div>
+                <div
+                  style={{
+                    border: "1px solid rgba(206, 226, 232, 1)",
+                  }}
+                />
+                <div
+                  style={{
+                    fontSize: "12px",
+                    lineHeight: "20px",
+                    alignItems: "center",
+                    columnGap: "12px",
+                  }}
+                  className="flex"
+                >
+                  <div
+                    className="flex"
+                    style={{
+                      fontSize: "14px",
+                      lineHeight: "22px",
+                      width: "36px",
+                      minWidth: "36px",
+                      height: "36px",
+                      background:
+                        "linear-gradient(270.8deg, #00A5D4 0.74%, #291FA7 99.39%)",
+                      borderRadius: "50%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "white",
+                    }}
+                  >
+                    <TTSMessage
+                      playIcon={
+                        <Play
+                          color="white"
+                          weight="fill"
+                          style={{ marginTop: "-18px" }}
+                        />
+                      }
+                      pauseIcon={
+                        <Pause
+                          color="white"
+                          weight="fill"
+                          style={{ marginTop: "-18px" }}
+                        />
+                      }
+                      isTooltipDisabled
+                      message={podcast?.content}
+                    />
+                  </div>
+                  <span>Tap to listen to your podcast</span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </Scrollbars>
     </div>
   );
 }

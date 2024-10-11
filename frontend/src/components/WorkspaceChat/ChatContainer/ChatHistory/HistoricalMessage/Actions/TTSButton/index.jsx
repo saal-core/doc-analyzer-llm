@@ -3,7 +3,14 @@ import NativeTTSMessage from "./native";
 import AsyncTTSMessage from "./asyncTts";
 import System from "@/models/system";
 
-export default function TTSMessage({ slug, chatId, message }) {
+export default function TTSMessage({
+  isTooltipDisabled,
+  slug,
+  chatId,
+  message,
+  playIcon,
+  pauseIcon,
+}) {
   const [provider, setProvider] = useState("native");
   const [loading, setLoading] = useState(true);
 
@@ -19,5 +26,12 @@ export default function TTSMessage({ slug, chatId, message }) {
   if (loading) return null;
   if (provider !== "native")
     return <AsyncTTSMessage slug={slug} chatId={chatId} />;
-  return <NativeTTSMessage message={message} />;
+  return (
+    <NativeTTSMessage
+      playIcon={playIcon}
+      pauseIcon={pauseIcon}
+      message={message}
+      isTooltipDisabled={isTooltipDisabled}
+    />
+  );
 }

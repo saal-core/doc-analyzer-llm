@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { SpeakerHigh, PauseCircle } from "@phosphor-icons/react";
 import { Tooltip } from "react-tooltip";
 
-export default function NativeTTSMessage({ message }) {
+export default function NativeTTSMessage({
+  message,
+  isTooltipDisabled,
+  playIcon,
+  pauseIcon,
+}) {
   const [speaking, setSpeaking] = useState(false);
   const [supported, setSupported] = useState(false);
   useEffect(() => {
@@ -33,21 +38,30 @@ export default function NativeTTSMessage({ message }) {
   }
 
   if (!supported) return null;
-
-  console.log('cominghere>>>')
+  console.log("playIcon>>>", playIcon);
   return (
     <div className="mt-3 relative">
       <button
         onClick={speakMessage}
         data-tooltip-id="message-to-speech"
         data-tooltip-content={
-          speaking ? "Pause TTS speech of message" : "TTS Speak message"
+          !isTooltipDisabled
+            ? speaking
+              ? "Pause TTS speech of message"
+              : "TTS Speak message"
+            : ""
         }
         className="border-none text-zinc-300"
         aria-label={speaking ? "Pause speech" : "Speak message"}
       >
         {speaking ? (
-          <PauseCircle size={18} className="mb-1" />
+          pauseIcon ? (
+            pauseIcon
+          ) : (
+            <PauseCircle size={18} className="mb-1" />
+          )
+        ) : playIcon ? (
+          playIcon
         ) : (
           <SpeakerHigh size={18} className="mb-1" />
         )}
