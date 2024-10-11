@@ -32,6 +32,7 @@ import {
   Play,
   Pause,
   Microphone,
+  Trash,
 } from "@phosphor-icons/react";
 import renderMarkdown from "@/utils/chat/markdown";
 import Skeleton from "react-loading-skeleton";
@@ -308,7 +309,24 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
       threadId: threadSlug ? threadSlug : "default",
       workspaceId: _workSpace?.slug,
     });
+    if (res) {
+      setSavedNotes((n) => {
+        n?.forEach((v) => {
+          if (v?.chatId === res?.chatId) {
+            v.noteId = res.noteId;
+          }
+        });
+        console.log("saveNote>>>", n);
+        return n;
+      });
+    }
   }
+
+  async function deleteNote(id) {
+    const res = await Workspace.deleteNote(id);
+  }
+
+  console.log("savedNotes>>>>", savedNotes);
 
   async function savePodcast({ title, content }, _workSpace) {
     const res = await Workspace.createPodcast({
@@ -341,6 +359,16 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
             onSaveNote={(val) => {
               setSavedNotes((v) => {
                 if (v?.find((_v) => (_v?.chatId || _v?.id) === val?.chatId)) {
+                  const found = v?.find(
+                    (_v) => (_v?.chatId || _v?.id) === val?.chatId
+                  );
+                  if (found?.noteId) {
+                    console.log("setSavedNotes>>>", found);
+                    deleteNote(found?.noteId);
+                    showToast(`Note removed successfully`, "success", {
+                      clear: true,
+                    });
+                  }
                   return v?.filter(
                     (_v) => (_v?.chatId || _v?.id) !== val?.chatId
                   );
@@ -920,23 +948,59 @@ function Notes({ chatHistory: _chatHistory }) {
                     style={{
                       columnGap: "12px",
                       alignItems: "center",
+                      justifyContent: "space-between",
+                      flexGrow: 1,
                     }}
                   >
                     <div
+                      className="flex"
                       style={{
-                        background: "rgba(244, 243, 255, 1)",
-                        border: "1px solid rgba(225, 222, 255, 1)",
-                        borderRadius: "6px",
-                        display: "flex",
-                        justifyContent: "center",
+                        columnGap: "12px",
                         alignItems: "center",
-                        width: "32px",
-                        height: "32px",
                       }}
                     >
-                      <Note size={18} color="rgba(41, 28, 166, 1)" />
+                      <div
+                        style={{
+                          background: "rgba(244, 243, 255, 1)",
+                          border: "1px solid rgba(225, 222, 255, 1)",
+                          borderRadius: "6px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: "32px",
+                          height: "32px",
+                        }}
+                      >
+                        <Note size={18} color="rgba(41, 28, 166, 1)" />
+                      </div>
+                      <div>Notes</div>
                     </div>
-                    <div>Notes</div>
+
+                    <div>
+                      <Trash
+                        style={{ cursor: "pointer" }}
+                        color="rgba(255, 77, 79, 1)"
+                        onClick={() => {
+                          setSavedNotes((v) => {
+                            if (v?.find((_v) => (_v?.chatId || _v?.id) === val?.chatId)) {
+                              const found = v?.find(
+                                (_v) => (_v?.chatId || _v?.id) === val?.chatId
+                              );
+                              if (found?.noteId) {
+                                console.log("setSavedNotes>>>", found);
+                                deleteNote(found?.noteId);
+                                showToast(`Note removed successfully`, "success", {
+                                  clear: true,
+                                });
+                              }
+                              return v?.filter(
+                                (_v) => (_v?.chatId || _v?.id) !== val?.chatId
+                              );
+                            }
+                          });
+                        }}
+                      />
+                    </div>
                   </div>
                   {/* <div>
                     <input type="checkbox" />
@@ -1360,7 +1424,7 @@ function Podcasts({
                   setIsPodcastCreating(true);
                   Workspace.streamChat(
                     { ...workspace },
-                    `Provide Podcast content on given topic: ${selectedTopic}`,
+                    `Provide Podcast script on ${selectedTopic} without titles and placeholders.`,
                     (chatResult) => {
                       if (chatResult?.type === "textResponseChunk") {
                         podcastRef.current += chatResult?.textResponse;
@@ -1599,7 +1663,7 @@ function StatusResponse({ content, error, isShowMoreHide }) {
           />
         </div>
       </div>
-    )
+    );
   }
   return (
     <div

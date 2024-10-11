@@ -84,8 +84,8 @@ const Actions = ({
                 (v) => (v?.chatId || v?.id) === chatId
               ) && {
                 color: "rgba(41, 28, 166, 1)",
-                opacity: 0.7,
-                pointerEvents: "none",
+                // opacity: 0.7,
+                // pointerEvents: "none",
               }),
             }}
             onClick={() => {

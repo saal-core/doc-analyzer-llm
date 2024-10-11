@@ -63,14 +63,11 @@ const Workspace = {
 
     return res;
   },
-  deleteNote: async function (slug, workspaceSlug) {
-    const res = await fetch(
-      `${API_BASE}/notes?threadId=${slug}&workspaceId=${workspaceSlug}`,
-      {
-        method: "GET",
-        headers: baseHeaders(),
-      }
-    )
+  deleteNote: async function (id) {
+    const res = await fetch(`${API_BASE}/notes/${id}`, {
+      method: "DELETE",
+      headers: baseHeaders(),
+    })
       .then((res) => res.json())
       .catch((e) => {
         return [];
