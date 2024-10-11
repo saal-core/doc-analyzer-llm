@@ -3,7 +3,7 @@ import _ChatHistory from "./ChatHistory";
 import PromptInput, { PROMPT_INPUT_EVENT } from "./PromptInput";
 import Workspace from "@/models/workspace";
 import handleChat, { ABORT_STREAM_EVENT } from "@/utils/chat";
-import { isMobile } from "react-device-detect";
+import { isMobile, isOpera } from "react-device-detect";
 import Scrollbars from "react-custom-scrollbars";
 import { SidebarMobileHeader } from "../../Sidebar";
 import { useParams } from "react-router-dom";
@@ -32,6 +32,7 @@ import {
 import renderMarkdown from "@/utils/chat/markdown";
 import Skeleton from "react-loading-skeleton";
 import System from "@/models/system";
+import ModalWrapper from "@/components/ModalWrapper";
 
 const ChatHistory = memo(
   _ChatHistory,
@@ -340,7 +341,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                   style={{
                     position: "absolute",
                     right: 0,
-                    top: 0,
+                    top: 3,
                     height: "24px",
                     cursor: "pointer",
                     display: "flex",
@@ -1037,6 +1038,7 @@ const podcasts = [
 ];
 
 function Podcasts() {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div
       className="flex flex-col"
@@ -1050,10 +1052,76 @@ function Podcasts() {
           fontWeight: 600,
           lineHeight: "24px",
           color: "rgba(41, 28, 165, 1)",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
+        className="flex"
       >
-        Saved Podcasts
+        <div>
+          Saved Podcasts
+        </div>
+        <div
+          style={{
+            width: "32px",
+            height: "32px",
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+            borderRadius: "6px",
+            backgroundColor: "rgba(0, 165, 212, 1)",
+            color: "white",
+            fontSize: "16px",
+            marginRight: "26px",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
+          <span
+            style={{
+              marginBottom: "5px",
+            }}
+          >
+            +
+          </span>
+        </div>
       </div>
+      <ModalWrapper isOpen={isOpen}>
+        <div
+          className="flex flex-col"
+          style={{
+            backgroundColor: "white",
+            width: "1000px",
+            height: "291px",
+            borderRadius: "8px",
+            padding: "24px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "16px",
+              fontWeight: 600,
+              lineHeight: "24px",
+              color: "rgba(41, 28, 165, 1)",
+            }}
+          >
+            Suggest the topic
+          </div>
+          <div className="flex">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            >
+              Cancel
+            </button>
+            <button>
+              Ok
+            </button>
+          </div>
+        </div>
+      </ModalWrapper>
       <div className="relative flex">
         <input
           placeholder="Search"
