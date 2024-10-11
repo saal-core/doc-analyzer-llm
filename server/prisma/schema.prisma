@@ -276,3 +276,22 @@ model slash_command_presets {
 
   @@unique([uid, command])
 }
+
+model notes {
+  id                Int      @id @default(autoincrement())
+  workspaceId       Int?
+  chatId            Int?
+  userId            Int?
+  threadId          Int?
+  createdAt         DateTime @default(now())
+}
+
+model podcasts {
+  id                Int      @id @default(autoincrement())
+  workspaceId       String
+  podcastName       String
+  podcastQuery      String   @default("query")
+  content           Text
+  userId            Int?
+  createdAt         DateTime @default(now())
+}

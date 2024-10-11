@@ -22,6 +22,9 @@ const { bootHTTP, bootSSL } = require("./utils/boot");
 const { workspaceThreadEndpoints } = require("./endpoints/workspaceThreads");
 const { documentEndpoints } = require("./endpoints/document");
 const { agentWebsocket } = require("./endpoints/agentWebsocket");
+const { notesEndpoints } = require("./endpoints/notes");
+const { podcastEndpoints } = require("./endpoints/podcast");
+
 const app = express();
 const apiRouter = express.Router();
 const FILE_LIMIT = "3GB";
@@ -55,7 +58,8 @@ utilEndpoints(apiRouter);
 documentEndpoints(apiRouter);
 agentWebsocket(apiRouter);
 developerEndpoints(app, apiRouter);
-
+notesEndpoints(apiRouter);
+podcastEndpoints(apiRouter);
 // Externally facing embedder endpoints
 embeddedEndpoints(apiRouter);
 
