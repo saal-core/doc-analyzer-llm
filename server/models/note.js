@@ -41,7 +41,7 @@ const Note = {
           chatId: true,
         },
       });
-
+      console.log(notes);
       const chatIds = notes.map((note) => note.chatId);
 
       const workspaceChats = await prisma.workspace_chats.findMany({
