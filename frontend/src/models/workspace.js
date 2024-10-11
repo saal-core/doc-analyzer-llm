@@ -35,6 +35,31 @@ const Workspace = {
 
     return { workspace, message };
   },
+  createNote: async function (data = {}) {
+    const { workspace, message } = await fetch(`${API_BASE}/notes`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: baseHeaders(),
+    })
+      .then((res) => res.json())
+      .catch((e) => {
+        return {};
+      });
+
+    return { workspace, message };
+  },
+  getNotes: async function (slug) {
+    const res = await fetch(`${API_BASE}/notes/thread/${slug}`, {
+      method: "GET",
+      headers: baseHeaders(),
+    })
+      .then((res) => res.json())
+      .catch((e) => {
+        return [];
+      });
+
+    return res;
+  },
   modifyEmbeddings: async function (slug, changes = {}) {
     const { workspace, message } = await fetch(
       `${API_BASE}/workspace/${slug}/update-embeddings`,
@@ -91,7 +116,7 @@ const Workspace = {
       });
   },
   deleteEditedChats: async function (slug = "", threadSlug = "", startingId) {
-    if (!!threadSlug)
+    if (threadSlug)
       return this.threads._deleteEditedChats(slug, threadSlug, startingId);
     return this._deleteEditedChats(slug, startingId);
   },
@@ -101,7 +126,7 @@ const Workspace = {
     chatId,
     newText
   ) {
-    if (!!threadSlug)
+    if (threadSlug)
       return this.threads._updateChatResponse(
         slug,
         threadSlug,

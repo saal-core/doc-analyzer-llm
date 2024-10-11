@@ -3,7 +3,7 @@ import _ChatHistory from "./ChatHistory";
 import PromptInput, { PROMPT_INPUT_EVENT } from "./PromptInput";
 import Workspace from "@/models/workspace";
 import handleChat, { ABORT_STREAM_EVENT } from "@/utils/chat";
-import { isMobile, isOpera } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import Scrollbars from "react-custom-scrollbars";
 import { SidebarMobileHeader } from "../../Sidebar";
 import { useParams } from "react-router-dom";
@@ -33,6 +33,7 @@ import renderMarkdown from "@/utils/chat/markdown";
 import Skeleton from "react-loading-skeleton";
 import System from "@/models/system";
 import ModalWrapper from "@/components/ModalWrapper";
+import { data } from "autoprefixer";
 
 const ChatHistory = memo(
   _ChatHistory,
@@ -47,6 +48,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   const [socketId, setSocketId] = useState(null);
   const [websocket, setWebsocket] = useState(null);
   const [savedNotes, setSavedNotes] = useState([]);
+  const [podcasts, setPodcasts] = useState([]);
   const [selectedSection, setSelectedSection] = useState();
   // Maintain state of message from whatever is in PromptInput
   const handleMessageChange = (event) => {
@@ -62,6 +64,17 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
       new CustomEvent(PROMPT_INPUT_EVENT, { detail: messageContent })
     );
   }
+
+  async function getNotes() {
+    const res = await Workspace.getNotes(threadSlug);
+    console.log("getNotes>>>", res);
+  }
+
+  useEffect(() => {
+    if (workspace) {
+      getNotes();
+    }
+  }, [workspace])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -274,6 +287,16 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socketId]);
 
+  async function saveNote({ chatId }, _workSpace) {
+    const res = await Workspace.createNote({
+      chatId,
+      userId: 1,
+      threadId: threadSlug,
+      workspaceId: _workSpace?.id,
+    });
+    console.log("res>>>>", res, threadSlug);
+  }
+
   console.log("chatHistory>>>", chatHistory);
   console.log("workSpace>>>", workspace, knownHistory);
   return (
@@ -297,12 +320,13 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
             updateHistory={setChatHistory}
             savedNotes={savedNotes}
             onSaveNote={(val) => {
-              console.log("val>>>>", val);
+              console.log("val>>>>", val, workspace);
               setSavedNotes((v) => {
                 console.log("v>>>", v, val);
                 if (v?.find((_v) => _v?.chatId === val?.chatId)) {
                   return v?.filter((_v) => _v?.chatId !== val?.chatId);
                 } else {
+                  saveNote(val, workspace);
                   return [val, ...v];
                 }
               });
@@ -1057,9 +1081,7 @@ function Podcasts() {
         }}
         className="flex"
       >
-        <div>
-          Saved Podcasts
-        </div>
+        <div>Saved Podcasts</div>
         <div
           style={{
             width: "32px",
@@ -1108,17 +1130,66 @@ function Podcasts() {
           >
             Suggest the topic
           </div>
+          <div
+            style={{
+              flexGrow: 1,
+              justifyContent: "space-between",
+            }}
+            className="flex flex-col"
+          >
+            <div>Suggestions</div>
+            <div>
+              <input
+                style={{
+                  padding: "16px",
+                  border: "1px solid rgba(206, 226, 232, 1)",
+                  borderRadius: "8px",
+                  width: "100%",
+                }}
+                placeholder="Enter your topic here"
+              />
+            </div>
+          </div>
           <div className="flex">
-            <button
-              onClick={() => {
-                setIsOpen(false);
+            <div
+              className="flex"
+              style={{
+                columnGap: "8px",
+                justifyContent: "flex-end",
               }}
             >
-              Cancel
-            </button>
-            <button>
-              Ok
-            </button>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+                className="flex"
+                style={{
+                  height: "32px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "8px",
+                  border: "1px solid rgba(206, 226, 232, 1)",
+                  paddingInline: "16px",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                style={{
+                  height: "32px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "8px",
+                  paddingInline: "16px",
+                  color: "white",
+                  background:
+                    "linear-gradient(90deg, #291CA6 0%, #00A5D4 100%)",
+                }}
+                className="flex"
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       </ModalWrapper>
