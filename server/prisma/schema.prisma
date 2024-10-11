@@ -279,10 +279,10 @@ model slash_command_presets {
 
 model notes {
   id                Int      @id @default(autoincrement())
-  workspaceId       Int?
+  workspaceId       String
   chatId            Int?
   userId            Int?
-  threadId          Int?
+  threadId          String
   createdAt         DateTime @default(now())
 }
 
@@ -291,7 +291,7 @@ model podcasts {
   workspaceId       String
   podcastName       String
   podcastQuery      String   @default("query")
-  content           Text
+  content           String
   userId            Int?
   createdAt         DateTime @default(now())
 }

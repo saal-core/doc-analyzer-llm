@@ -13,7 +13,6 @@ const Note = {
 
   create: async function (newNoteParams) {
     try {
-      console.log(newNoteParams);
       const user = await prisma.notes.create({
         data: newNoteParams,
       });
