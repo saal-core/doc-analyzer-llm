@@ -290,7 +290,7 @@ model podcasts {
   id                Int      @id @default(autoincrement())
   workspaceId       String
   podcastName       String
-  content           String
+  chatId            Int?
   userId            Int?
   createdAt         DateTime @default(now())
 }
