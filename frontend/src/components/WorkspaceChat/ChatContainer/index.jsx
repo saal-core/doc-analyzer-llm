@@ -65,14 +65,17 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     );
   }
 
-  async function getNotes() {
-    const res = await Workspace.getNotes(threadSlug);
+  async function getNotes(workspace) {
+    const res = await Workspace.getNotes(
+      threadSlug || "default",
+      workspace?.slug
+    );
     setSavedNotes(res);
   }
 
   useEffect(() => {
     if (workspace) {
-      getNotes();
+      getNotes(workspace);
     }
   }, [workspace]);
 
@@ -290,7 +293,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   async function saveNote({ chatId }, _workSpace) {
     const res = await Workspace.createNote({
       chatId,
-      threadId: threadSlug,
+      threadId: threadSlug ? threadSlug : "default",
       workspaceId: _workSpace?.slug,
     });
     console.log("res>>>>", res, threadSlug);
@@ -388,7 +391,9 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
                 {selectedSection === "doc" && (
                   <Documents workspace={workspace} />
                 )}
-                {selectedSection === "podcast" && <Podcasts />}
+                {selectedSection === "podcast" && (
+                  <Podcasts workspace={workspace} sendMessage={sendMessage} />
+                )}
               </div>
             </div>
           )}
@@ -471,7 +476,7 @@ function SideSections({ selectedSection, setSelectedSection }) {
   );
 }
 
-function getFirstFiveQuestions(questionsString) {
+function getQuestions(questionsString, num = 5) {
   // Split the string by lines
   const questionsArray = questionsString
     .split("\n")
@@ -486,7 +491,7 @@ function getFirstFiveQuestions(questionsString) {
     ); // Filter only questions
 
   // Get the first five questions
-  const firstFiveQuestions = questionsArray.slice(0, 5);
+  const firstFiveQuestions = questionsArray.slice(0, num);
 
   return firstFiveQuestions;
 }
@@ -503,7 +508,7 @@ function StyleGuide({ sendMessage, workspace }) {
       { ...workspace, chatMode: "query" },
       `Provide an overview from the uploaded documents in less than 150 words. Find meta details: ${documents}`,
       (chatResult) => {
-        console.log('chatResults>>>', chatResult);
+        console.log("chatResults>>>", chatResult);
         if (chatResult?.type === "textResponseChunk") {
           summaryRef.current += chatResult?.textResponse;
         } else if (chatResult?.type === "finalizeResponseStream") {
@@ -528,7 +533,7 @@ function StyleGuide({ sendMessage, workspace }) {
         if (chatResult?.type === "textResponseChunk") {
           questionsRef.current += chatResult?.textResponse;
         } else if (chatResult?.type === "finalizeResponseStream") {
-          const _questions = getFirstFiveQuestions(questionsRef.current);
+          const _questions = getQuestions(questionsRef.current);
           const cleanedQuestions = _questions.map((q) =>
             q.replace(/^\d+\.\s*/, "")
           ); // Remove leading numbers
@@ -1092,8 +1097,43 @@ const podcasts = [
   },
 ];
 
-function Podcasts() {
+function Podcasts({ workspace }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [questions, setQuestions] = useState([]);
+  const questionsRef = useRef("");
+  const isLoading = useRef(true);
+
+  useEffect(() => {
+    const documents = workspace?.documents?.map((v) => v?.metadata);
+    isLoading.current = true;
+    Workspace.streamChat(
+      { ...workspace },
+      `Suggest podcast topics less that 5 words from the uploaded documents. Find meta details: ${documents}`,
+      (chatResult) => {
+        console.log("podcast_chatResult>>>", chatResult);
+        if (chatResult?.type === "textResponseChunk") {
+          questionsRef.current += chatResult?.textResponse;
+        } else if (chatResult?.type === "finalizeResponseStream") {
+          const _questions = getQuestions(questionsRef.current, 3);
+          const cleanedQuestions = _questions.map((q) =>
+            q.replace(/^\d+\.\s*/, "")
+          ); // Remove leading numbers
+          System.deleteChat(chatResult?.chatId);
+          questionsRef.current = "";
+          isLoading.current = false;
+          setQuestions(cleanedQuestions);
+        } else if (chatResult?.type === "abort") {
+          setQuestions([]);
+          isLoading.current = false;
+          questionsRef.current = "";
+          // System.deleteChat(chatResult?.chatId);
+        }
+      }
+    );
+  }, [workspace]);
+
+  console.log("podcast_questions>>>>", questions);
+
   return (
     <div
       className="flex flex-col"
@@ -1146,9 +1186,10 @@ function Podcasts() {
           style={{
             backgroundColor: "white",
             width: "1000px",
-            height: "291px",
+            minHeight: "300px",
             borderRadius: "8px",
             padding: "24px",
+            rowGap: "24px",
           }}
         >
           <div
@@ -1180,6 +1221,13 @@ function Podcasts() {
                 placeholder="Enter your topic here"
               />
             </div>
+          </div>
+          <div className="flex">
+            {isLoading?.current ? (
+              <Skeleton count={4} />
+            ) : (
+              questions?.map((q) => <div key={q}>{q}</div>)
+            )}
           </div>
           <div className="flex">
             <div

@@ -48,11 +48,14 @@ const Workspace = {
 
     return { workspace, message };
   },
-  getNotes: async function (slug) {
-    const res = await fetch(`${API_BASE}/notes/thread/${slug}`, {
-      method: "GET",
-      headers: baseHeaders(),
-    })
+  getNotes: async function (slug, workspaceSlug) {
+    const res = await fetch(
+      `${API_BASE}/notes?threadId=${slug}&workspaceId=${workspaceSlug}`,
+      {
+        method: "GET",
+        headers: baseHeaders(),
+      }
+    )
       .then((res) => res.json())
       .catch((e) => {
         return [];
