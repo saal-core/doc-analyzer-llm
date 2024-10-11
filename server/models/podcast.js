@@ -5,6 +5,9 @@ const Podcasts = {
     try {
       const podcasts = await prisma.podcasts.findMany({
         where: clause,
+        orderBy: {
+          createdAt: "desc",
+        },
       });
       return podcasts;
     } catch (error) {
