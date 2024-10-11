@@ -67,14 +67,14 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
 
   async function getNotes() {
     const res = await Workspace.getNotes(threadSlug);
-    console.log("getNotes>>>", res);
+    setSavedNotes(res);
   }
 
   useEffect(() => {
     if (workspace) {
       getNotes();
     }
-  }, [workspace])
+  }, [workspace]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -290,9 +290,8 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   async function saveNote({ chatId }, _workSpace) {
     const res = await Workspace.createNote({
       chatId,
-      userId: 1,
       threadId: threadSlug,
-      workspaceId: _workSpace?.id,
+      workspaceId: _workSpace?.slug,
     });
     console.log("res>>>>", res, threadSlug);
   }
@@ -323,8 +322,10 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
               console.log("val>>>>", val, workspace);
               setSavedNotes((v) => {
                 console.log("v>>>", v, val);
-                if (v?.find((_v) => _v?.chatId === val?.chatId)) {
-                  return v?.filter((_v) => _v?.chatId !== val?.chatId);
+                if (v?.find((_v) => (_v?.chatId || _v?.id) === val?.chatId)) {
+                  return v?.filter(
+                    (_v) => (_v?.chatId || _v?.id) !== val?.chatId
+                  );
                 } else {
                   saveNote(val, workspace);
                   return [val, ...v];
@@ -502,19 +503,23 @@ function StyleGuide({ sendMessage, workspace }) {
       { ...workspace, chatMode: "query" },
       `Provide an overview from the uploaded documents in less than 150 words. Find meta details: ${documents}`,
       (chatResult) => {
+        console.log('chatResults>>>', chatResult);
         if (chatResult?.type === "textResponseChunk") {
           summaryRef.current += chatResult?.textResponse;
         } else if (chatResult?.type === "finalizeResponseStream") {
           setSummary(summaryRef.current);
           summaryRef.current = "";
           System.deleteChat(chatResult?.chatId);
+        } else if (chatResult?.type === "abort") {
+          setSummary(summaryRef.current);
+          summaryRef.current = "";
+          // System.deleteChat(chatResult?.chatId);
         }
       }
     );
   }, [workspace]);
 
   useEffect(() => {
-    console.log("workspace>>>", workspace);
     const documents = workspace?.documents?.map((v) => v?.metadata);
     Workspace.streamChat(
       { ...workspace },
@@ -528,7 +533,12 @@ function StyleGuide({ sendMessage, workspace }) {
             q.replace(/^\d+\.\s*/, "")
           ); // Remove leading numbers
           System.deleteChat(chatResult?.chatId);
+          questionsRef.current = "";
           setQuestions(cleanedQuestions);
+        } else if (chatResult?.type === "abort") {
+          setQuestions([]);
+          questionsRef.current = "";
+          // System.deleteChat(chatResult?.chatId);
         }
       }
     );
@@ -558,7 +568,6 @@ function StyleGuide({ sendMessage, workspace }) {
         <div
           className="flex flex-col"
           style={{
-            paddingInline: "8px",
             rowGap: "24px",
           }}
         >
@@ -572,6 +581,7 @@ function StyleGuide({ sendMessage, workspace }) {
             <div
               style={{
                 fontWeight: 600,
+                paddingInline: "8px",
               }}
             >
               Summary
@@ -580,7 +590,20 @@ function StyleGuide({ sendMessage, workspace }) {
               {!summary ? (
                 <Skeleton count={4} />
               ) : (
-                <StatusResponse content={summary} />
+                <Scrollbars
+                  style={{
+                    maxHeight: "250px",
+                    height: "250px",
+                  }}
+                >
+                  <div
+                    style={{
+                      paddingInline: "8px",
+                    }}
+                  >
+                    <StatusResponse content={summary} />
+                  </div>
+                </Scrollbars>
               )}
             </div>
           </div>
@@ -762,7 +785,9 @@ function StyleGuide({ sendMessage, workspace }) {
 function Notes({ chatHistory: _chatHistory }) {
   const [searchText, setSearchText] = useState("");
   const chatHistory = _chatHistory?.filter((v) =>
-    v?.content?.toLowerCase()?.includes(searchText?.toLowerCase())
+    (v?.response ? JSON.parse(v?.response)?.text : v?.content)
+      ?.toLowerCase()
+      ?.includes(searchText?.toLowerCase())
   );
 
   return (
@@ -843,7 +868,7 @@ function Notes({ chatHistory: _chatHistory }) {
                 }}
                 onClick={() => {
                   const ele = document?.getElementById(
-                    `assistant_historical_${note?.chatId}`
+                    `assistant_historical_${note?.chatId ? note?.chatId : note?.id}`
                   );
                   if (ele) {
                     ele.scrollIntoView({ behavior: "smooth" });
@@ -895,7 +920,13 @@ function Notes({ chatHistory: _chatHistory }) {
                     lineHeight: "22px",
                   }}
                 >
-                  <StatusResponse content={note?.content} />
+                  <StatusResponse
+                    content={
+                      note?.response
+                        ? JSON.parse(note?.response)?.text
+                        : note?.content
+                    }
+                  />
                 </div>
               </div>
             ))

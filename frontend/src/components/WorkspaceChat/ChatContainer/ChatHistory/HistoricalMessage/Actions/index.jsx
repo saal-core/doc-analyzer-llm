@@ -80,8 +80,12 @@ const Actions = ({
               justifyContent: "center",
               columnGap: "8px",
               cursor: "pointer",
-              ...(!!savedNotes?.find((v) => v?.chatId === chatId) && {
+              ...(!!savedNotes?.find(
+                (v) => (v?.chatId || v?.id) === chatId
+              ) && {
                 color: "rgba(41, 28, 166, 1)",
+                opacity: 0.7,
+                pointerEvents: "none",
               }),
             }}
             onClick={() => {
@@ -91,7 +95,7 @@ const Actions = ({
           >
             <PushPin
               weight={
-                savedNotes?.find((v) => v?.chatId === chatId)
+                savedNotes?.find((v) => (v?.chatId || v?.id) === chatId)
                   ? "fill"
                   : "regular"
               }
