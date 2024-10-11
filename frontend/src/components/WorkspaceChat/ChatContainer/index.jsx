@@ -427,6 +427,7 @@ const sections = [
     label: "Podcast",
     Icon: Doc,
     key: "podcast",
+    disabled: true,
   },
 ];
 
@@ -457,6 +458,10 @@ function SideSections({ selectedSection, setSelectedSection }) {
             rowGap: "4px",
             cursor: "pointer",
             borderRight: "4px solid transparent",
+            ...(section?.disabled && {
+              opacity: 0.7,
+              pointerEvents: "none",
+            }),
             ...(section?.key === selectedSection && {
               background: "#E4F5FE",
               borderRight: "4px solid #291CA6",
