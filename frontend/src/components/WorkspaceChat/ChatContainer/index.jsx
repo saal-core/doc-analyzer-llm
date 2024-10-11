@@ -1226,7 +1226,30 @@ function Podcasts({ workspace }) {
             {isLoading?.current ? (
               <Skeleton count={4} />
             ) : (
-              questions?.map((q) => <div key={q}>{q}</div>)
+              questions?.map((q, index) => (
+                <div
+                  key={index}
+                  style={{
+                    background:
+                      "linear-gradient(84.14deg, #F2F0FF 0%, #ECFBFF 100%)",
+                    border: "1px solid rgba(206, 226, 232, 1)",
+                    borderRadius: "8px",
+                    padding: "16px",
+                    cursor: "pointer",
+                    alignItems: "flex-start",
+                    columnGap: "8px",
+                  }}
+                  onClick={() => {
+                    sendMessage(q);
+                  }}
+                  className="flex"
+                >
+                  <div>
+                    <ListPlus size={18} color="rgba(41, 28, 166, 1)" />
+                  </div>
+                  <div>{q}</div>
+                </div>
+              ))
             )}
           </div>
           <div className="flex">
