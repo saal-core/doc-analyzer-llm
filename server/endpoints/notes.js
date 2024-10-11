@@ -5,18 +5,11 @@ function notesEndpoints(app) {
 
   app.get("/notes", async (request, response) => {
     try {
-      const notes = await Note.get();
-      response.status(200).json(notes);
-    } catch (e) {
-      console.error(e);
-      response.sendStatus(500).end();
-    }
-  });
-
-  app.get("/notes/thread/:threadId", async (request, response) => {
-    try {
-      const { threadId } = request.params;
-      const notes = await Note.getallnotes({ threadId: threadId });
+      const { workspaceId, threadId } = request.query;
+      const notes = await Note.getallnotes({
+        threadId: threadId || null,
+        workspaceId: workspaceId || null,
+      });
       response.status(200).json(notes);
     } catch (e) {
       console.error(e);
@@ -28,6 +21,9 @@ function notesEndpoints(app) {
     try {
       const user = await userFromSession(request, response);
       let newNoteParams = reqBody(request);
+      if (newNoteParams.threadId == 'null') {
+        newNoteParams.threadId = "default";
+      }
       newNoteParams.userId = user.id;
       const notes = await Note.create(newNoteParams);
       response.status(200).json(notes);
