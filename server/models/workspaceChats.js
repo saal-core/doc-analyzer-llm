@@ -115,6 +115,18 @@ const WorkspaceChats = {
     }
   },
 
+  getchatbyid: async function (clause = {}) {
+    try {
+      const workspace_chats = await prisma.workspace_chats.findMany({
+        where: clause,
+      });
+      return workspace_chats;
+    } catch (error) {
+      console.error(error.message);
+      return null;
+    }
+  },
+
   get: async function (clause = {}, limit = null, orderBy = null) {
     try {
       const chat = await prisma.workspace_chats.findFirst({

@@ -3,7 +3,9 @@ const prisma = require("../utils/prisma");
 const Podcasts = {
   get: async function (clause = {}) {
     try {
-      const podcasts = await prisma.podcasts.findMany({ where: clause });
+      const podcasts = await prisma.podcasts.findMany({
+        where: clause,
+      });
       return podcasts;
     } catch (error) {
       console.error(error.message);
