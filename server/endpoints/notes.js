@@ -1,4 +1,5 @@
 const { reqBody, userFromSession } = require("../utils/http");
+const { WorkspaceChats } = require("../models/workspaceChats");
 const { Note } = require("../models/note");
 function notesEndpoints(app) {
   if (!app) return;
@@ -6,11 +7,21 @@ function notesEndpoints(app) {
   app.get("/notes", async (request, response) => {
     try {
       const { workspaceId, threadId } = request.query;
-      const notes = await Note.getallnotes({
+      console.log(workspaceId, threadId);
+      const notes = await Note.get({
         threadId: threadId || null,
         workspaceId: workspaceId || null,
       });
-      response.status(200).json(notes);
+
+      const userNotes = [];
+      for (const note of notes) {
+        let chat = await WorkspaceChats.getchatbyid({ id: note.chatId });
+        chat = chat[0];
+        chat.noteId = note.id;
+        userNotes.push(chat);
+      }
+
+      response.status(200).json(userNotes);
     } catch (e) {
       console.error(e);
       response.sendStatus(500).end();

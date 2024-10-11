@@ -1,9 +1,15 @@
 const prisma = require("../utils/prisma");
 
 const Note = {
-  get: async function () {
+  get: async function (clause = {}) {
     try {
-      const notes = await prisma.notes.findMany();
+      const notes = await prisma.notes.findMany({
+        where: clause,
+        select: {
+          chatId: true,
+          id: true,
+        },
+      });
       return notes;
     } catch (error) {
       console.error(error.message);
