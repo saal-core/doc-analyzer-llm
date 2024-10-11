@@ -631,7 +631,7 @@ function StyleGuide({ sendMessage, workspace }) {
                       paddingInline: "8px",
                     }}
                   >
-                    <StatusResponse content={summary} />
+                    <StatusResponse isShowMoreHide content={summary} />
                   </div>
                 </Scrollbars>
               )}
@@ -1585,7 +1585,22 @@ function Podcasts({
   );
 }
 
-function StatusResponse({ content, error }) {
+function StatusResponse({ content, error, isShowMoreHide }) {
+  if (isShowMoreHide) {
+    return (
+      <div
+        style={{ wordBreak: "break-word" }}
+        className={`flex markdown flex-col ${error ? "bg-red-200" : {}}`}
+      >
+        <div className="flex gap-x-5">
+          <span
+            className={`reply whitespace-pre-line font-normal text-sm md:text-sm flex flex-col gap-y-1`}
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+          />
+        </div>
+      </div>
+    )
+  }
   return (
     <div
       style={{ wordBreak: "break-word" }}

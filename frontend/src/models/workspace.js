@@ -63,6 +63,21 @@ const Workspace = {
 
     return res;
   },
+  deleteNote: async function (slug, workspaceSlug) {
+    const res = await fetch(
+      `${API_BASE}/notes?threadId=${slug}&workspaceId=${workspaceSlug}`,
+      {
+        method: "GET",
+        headers: baseHeaders(),
+      }
+    )
+      .then((res) => res.json())
+      .catch((e) => {
+        return [];
+      });
+
+    return res;
+  },
   createPodcast: async function (data = {}) {
     const res = await fetch(`${API_BASE}/podcasts`, {
       method: "POST",
