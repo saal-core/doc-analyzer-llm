@@ -9,6 +9,9 @@ const Note = {
           chatId: true,
           id: true,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
       return notes;
     } catch (error) {
