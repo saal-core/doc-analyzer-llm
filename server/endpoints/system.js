@@ -1,7 +1,12 @@
 process.env.NODE_ENV === "development"
   ? require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` })
   : require("dotenv").config();
-const { viewLocalFiles, normalizePath, isWithin } = require("../utils/files");
+const {
+  viewLocalFiles,
+  normalizePath,
+  isWithin,
+  viewLocalFilesByWorkspace
+} = require("../utils/files");
 const { purgeDocument, purgeFolder } = require("../utils/files/purgeDocument");
 const { getVectorDbClass } = require("../utils/helpers");
 const { updateENV, dumpENV } = require("../utils/helpers/updateENV");
@@ -51,6 +56,10 @@ const {
   generateRecoveryCodes,
 } = require("../utils/PasswordRecovery");
 const { SlashCommandPresets } = require("../models/slashCommandsPresets");
+const axios = require("axios");
+const querystring = require("querystring");
+const crypto = require("crypto");
+const { Workspace } = require("../models/workspace");
 
 function systemEndpoints(app) {
   if (!app) return;
@@ -80,6 +89,13 @@ function systemEndpoints(app) {
     }
   });
 
+  const config = {
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    redirectUri: process.env.REDIRECT_URI,
+    authServerUrl: process.env.AUTH_SERVER_URL,
+  };
+
   app.get(
     "/system/check-token",
     [validatedRequest],
@@ -103,6 +119,126 @@ function systemEndpoints(app) {
       }
     }
   );
+
+  app.get("/auth", async (req, res) => {
+    const authUrl =
+      `${config.authServerUrl}/auth?` +
+      querystring.stringify({
+        client_id: config.clientId,
+        response_type: "code",
+        scope: "openid",
+        redirect_uri: config.redirectUri,
+      });
+    res.redirect(authUrl);
+  });
+
+  app.get("/callback", async (req, res) => {
+    const code = req.query.code;
+   
+    if (!code) {
+      return res.status(400).send("No code found");
+    }
+
+    try {
+      const response = await axios.post(
+        `${config.authServerUrl}/token`,
+        querystring.stringify({
+          grant_type: "authorization_code",
+          code: code,
+          redirect_uri: config.redirectUri,
+          client_id: config.clientId,
+          client_secret: config.clientSecret,
+        }),
+        {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        }
+      );
+      const token = response.data.access_token;
+      const userinfoResponse = await axios.get(
+        `${config.authServerUrl}/userinfo`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const userInfo = userinfoResponse.data;
+      var existingUser = await User._get({
+        username: String(userInfo.user.username),
+      });
+
+      if (!existingUser) {
+        await User.create({
+          username: userInfo.user.username,
+          password: crypto.randomUUID(),
+          role: ROLES.default,
+        });
+
+        existingUser = await User._get({
+          username: String(userInfo.user.username),
+        });
+        Workspace.new(userInfo.user.username + "-workspace", existingUser.id);
+      }
+
+      const fullAuthResponse = {
+        valid: true,
+        user: User.filterFields(existingUser),
+        token: makeJWT(
+          { id: existingUser.id, username: existingUser.username },
+          "30d"
+        ),
+        message: null,
+      };
+
+      req.session.token = fullAuthResponse.token;
+
+      res.cookie("token", fullAuthResponse.token, {
+        maxAge: 900000,
+        httpOnly: false,
+        secure: false,
+      });
+
+      res.cookie("user", JSON.stringify(User.filterFields(existingUser)), {
+        maxAge: 900000,
+        httpOnly: false,
+        secure: false,
+      });
+
+      res.cookie("valid", true, {
+        maxAge: 900000,
+        httpOnly: false,
+        secure: false,
+      });
+
+      if (existingUser.suspended) {
+        response.status(200).json({
+          user: null,
+          valid: false,
+          token: null,
+          message: "[004] Account suspended by admin.",
+        });
+        return;
+      }
+
+      res.redirect("/");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Error while exchanging code for token");
+    }
+  });
+
+  // Protected route
+  app.get("/token", async (req, res) => {
+    const token = req.session.token;
+    if (!token) {
+      return res.status(401).send("Not authenticated");
+    }
+
+    try {
+      res.json("hello");
+    } catch (error) {
+      res.status(500).send("Error retrieving user info");
+    }
+  });
 
   app.post("/request-token", async (request, response) => {
     try {
@@ -365,6 +501,22 @@ function systemEndpoints(app) {
     async (_, response) => {
       try {
         const localFiles = await viewLocalFiles();
+        response.status(200).json({ localFiles });
+      } catch (e) {
+        console.log(e.message, e);
+        response.sendStatus(500).end();
+      }
+    }
+  );
+
+  app.get(
+    "/system/local-files/:workflowfolder",
+    // [validatedRequest, flexUserRoleValid([ROLES.all])],
+    [validatedRequest, flexUserRoleValid([ROLES.all])],
+    async (request, response) => {
+      try {
+        const { workflowfolder } = request.params;
+        const localFiles = await viewLocalFilesByWorkspace(workflowfolder);
         response.status(200).json({ localFiles });
       } catch (e) {
         console.log(e.message, e);
