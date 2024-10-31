@@ -39,6 +39,28 @@ const User = {
     return { ...rest };
   },
 
+  createBulk: async function (bulkUsers = []) {
+    try {
+      const bcrypt = require("bcrypt");
+      const usersToCreate = bulkUsers.map((user) => ({
+        ...user,
+        password: bcrypt.hashSync(user?.password, 10),
+        role: String(user.role),
+      }));
+      const { count } = await prisma.users.createMany({
+        data: usersToCreate,
+      });
+
+      return {
+        count,
+        error: null,
+      };
+    } catch (error) {
+      console.error("FAILED TO BULK CREATE USER.", error.message);
+      return { users: null, error: error.message };
+    }
+  },
+
   create: async function ({ username, password, role = "default" }) {
     const passwordCheck = this.checkPasswordComplexity(password);
     if (!passwordCheck.checkedOK) {

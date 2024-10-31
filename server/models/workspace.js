@@ -55,6 +55,68 @@ const Workspace = {
       return { workspace: null, message: error.message };
     }
   },
+  /**
+   *
+   * @param {*} workspaces: {
+   * [keys: string (workspace name)]: {
+   *    creatorId: string | number,
+   *    ownerIds: string[] | number []
+   *  }
+   * }
+   * @returns
+   */
+  bulkCreate: async function (workspaces = {}) {
+    const workspaceUsersToCreate = [];
+    const workSpacesToCreate = await Promise.all(
+      Object.keys(workspaces)?.map(async (workspace) => {
+        const { creatorId, ownerIds } = workspaces?.[workspace];
+        let slug = slugify(workspace, { lower: true });
+        slug = slug || uuidv4();
+
+        const existingBySlug = await this.get({ slug });
+        if (existingBySlug !== null) {
+          const slugSeed = Math.floor(10000000 + Math.random() * 90000000);
+          slug = slugify(`${workspace}-${slugSeed}`, { lower: true });
+        }
+        return {
+          name: workspace,
+          slug,
+          createdBy: creatorId,
+        };
+      })
+    );
+
+    await prisma.workspaces.createMany({
+      data: workSpacesToCreate,
+    });
+
+    const workspaceNameIdMap = (
+      await this.where({
+        name: {
+          in: Object.keys(workspaces),
+        },
+      })
+    ).reduce((acc, curr) => {
+      acc[curr.name] = curr.id;
+      return acc;
+    }, {});
+
+    for (const [workspaceName, workspaceOwnership] of Object.entries(
+      workspaces
+    )) {
+      const { ownerIds } = workspaceOwnership;
+      workspaceUsersToCreate?.push(
+        ...ownerIds?.map((id) => ({
+          user_id: Number(id),
+          workspace_id: Number(workspaceNameIdMap?.[workspaceName]),
+        }))
+      );
+    }
+    const workespaceUsersResponse = await WorkspaceUser.bulkCreateManyUsers(
+      workspaceUsersToCreate
+    );
+    return workespaceUsersResponse;
+  },
 
   update: async function (id = null, updates = {}) {
     if (!id) throw new Error("No workspace id provided for update");

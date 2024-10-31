@@ -17,6 +17,15 @@ const WorkspaceUser = {
     return;
   },
 
+  bulkCreateManyUsers: async (workspaceUsers = []) => {
+    try {
+      await prisma.workspace_users.createMany({ data: workspaceUsers });
+    } catch (error) {
+      console.error(error.message);
+    }
+    return;
+  },
+
   createManyUsers: async function (userIds = [], workspaceId) {
     if (userIds.length === 0) return;
     try {

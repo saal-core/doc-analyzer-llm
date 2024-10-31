@@ -5,7 +5,7 @@ const {
   viewLocalFiles,
   normalizePath,
   isWithin,
-  viewLocalFilesByWorkspace
+  viewLocalFilesByWorkspace,
 } = require("../utils/files");
 const { purgeDocument, purgeFolder } = require("../utils/files/purgeDocument");
 const { getVectorDbClass } = require("../utils/helpers");
@@ -134,7 +134,7 @@ function systemEndpoints(app) {
 
   app.get("/callback", async (req, res) => {
     const code = req.query.code;
-   
+
     if (!code) {
       return res.status(400).send("No code found");
     }
@@ -1334,6 +1334,67 @@ function systemEndpoints(app) {
       }
     }
   );
+
+  app.post("/system/onboard-space", async (request, response) => {
+    try {
+      const { space } = request.body;
+      const { name: spaceName = "", admins = [], members = [] } = space || {};
+      // create users if don't exist
+      const allUsernames = new Set([...admins, ...members]);
+      const existingUsers = (
+        await User.where({
+          username: { in: [...allUsernames] },
+        })
+      ).map((user) => user.username);
+
+      const usersToCreate = [...allUsernames]?.reduce((acc, username) => {
+        if (!existingUsers?.includes(username)) {
+          acc.push({
+            username,
+            password: crypto.randomUUID(),
+            role: ROLES.default,
+          });
+        }
+        return acc;
+      }, []);
+      await User.createBulk(usersToCreate);
+
+      const usernameIdMap = (
+        await User.where({
+          username: {
+            in: [...allUsernames],
+          },
+        })
+      ).reduce((acc, curr) => {
+        acc[curr.username] = curr.id;
+        return acc;
+      }, {});
+
+      // creating workspaces for each user and a commmon workspace for the domain
+      const workspacesToCreate = {
+        [spaceName]: {
+          creatorId: usernameIdMap?.admin,
+          ownerIds: Object.values(usernameIdMap),
+        },
+      };
+
+      for (const [username, userId] of Object.entries(usernameIdMap)) {
+        workspacesToCreate[`${username}-workspace`] = {
+          creatorId: userId,
+          ownerIds: [userId],
+        };
+      }
+
+      await Workspace.bulkCreate(workspacesToCreate);
+
+      response.json({ spaceName, usernameIdMap, workspacesToCreate });
+    } catch (error) {
+      console.error("Error while onboarding space", error);
+      response
+        .status(500)
+        .json({ message: "Something wrong happened while onboarding space" });
+    }
+  });
 }
 
 module.exports = { systemEndpoints };
