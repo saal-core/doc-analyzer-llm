@@ -1373,21 +1373,24 @@ function systemEndpoints(app) {
       // creating workspaces for each user and a commmon workspace for the domain
       const workspacesToCreate = {
         [spaceName]: {
-          creatorId: usernameIdMap?.admin,
-          ownerIds: Object.values(usernameIdMap),
+          creatorId: usernameIdMap[admins?.[0]],
+          ownerIdsAndRoles: Object.keys(usernameIdMap)?.map((username) => ({
+            id: usernameIdMap?.[username],
+            role: admins?.includes(username) ? ROLES.admin : ROLES.default,
+          })),
         },
       };
 
       for (const [username, userId] of Object.entries(usernameIdMap)) {
         workspacesToCreate[`${username}-workspace`] = {
           creatorId: userId,
-          ownerIds: [userId],
+          ownerIdsAndRoles: [{ id: userId, role: ROLES.admin }],
         };
       }
 
       await Workspace.bulkCreate(workspacesToCreate);
 
-      response.json({ spaceName, usernameIdMap, workspacesToCreate });
+      response.status(200).json({ message: "Space onboarded successfully!!" });
     } catch (error) {
       console.error("Error while onboarding space", error);
       response

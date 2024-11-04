@@ -69,7 +69,7 @@ const Workspace = {
     const workspaceUsersToCreate = [];
     const workSpacesToCreate = await Promise.all(
       Object.keys(workspaces)?.map(async (workspace) => {
-        const { creatorId, ownerIds } = workspaces?.[workspace];
+        const { creatorId } = workspaces?.[workspace];
         let slug = slugify(workspace, { lower: true });
         slug = slug || uuidv4();
 
@@ -104,11 +104,12 @@ const Workspace = {
     for (const [workspaceName, workspaceOwnership] of Object.entries(
       workspaces
     )) {
-      const { ownerIds } = workspaceOwnership;
+      const { ownerIdsAndRoles } = workspaceOwnership;
       workspaceUsersToCreate?.push(
-        ...ownerIds?.map((id) => ({
+        ...ownerIdsAndRoles?.map(({ id, role }) => ({
           user_id: Number(id),
           workspace_id: Number(workspaceNameIdMap?.[workspaceName]),
+          role,
         }))
       );
     }
@@ -246,21 +247,19 @@ const Workspace = {
       return await this.where(clause, limit, orderBy);
 
     try {
-      const workspaces = await prisma.workspaces.findMany({
+      const workspaces = await prisma.workspace_users.findMany({
         where: {
           ...clause,
-          workspace_users: {
-            some: {
-              user_id: user.id,
-            },
-          },
+          user_id: user.id,
+          ...(limit !== null ? { take: limit } : {}),
+          ...(orderBy !== null ? { orderBy } : {}),
         },
-        ...(limit !== null ? { take: limit } : {}),
-        ...(orderBy !== null ? { orderBy } : {}),
+        include: { workspaces: true },
       });
       return workspaces.map((workspace) => ({
-        ...workspace,
-        isOwner: workspace.createdBy === user.id,
+        ...workspace?.workspaces,
+        isOwner: workspace?.workspaces?.createdBy === user?.id,
+        isAdmin: workspace?.role === ROLES.admin,
       }));
     } catch (error) {
       console.error(error.message);
