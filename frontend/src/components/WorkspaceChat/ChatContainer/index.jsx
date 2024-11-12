@@ -485,7 +485,7 @@ const sections = [
     label: "Podcast",
     Icon: Microphone,
     key: "podcast",
-    disabled: false,
+    disabled: true,
   },
 ];
 
