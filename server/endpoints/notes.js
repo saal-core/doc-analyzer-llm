@@ -31,11 +31,12 @@ function notesEndpoints(app) {
   app.post("/notes", async (request, response) => {
     try {
       const user = await userFromSession(request, response);
+      console.log("User from session:", user);
       let newNoteParams = reqBody(request);
       if (newNoteParams.threadId == 'null') {
         newNoteParams.threadId = "default";
       }
-      newNoteParams.userId = user.id;
+      if (user) newNoteParams.userId = user.id;
       const notes = await Note.create(newNoteParams);
       response.status(200).json(notes);
     } catch (e) {
