@@ -481,12 +481,12 @@ const sections = [
     Icon: Doc,
     key: "doc",
   },
-  {
-    label: "Podcast",
-    Icon: Microphone,
-    key: "podcast",
-    disabled: true,
-  },
+  // {
+  //   label: "Podcast",
+  //   Icon: Microphone,
+  //   key: "podcast",
+  //   disabled: true,
+  // },
 ];
 
 function SideSections({ selectedSection, setSelectedSection }) {
