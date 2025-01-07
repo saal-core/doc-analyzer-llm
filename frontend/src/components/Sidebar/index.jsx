@@ -106,8 +106,9 @@ export default function Sidebar() {
               className="absolute bottom-0 left-0 right-0 pt-4 pb-3 rounded-b-[16px] bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md z-10"
               style={{
                 backgroundColor: "transparent",
-                height: "0px",
-                padding: "0px",
+                // height: "0px",
+                borderRadius: "0px",
+                paddingTop: "8px",
               }}
             >
               <Footer />

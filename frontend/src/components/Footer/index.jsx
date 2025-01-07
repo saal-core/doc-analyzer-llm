@@ -47,7 +47,7 @@ export default function Footer() {
 
   if (!Array.isArray(footerData) || footerData.length === 0) {
     return (
-      <div className="flex justify-center mb-2" style={{ flexDirection: 'column' }}>
+      <div className="flex justify-center" style={{ flexDirection: 'column' }}>
         <div className="flex" style={{ width: "100%", padding: "0px 6px" }}>
           {/* <ToolTipWrapper id="open-github">
             <a
@@ -106,6 +106,9 @@ export default function Footer() {
             href={item.url}
             target="_blank"
             rel="noreferrer"
+            style={{
+              borderRadius: "0px",
+            }}
             className="transition-all duration-300 p-2 rounded-full text-white bg-sidebar-button hover:bg-menu-item-selected-gradient hover:border-slate-100 hover:border-opacity-50 border-transparent border"
           >
             {React.createElement(
