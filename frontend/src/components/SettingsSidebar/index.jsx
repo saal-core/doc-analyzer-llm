@@ -192,6 +192,7 @@ export default function SettingsSidebar() {
             style={{
               backgroundColor: "transparent",
               // height: "0px",
+              borderRadius: "0px",
             }}
           >
             <Footer />
