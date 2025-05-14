@@ -9,6 +9,7 @@ const User = {
     "pfpFilename",
     "role",
     "suspended",
+    "uid",
   ],
   validations: {
     username: (newValue = "") => {
@@ -39,7 +40,7 @@ const User = {
     return { ...rest };
   },
 
-  create: async function ({ username, password, role = "default" }) {
+  create: async function ({ username, password, role = "default", uid=null }) {
     const passwordCheck = this.checkPasswordComplexity(password);
     if (!passwordCheck.checkedOK) {
       return { user: null, error: passwordCheck.error };
@@ -53,6 +54,7 @@ const User = {
           username: this.validations.username(username),
           password: hashedPassword,
           role: String(role),
+          uid
         },
       });
       return { user: this.filterFields(user), error: null };

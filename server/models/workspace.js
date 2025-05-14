@@ -5,7 +5,7 @@ const { WorkspaceUser } = require("./workspaceUsers");
 const { ROLES } = require("../utils/middleware/multiUserProtected");
 const { v4: uuidv4 } = require("uuid");
 const { User } = require("./user");
-
+const DEFAULT_WORKSPACE = process.env.DEFAULT_WORKSPACE || "default-workspace";
 const Workspace = {
   defaultPrompt:
     "Given the following conversation, relevant context, and a follow-up question, reply with an answer to the current question the user is asking. You must reply using only English and Arabic language. Do not use or output any words, characters, or symbols from other languages. Reject any inclusion of Chinese, Japanese, Hindi, Hebrew, or any other non-English, non-Arabic text. Return only your response to the question given the above information following the users instructions as needed. ",
@@ -293,6 +293,55 @@ const Workspace = {
       user?.id
     );
     return;
+  },
+  getDefaultWorkspace: async function () {
+    return await prisma.workspaces.findFirst({
+      where: {
+        slug: DEFAULT_WORKSPACE,
+      },
+    });
+  },
+  createDefaultWorkspace: async function () {
+    return await this.new(DEFAULT_WORKSPACE);
+  },
+
+  addToDefaultWorkspace: async function (userId) {
+    try {
+      // getting the default space
+      let defaultWorkspace = await this.getDefaultWorkspace();
+      if (!defaultWorkspace) {
+        console.warn("Default workspace not found. Creating...");
+        defaultWorkspace = await this.createDefaultWorkspace();
+      }
+      return await WorkspaceUser.create(userId, defaultWorkspace?.id);
+    } catch (error) {
+      console.error(
+        "Something went wrong while adding user to default workspace",
+        error
+      );
+      return false;
+    }
+  },
+  isUserInDefaultWS: async function (userId) {
+    try {
+      // getting the default space
+      let defaultWorkspace = await this.getDefaultWorkspace();
+      if (!defaultWorkspace) {
+        return false;
+      }
+      const user = await WorkspaceUser.get({
+        user_id: userId,
+        workspace_id: defaultWorkspace?.id,
+      });
+
+      return !!user;
+    } catch (error) {
+      console.error(
+        "Something went wrong while adding user to default workspace",
+        error
+      );
+      return false;
+    }
   },
 };
 

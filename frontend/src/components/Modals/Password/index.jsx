@@ -9,8 +9,26 @@ import {
 } from "../../../utils/constants";
 import useLogo from "../../../hooks/useLogo";
 import illustration from "@/media/illustrations/login-illustration.png";
+import { API_BASE } from "../../../utils/constants";
 
-export default function PasswordModal({ mode = "single" }) {
+export default function PasswordModalWithKeycloak({ mode }) {
+  const { loginLogo } = useLogo();
+  const logo = (
+    <img
+      src={loginLogo}
+      alt="Logo"
+      className={`hidden relative md:flex w-fit z-30 max-h-[40px]`}
+      style={{ objectFit: "contain" }}
+    />
+  );
+  if (mode === "single") {
+    <SingleUserAuth logo={logo} />;
+  }
+  window.location.href = `${API_BASE}/auth`;
+  return null;
+}
+
+export function PasswordModal({ mode = "single" }) {
   const { loginLogo } = useLogo();
   const logo = null;
   // (

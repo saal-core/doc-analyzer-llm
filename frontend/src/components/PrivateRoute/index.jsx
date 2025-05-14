@@ -7,6 +7,7 @@ import { AUTH_TIMESTAMP, AUTH_TOKEN, AUTH_USER } from "@/utils/constants";
 import { userFromStorage } from "@/utils/request";
 import System from "@/models/system";
 import UserMenu from "../UserMenu";
+import Cookies from "js-cookie";
 
 // Used only for Multi-user mode only as we permission specific pages based on auth role.
 // When in single user mode we just bypass any authchecks.
@@ -45,8 +46,17 @@ function useIsAuthenticated() {
       }
 
       // Single User password mode check
+      const localAuthToken =
+        localStorage.getItem(AUTH_TOKEN) || Cookies.get("token");
+      const localUser = localStorage.getItem(AUTH_USER) || Cookies.get("user");
+      if (localAuthToken) {
+        localStorage.setItem(AUTH_USER, localUser);
+        localStorage.setItem(AUTH_TOKEN, localAuthToken);
+        localStorage.setItem(AUTH_TIMESTAMP, Date.now());
+        Cookies.remove("token");
+        Cookies.remove("user");
+      }
       if (!MultiUserMode && RequiresAuth) {
-        const localAuthToken = localStorage.getItem(AUTH_TOKEN);
         if (!localAuthToken) {
           setIsAuthed(false);
           return;
@@ -56,9 +66,6 @@ function useIsAuthenticated() {
         setIsAuthed(isValid);
         return;
       }
-
-      const localUser = localStorage.getItem(AUTH_USER);
-      const localAuthToken = localStorage.getItem(AUTH_TOKEN);
       if (!localUser || !localAuthToken) {
         setIsAuthed(false);
         return;

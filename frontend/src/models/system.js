@@ -675,6 +675,13 @@ const System = {
         return false;
       });
   },
+  oauthSignout: async () => {
+    console.log("base headers", baseHeaders());
+    return await fetch(`${API_BASE}/auth/signout`, {
+      method: "GET",
+      headers: baseHeaders(),
+    });
+  },
 };
 
 export default System;

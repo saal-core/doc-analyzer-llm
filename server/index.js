@@ -23,6 +23,7 @@ const { workspaceThreadEndpoints } = require("./endpoints/workspaceThreads");
 const { documentEndpoints } = require("./endpoints/document");
 const { agentWebsocket } = require("./endpoints/agentWebsocket");
 const { notesEndpoints } = require("./endpoints/notes");
+const { authEndpoints } = require("./endpoints/auth");
 const { podcastEndpoints } = require("./endpoints/podcast");
 
 const app = express();
@@ -47,6 +48,7 @@ if (!!process.env.ENABLE_HTTPS) {
 
 app.use("/api", apiRouter);
 systemEndpoints(apiRouter);
+authEndpoints(apiRouter);
 extensionEndpoints(apiRouter);
 workspaceEndpoints(apiRouter);
 workspaceThreadEndpoints(apiRouter);

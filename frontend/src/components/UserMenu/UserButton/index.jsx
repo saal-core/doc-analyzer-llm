@@ -8,6 +8,7 @@ import { Person } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
 import AccountModal from "../AccountModal";
 import { AUTH_TIMESTAMP, AUTH_TOKEN, AUTH_USER } from "@/utils/constants";
+import { useNavigate } from "react-router-dom";
 
 export default function UserButton() {
   const mode = useLoginMode();
@@ -17,7 +18,7 @@ export default function UserButton() {
   const [showMenu, setShowMenu] = useState(false);
   const [showAccountSettings, setShowAccountSettings] = useState(false);
   const [supportEmail, setSupportEmail] = useState("");
-
+  const navigate = useNavigate();
   const handleClose = (event) => {
     if (
       menuRef.current &&
@@ -33,6 +34,15 @@ export default function UserButton() {
     setShowMenu(false);
   };
 
+  const handleSignout = async () => {
+    const result = await System.oauthSignout();
+    if (result) {
+      window.localStorage.removeItem(AUTH_USER);
+      window.localStorage.removeItem(AUTH_TOKEN);
+      window.localStorage.removeItem(AUTH_TIMESTAMP);
+      navigate(paths.login());
+    }
+  };
   useEffect(() => {
     if (showMenu) {
       document.addEventListener("mousedown", handleClose);
@@ -90,12 +100,7 @@ export default function UserButton() {
               Support
             </a>
             <button
-              onClick={() => {
-                window.localStorage.removeItem(AUTH_USER);
-                window.localStorage.removeItem(AUTH_TOKEN);
-                window.localStorage.removeItem(AUTH_TIMESTAMP);
-                window.location.replace(paths.home());
-              }}
+              onClick={handleSignout}
               type="button"
               className="text-white hover:bg-slate-200/20 w-full text-left px-4 py-1.5 rounded-md"
             >
